@@ -1,0 +1,332 @@
+/* ==========================================================================
+   VARIÁVEIS DE CORES E TEXTURAS (Carvalho, Dourado e Pergaminho)
+   ========================================================================== */
+:root {
+    --carvalho-escuro: #3D2516;
+    --carvalho-medio: #4A2E1B;
+    --carvalho-text: #2A170C;
+    --dourado-sacro: #C5A059;
+    --dourado-brilhante: #E5C17D;
+    
+    /* Efeito de pergaminho envelhecido usando múltiplos gradientes lineares e radiais */
+    --bg-pergaminho: radial-gradient(circle at 50% 50%, #F5EBD2 0%, #EADAB7 70%, #D8C398 100%);
+    --bg-pergaminho-escuro: radial-gradient(circle at 50% 50%, #EADAB7 0%, #D8C398 80%, #C4AE83 100%);
+    
+    --fonte-serifa: 'Playfair Display', Georgia, serif;
+    --fonte-titulo: 'Cinzel', serif;
+}
+
+/* ==========================================================================
+   RESETS E CONFIGURAÇÕES GERAIS
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1a100a; /* Fundo escuro externo para destacar os pergaminhos */
+    background-image: radial-gradient(#291910 20%, transparent 80%);
+    font-family: var(--fonte-serifa);
+    color: var(--carvalho-text);
+    min-height: 100vh;
+    padding-bottom: 40px;
+}
+
+/* ==========================================================================
+   HEADER (MOBILE & DESKTOP)
+   ========================================================================== */
+.site-header {
+    background: var(--carvalho-escuro);
+    border-bottom: 2px solid var(--dourado-sacro);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.logo {
+    font-family: var(--fonte-titulo);
+    color: var(--dourado-sacro);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+.search-box input {
+    background: #2a190e;
+    border: 1px solid var(--dourado-sacro);
+    color: #f5ebd2;
+    padding: 8px 15px;
+    font-family: var(--fonte-serifa);
+    border-radius: 4px;
+    outline: none;
+    width: 250px;
+    text-align: center;
+}
+
+.search-box input::placeholder {
+    color: #8c7255;
+}
+
+.nav-tools {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-sacro {
+    background: var(--carvalho-medio);
+    border: 1px solid var(--dourado-sacro);
+    color: #f5ebd2;
+    padding: 6px 15px;
+    font-family: var(--fonte-titulo);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-sacro:hover {
+    background: var(--dourado-sacro);
+    color: var(--carvalho-escuro);
+}
+
+.btn-gold {
+    background: var(--dourado-sacro);
+    color: var(--carvalho-escuro);
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   CONTAINER PRINCIPAL (MOBILE-FIRST)
+   ========================================================================== */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO DO TEMA PERGAMINHO (Cards)
+   ========================================================================== */
+.card-pergaminho {
+    background: var(--bg-pergaminho);
+    border-radius: 4px;
+    padding: 8px; /* Espaço para a moldura interna */
+    box-shadow: 
+        0 10px 25px rgba(0,0,0,0.5), 
+        inset 0 0 40px rgba(139, 90, 43, 0.15);
+    position: relative;
+}
+
+/* Moldura interna fina em ouro sacro */
+.card-border {
+    border: 1px solid var(--dourado-sacro);
+    padding: 20px;
+    height: 100%;
+    position: relative;
+}
+
+/* Detalhe de canto ornamental simulado com sombras de borda nas quinas */
+.card-border::before {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    pointer-events: none;
+}
+
+/* Bloco de Leitura Imersiva */
+.reader-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.capitulo-tag {
+    font-family: var(--fonte-titulo);
+    font-size: 1.2rem;
+    color: var(--carvalho-escuro);
+    border-bottom: 2px solid var(--dourado-sacro);
+    padding-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.texto-sagrado p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    text-align: justify;
+    color: var(--carvalho-text);
+}
+
+/* Letra Capitular Sacra */
+.capitular {
+    font-family: var(--fonte-titulo);
+    font-size: 3.5rem;
+    float: left;
+    line-height: 0.8;
+    margin-right: 10px;
+    margin-top: 5px;
+    color: var(--dourado-sacro);
+    text-shadow: 1px 1px 1px var(--carvalho-escuro);
+}
+
+/* Painel de Estudos Multicolunas */
+.estudo-section .card-border {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.titulo-aba {
+    font-family: var(--fonte-titulo);
+    font-size: 0.9rem;
+    background: var(--carvalho-escuro);
+    color: var(--dourado-sacro);
+    padding: 6px 12px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+
+.texto-apoio {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.lista-referencias {
+    list-style: none;
+}
+
+.lista-referencias li {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.lista-referencias span {
+    color: var(--dourado-sacro);
+    margin-right: 5px;
+}
+
+/* Editorial Moderno & Mídia */
+.media-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.arco-dourado {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--dourado-sacro);
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rosa-dos-ventos {
+    color: var(--dourado-sacro);
+    font-size: 1.2rem;
+}
+
+.titulo-media {
+    font-family: var(--fonte-titulo);
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.video-placeholder {
+    background: var(--carvalho-escuro);
+    height: 180px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    border: 1px solid var(--dourado-sacro);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+}
+
+.play-button {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--dourado-sacro);
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.play-button::after {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 19px;
+    border-style: solid;
+    border-width: 10px 0 10px 16px;
+    border-color: transparent transparent transparent var(--dourado-sacro);
+}
+
+.play-button:hover {
+    transform: scale(1.1);
+    background: rgba(197, 160, 89, 0.1);
+}
+
+.centralizado {
+    text-align: center;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES (Ajustes de Layout para telas Desktop)
+   ========================================================================== */
+@media (min-width: 768px) {
+    .header-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .main-content {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr; /* Divide a tela em duas colunas principais */
+        grid-template-rows: auto auto;
+        gap: 30px;
+    }
+
+    /* O painel de leitura principal ganha destaque vertical ocupando as duas linhas da esquerda */
+    .reader-section {
+        grid-row: span 2;
+    }
+
+    /* O painel de estudos se divide em duas colunas horizontais lado a lado por dentro */
+    .estudo-section .card-border {
+        flex-direction: row;
+    }
+
+    .coluna-estudo {
+        flex: 1;
+    }
+
+    .divisor-left {
+        border-left: 1px dashed rgba(197, 160, 89, 0.4);
+        padding-left: 20px;
+    }
+
+    .video-placeholder {
+        height: 220px; /* Aumenta a janela de vídeo no desktop */
+    }
+}

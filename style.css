@@ -1,0 +1,359 @@
+/* ==========================================================================
+   VARIÁVEIS DE CORES ATUALIZADAS (Fiel à imagem de referência)
+   ========================================================================== */
+:root {
+    /* Carvalho Envelhecido / Mel Clássico da Imagem */
+    --carvalho-fundo: #D6BA91;    /* Cor da madeira de fundo da imagem enviada */
+    --carvalho-escuro: #6B4423;   /* Marrom amadeirado médio para os contrastes e textos */
+    --carvalho-medio: #875A34;    /* Tom de madeira quente para botões e detalhes */
+    --carvalho-text: #3D2311;     /* Texto legível cor de tinta nanquim antiga */
+    
+    /* Dourado Sacro Celestial (Com efeito de brilho e luz) */
+    --dourado-sacro: #CBB071;     /* Tom de ouro antigo fosco */
+    --dourado-celestial: #FCE8B1; /* Brilho do ouro refletindo luz divina */
+    
+    /* Pergaminho Manuscrito Envelhecido (Texturas mais suaves e gastas) */
+    --bg-pergaminho: radial-gradient(circle at 50% 40%, #FFFDF4 0%, #F5E8C4 60%, #E6CE9C 100%);
+    
+    --fonte-serifa: 'Playfair Display', Georgia, serif;
+    --fonte-titulo: 'Cinzel', serif;
+}
+
+/* ==========================================================================
+   RESETS E CONFIGURAÇÕES GERAIS
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* Fundo agora é a cor exata do carvalho da imagem, simulando uma mesa de madeira */
+    background-color: var(--carvalho-fundo);
+    background-image: 
+        radial-gradient(rgba(255, 253, 244, 0.15) 10%, transparent 80%),
+        linear-gradient(to bottom, rgba(74, 46, 27, 0.05), rgba(0, 0, 0, 0.05));
+    font-family: var(--fonte-serifa);
+    color: var(--carvalho-text);
+    min-height: 100vh;
+    padding-bottom: 40px;
+}
+
+/* ==========================================================================
+   HEADER (Ajustado para tons de Carvalho Mel e Ouro)
+   ========================================================================== */
+.site-header {
+    background: linear-gradient(135deg, var(--carvalho-medio) 0%, var(--carvalho-escuro) 100%);
+    border-bottom: 3px solid var(--dourado-sacro);
+    /* Sombra dourada que simula um brilho celestial saindo do header */
+    box-shadow: 0 4px 25px rgba(203, 176, 113, 0.25), 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.logo {
+    font-family: var(--fonte-titulo);
+    color: var(--dourado-celestial);
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    /* Efeito de luz dourada brilhando no texto */
+    text-shadow: 0 0 10px rgba(252, 232, 177, 0.6), 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.search-box input {
+    background: rgba(255, 253, 244, 0.85); /* Fundo cor de pergaminho claro para a busca */
+    border: 1px solid var(--dourado-sacro);
+    color: var(--carvalho-text);
+    padding: 10px 20px;
+    font-family: var(--fonte-serifa);
+    border-radius: 20px; /* Arredondado como na imagem */
+    outline: none;
+    width: 280px;
+    text-align: center;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.search-box input::placeholder {
+    color: #8c7255;
+    font-style: italic;
+}
+
+.nav-tools {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-sacro {
+    background: rgba(255, 253, 244, 0.15);
+    border: 1px solid var(--dourado-sacro);
+    color: #fff;
+    padding: 8px 18px;
+    font-family: var(--fonte-titulo);
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-sacro:hover {
+    background: var(--dourado-sacro);
+    color: var(--carvalho-escuro);
+    box-shadow: 0 0 12px var(--dourado-celestial);
+}
+
+.btn-gold {
+    background: linear-gradient(to bottom, var(--dourado-celestial), var(--dourado-sacro));
+    color: var(--carvalho-text);
+    font-weight: bold;
+    border: 1px solid #fff;
+}
+
+/* ==========================================================================
+   CONTAINER PRINCIPAL
+   ========================================================================== */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* ==========================================================================
+   CARDS ESTILO PERGAMINHO ENVELHECIDO
+   ========================================================================== */
+.card-pergaminho {
+    background: var(--bg-pergaminho);
+    border-radius: 6px;
+    padding: 10px; 
+    /* Bordas com sombreamento suave simulando papel pergaminho grosso e antigo */
+    box-shadow: 
+        0 15px 35px rgba(53, 35, 17, 0.25), 
+        inset 0 0 50px rgba(184, 144, 91, 0.3);
+    position: relative;
+    border: 1px solid #D1BA8D;
+}
+
+/* Moldura interna dupla para parecer sacro e refinado */
+.card-border {
+    border: 2px solid var(--dourado-sacro);
+    padding: 25px;
+    height: 100%;
+    position: relative;
+    background: transparent;
+}
+
+.card-border::before {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border: 1px dashed rgba(107, 68, 35, 0.25);
+    pointer-events: none;
+}
+
+/* Seção de leitura minimalista */
+.reader-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.capitulo-tag {
+    font-family: var(--fonte-titulo);
+    font-size: 1.3rem;
+    color: var(--carvalho-escuro);
+    border-bottom: 2px solid var(--dourado-sacro);
+    padding-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+.texto-sagrado p {
+    font-size: 1.2rem;
+    line-height: 1.9;
+    margin-bottom: 20px;
+    text-align: justify;
+    color: var(--carvalho-text);
+}
+
+/* Letra Capitular Sacra Iluminada */
+.capitular {
+    font-family: var(--fonte-titulo);
+    font-size: 4rem;
+    float: left;
+    line-height: 0.8;
+    margin-right: 12px;
+    margin-top: 5px;
+    color: var(--carvalho-escuro);
+    background: linear-gradient(135deg, var(--carvalho-escuro), var(--dourado-sacro));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+/* Painel de Estudos */
+.estudo-section .card-border {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.titulo-aba {
+    font-family: var(--fonte-titulo);
+    font-size: 0.85rem;
+    background: linear-gradient(to right, var(--carvalho-escuro), var(--carvalho-medio));
+    color: var(--dourado-celestial);
+    padding: 8px 16px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.texto-apoio {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #4A3319;
+}
+
+.lista-referencias {
+    list-style: none;
+}
+
+.lista-referencias li {
+    margin-bottom: 12px;
+    font-size: 1rem;
+    color: #4A3319;
+}
+
+.lista-referencias span {
+    color: var(--carvalho-medio);
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* Bloco Editorial e de Mídia */
+.media-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.arco-dourado {
+    width: 55px;
+    height: 55px;
+    border: 2px solid var(--dourado-sacro);
+    background: radial-gradient(circle, var(--dourado-celestial) 0%, transparent 70%);
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(203, 176, 113, 0.4);
+}
+
+.rosa-dos-ventos {
+    color: var(--carvalho-escuro);
+    font-size: 1.3rem;
+}
+
+.titulo-media {
+    font-family: var(--fonte-titulo);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    color: var(--carvalho-escuro);
+}
+
+.video-placeholder {
+    background: linear-gradient(135deg, var(--carvalho-medio) 0%, var(--carvalho-escuro) 100%);
+    height: 190px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    border: 2px solid var(--dourado-sacro);
+    box-shadow: 
+        0 8px 20px rgba(0,0,0,0.3),
+        inset 0 0 30px rgba(0,0,0,0.5);
+}
+
+.play-button {
+    width: 55px;
+    height: 55px;
+    border: 2px solid var(--dourado-celestial);
+    background: rgba(255, 253, 244, 0.1);
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--dourado-sacro);
+}
+
+.play-button::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 21px;
+    border-style: solid;
+    border-width: 10px 0 10px 16px;
+    border-color: transparent transparent transparent var(--dourado-celestial);
+}
+
+.play-button:hover {
+    transform: scale(1.1);
+    background: var(--dourado-sacro);
+    box-shadow: 0 0 20px var(--dourado-celestial);
+}
+
+.play-button:hover::after {
+    border-color: transparent transparent transparent var(--carvalho-escuro);
+}
+
+/* ==========================================================================
+   MEDIA QUERIES (Ajustes de Grid para Computador / Desktop)
+   ========================================================================== */
+@media (min-width: 768px) {
+    .header-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .main-content {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr; 
+        grid-template-rows: auto auto;
+        gap: 35px;
+    }
+
+    .reader-section {
+        grid-row: span 2;
+    }
+
+    .estudo-section .card-border {
+        flex-direction: row;
+    }
+
+    .coluna-estudo {
+        flex: 1;
+    }
+
+    .divisor-left {
+        border-left: 1px dashed rgba(107, 68, 35, 0.3);
+        padding-left: 25px;
+    }
+
+    .video-placeholder {
+        height: 240px; 
+    }
+}
