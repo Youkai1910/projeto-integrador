@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Bíblico Scriptura - Leitura, Estudo e Meditação</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts: Cinzel (Sacro/Titulos), Lora (Leitura Bíblica), Inter (UI) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- 
+      WORDPRESS READY:
+      Adicione no header.php do seu tema WordPress:
+      <?php wp_head(); ?>
+    -->
+
+    <style>
+        :root {
+            /* PALETA DE CORES OFICIAL EXTRAÍDA DAS REFERÊNCIAS */
+            --bg-pergaminho: #FAF0D7;
+            --bg-bege: #F3E2B8;
+            --bg-madeira-clara: #CFB083;
+            --c-ouro: #D8A742;
+            --c-ouro-brilho: #E5BF5A;
+            --c-terracota: #9E6032;
+            --c-madeira: #6B472A;
+            --c-couro: #53341C;
+            --c-cafe: #3D2513;
+            --c-escuro: #2A180B;
+
+            /* Configuração de Transições e Fontes */
+            --trans-speed: 1.2s;
+            --font-sacra: 'Cinzel', serif;
+            --font-biblica: 'Lora', serif;
+            --font-ui: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            color: var(--c-cafe);
+            background-color: var(--c-escuro);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center center;
+            opacity: 0;
+            transition: opacity var(--trans-speed) ease-in-out, transform 10s ease-out;
+            transform: scale(1.04);
+            will-change: opacity, transform;
+        }
+
+        .bg-layer.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(42, 24, 11, 0.45) 0%, rgba(20, 10, 4, 0.85) 100%),
+                        linear-gradient(180deg, rgba(42, 24, 11, 0.6) 0%, rgba(107, 71, 42, 0.4) 50%, rgba(42, 24, 11, 0.8) 100%);
+            pointer-events: none;
+        }
+
+        .top-toolbar {
+            background: linear-gradient(180deg, rgba(250, 240, 215, 0.95) 0%, rgba(243, 226, 184, 0.9) 100%);
+            border-bottom: 2px solid var(--c-ouro);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-title {
+            font-family: var(--font-sacra);
+            color: var(--c-escuro);
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .search-pill {
+            background-color: #ffffff;
+            border: 1px solid var(--c-ouro);
+            border-radius: 50rem;
+            padding: 0.35rem 1rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .search-pill input {
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--c-cafe);
+            font-size: 0.9rem;
+        }
+
+        .badge-gold {
+            background: linear-gradient(135deg, var(--c-ouro) 0%, var(--c-terracota) 100%);
+            color: #ffffff;
+            font-weight: 600;
+            border: 1px solid var(--c-ouro-brilho);
+        }
+
+        .parchment-card {
+            background: var(--bg-pergaminho);
+            background-image: radial-gradient(rgba(216, 167, 66, 0.1) 1px, transparent 0);
+            background-size: 20px 20px;
+            border: 2px solid var(--c-ouro);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(107, 71, 42, 0.15);
+            color: var(--c-cafe);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parchment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), inset 0 0 50px rgba(107, 71, 42, 0.2);
+        }
+
+        .card-header-gold {
+            background: linear-gradient(90deg, var(--c-madeira) 0%, var(--c-terracota) 100%);
+            color: var(--bg-pergaminho);
+            font-family: var(--font-sacra);
+            font-weight: 700;
+            padding: 0.6rem 1rem;
+            border-bottom: 2px solid var(--c-ouro);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .bible-text-display {
+            font-family: var(--font-biblica);
+            color: var(--c-escuro);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            transition: font-size 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Temas de leitura do Reader */
+        .theme-claro { background-color: var(--bg-pergaminho); color: var(--c-escuro); }
+        .theme-sepia { background-color: #E8D3A7; color: #332011; }
+        .theme-escuro { background-color: var(--c-escuro); color: var(--bg-pergaminho); }
+
+        .floating-action-bar {
+            background: var(--c-couro);
+            color: var(--bg-pergaminho);
+            border-radius: 0.6rem;
+            padding: 0.4rem 0.8rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid var(--c-ouro);
+        }
+
+        .floating-action-bar button {
+            background: transparent;
+            border: none;
+            color: var(--bg-pergaminho);
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.2rem 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .floating-action-bar button:hover {
+            color: var(--c-ouro-brilho);
+        }
+
+        .hebrew-text {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.3rem;
+            direction: rtl;
+            color: var(--c-couro);
+            font-weight: bold;
+        }
+
+        .sub-card-box {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--c-madeira-clara);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+        }
+
+        .media-banner {
+            position: relative;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .media-banner img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: transform 0.5s ease;
+        }
+
+        .media-banner:hover img {
+            transform: scale(1.05);
+        }
+
+        .media-overlay-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+            color: #fff;
+            font-family: var(--font-sacra);
+        }
+
+        .audio-player-gold {
+            background: var(--bg-bege);
+            border: 1px solid var(--c-ouro);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.8rem;
+        }
+
+        .sacred-frame {
+            border: 4px double var(--c-ouro);
+            padding: 1.25rem;
+            position: relative;
+            background: #FDF8EC;
+        }
+
+        .compass-rose {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 48px;
+            height: 48px;
+            opacity: 0.85;
+            color: var(--c-ouro);
+        }
+
+        /* Capilar Iluminada (Drop Cap) */
+        .drop-cap-illuminated {
+            float: left;
+            font-family: var(--font-sacra);
+            font-size: 3.8rem;
+            line-height: 0.8;
+            padding: 0.3rem 0.6rem 0.1rem 0.6rem;
+            margin-right: 0.6rem;
+            margin-bottom: 0.2rem;
+            background: linear-gradient(135deg, var(--c-ouro) 0%, var(--c-couro) 100%);
+            color: var(--bg-pergaminho);
+            border: 2px solid var(--c-ouro-brilho);
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--c-escuro);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--c-madeira);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--c-ouro);
+        }
+
+        .toast-custom {
+            background: var(--c-couro);
+            color: var(--bg-pergaminho);
+            border: 1px solid var(--c-ouro);
+            border-radius: 0.5rem;
+        }
+
+        /* Switch toggle customizado em tom dourado */
+        .form-check-input:checked {
+            background-color: var(--c-ouro);
+            border-color: var(--c-terracota);
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- GERENCIADOR DE PLANO DE FUNDO DINÂMICO -->
+    <div id="bg-container" aria-hidden="true">
+        <div id="bg-layer-1" class="bg-layer active"></div>
+        <div id="bg-layer-2" class="bg-layer"></div>
+    </div>
+    <div id="bg-overlay" aria-hidden="true"></div>
+
+    <!-- BARRA DE FERRAMENTAS SUPERIOR DO APP BÍBLICO -->
+    <header class="sticky-top top-toolbar py-2">
+        <div class="container-fluid px-md-4">
+            <div class="row align-items-center gy-2">
+                
+                <!-- Logo & Título -->
+                <div class="col-12 col-md-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-book-half fs-2 text-warning shadow-sm"></i>
+                    <div>
+                        <h1 class="h5 mb-0 brand-title">SCRIPTURA</h1>
+                        <small class="text-uppercase fw-semibold text-muted" style="font-size: 0.65rem; letter-spacing: 1px;">Portal Bíblico Cristão</small>
+                    </div>
+                </div>
+
+                <!-- Campo de Pesquisa & Seletor de Livro -->
+                <div class="col-12 col-md-6 d-flex flex-wrap align-items-center gap-2 justify-content-center">
+                    
+                    <!-- Busca rápida -->
+                    <div class="search-pill d-flex align-items-center flex-grow-1 max-w-300">
+                        <i class="bi bi-search text-muted me-2"></i>
+                        <input type="text" id="globalBibleSearch" placeholder="Seletor ou busca de versículo..." class="w-full">
+                    </div>
+
+                    <!-- Seletor de Livros / Capítulos -->
+                    <div class="dropdown">
+                        <button class="btn btn-sm badge-gold rounded-pill dropdown-toggle px-3 py-2 shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-journals me-1"></i> Gênesis > Cap. 1
+                        </button>
+                        <ul class="dropdown-menu shadow border-warning">
+                            <li><h6 class="dropdown-header">Antigo Testamento</h6></li>
+                            <li><a class="dropdown-item active" href="#">Gênesis</a></li>
+                            <li><a class="dropdown-item" href="#">Êxodo</a></li>
+                            <li><a class="dropdown-item" href="#">Salmos</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Novo Testamento</h6></li>
+                            <li><a class="dropdown-item" href="#">Mateus</a></li>
+                            <li><a class="dropdown-item" href="#">João</a></li>
+                            <li><a class="dropdown-item" href="#">Romanos</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Comparador de Traduções e Botão de Fundo -->
+                <div class="col-12 col-md-3 d-flex align-items-center justify-content-md-end gap-3">
+                    <div class="d-flex align-items-center gap-2 bg-white bg-opacity-50 px-2 py-1 rounded-pill border border-warning">
+                        <small class="fw-bold" style="font-size: 0.75rem; color: var(--c-couro);">Tradução:</small>
+                        <select class="form-select form-select-sm border-0 bg-transparent fw-semibold p-0 pe-4" style="font-size: 0.8rem; cursor: pointer;">
+                            <option value="ARC" selected>ARC</option>
+                            <option value="NVI">NVI</option>
+                            <option value="ARA">ARA</option>
+                            <option value="NAA">NAA</option>
+                        </select>
+                    </div>
+
+                    <!-- Botão para Sortear Novo Fundo -->
+                    <button id="btnNextBg" class="btn btn-sm btn-outline-dark rounded-circle p-2" title="Trocar Imagem de Fundo">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main class="container-fluid px-md-4 py-4 flex-grow-1">
+        
+        <!-- Banner de Título Geral -->
+        <div class="text-center mb-4">
+            <h2 class="font-sacra fw-bold text-light text-shadow display-6 mb-1" style="color: var(--bg-pergaminho) !important;">
+                EXEMPLOS DE DESIGN DE SITES BÍBLICOS
+            </h2>
+            <p class="text-warning opacity-90 fw-light small">
+                Explore os 4 modos de interface bíblica adaptáveis para web e aplicativo
+            </p>
+        </div>
+
+        <!-- GRID DOS 4 MÓDULOS DE EXPOSIÇÃO BÍBLICA -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+
+            <!-- ==========================================
+                 MÓDULO 1: READER-FIRST UI (FOCADO EM LEITURA)
+                 ========================================== -->
+            <div class="col">
+                <div class="parchment-card h-100 d-flex flex-column">
+                    <div class="card-header-gold d-flex justify-content-between align-items-center">
+                        <span>1. DESIGN MINIMALISTA</span>
+                        <small class="badge bg-warning text-dark">Reader-First</small>
+                    </div>
+
+                    <div class="p-3 flex-grow-1 d-flex flex-column" id="readerCardBody">
+                        
+                        <!-- Barra de Controles do Leitor (A+, A-, Temas) -->
+                        <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom border-warning">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-outline-dark fw-bold" id="btnFontInc" title="Aumentar Letra">A+</button>
+                                <button type="button" class="btn btn-outline-dark fw-bold" id="btnFontDec" title="Diminuir Letra">A-</button>
+                            </div>
+
+                            <!-- Selector de Tema de Leitura -->
+                            <div class="d-flex gap-1">
+                                <button class="btn btn-sm rounded-circle theme-btn p-2 border" style="background: #FAF0D7" onclick="setReaderTheme('claro')" title="Tema Pergaminho"></button>
+                                <button class="btn btn-sm rounded-circle theme-btn p-2 border" style="background: #E8D3A7" onclick="setReaderTheme('sepia')" title="Tema Sépia"></button>
+                                <button class="btn btn-sm rounded-circle theme-btn p-2 border" style="background: #2A180B" onclick="setReaderTheme('escuro')" title="Tema Noturno"></button>
+                            </div>
+                        </div>
+
+                        <!-- Texto Bíblico Principial (Salmo 23) -->
+                        <div class="bible-text-display flex-grow-1 mb-3 pe-1" id="psalmTextContainer">
+                            <h3 class="font-sacra h5 fw-bold mb-3" style="color: var(--c-terracota);">SALMO 23</h3>
+                            <p id="psalmText">
+                                <strong>1.</strong> O Senhor é o meu pastor; nada me faltará.<br>
+                                <strong>2.</strong> Deitar-me faz em verdes pastos, guia-me suavemente a águas tranquilas.<br>
+                                <strong>3.</strong> Refrigera a minha alma; guia-me pelas veredas da justiça por amor do seu nome.<br>
+                                <strong>4.</strong> Ainda que eu andasse pelo vale da sombra da morte, não temeria mal algum, porque tu estás comigo...
+                            </p>
+                        </div>
+
+                        <!-- Menu Flutuante de Ações Rápida -->
+                        <div class="floating-action-bar d-flex justify-content-around align-items-center mt-auto">
+                            <button onclick="copyPsalmText()"><i class="bi bi-copy me-1"></i> Copiar</button>
+                            <span class="text-warning">|</span>
+                            <button onclick="openNoteModal()"><i class="bi bi-pencil-square me-1"></i> Nota</button>
+                            <span class="text-warning">|</span>
+                            <button onclick="sharePassage()"><i class="bi bi-share me-1"></i> Compartilhar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 MÓDULO 2: PAINEL DE ESTUDO MULTICOLUNA
+                 ========================================== -->
+            <div class="col">
+                <div class="parchment-card h-100 d-flex flex-column">
+                    <div class="card-header-gold d-flex justify-content-between align-items-center">
+                        <span>2. PAINEL DE ESTUDO</span>
+                        <small class="badge bg-secondary">Interlinear</small>
+                    </div>
+
+                    <div class="p-3 flex-grow-1 d-flex flex-column gap-2" style="font-size: 0.88rem;">
+                        
+                        <!-- Abas Estilizadas -->
+                        <div class="d-flex gap-1 overflow-x-auto pb-1 mb-1 font-sacra fw-bold" style="font-size: 0.7rem;">
+                            <span class="badge bg-warning text-dark px-2 py-1">GÊNESIS</span>
+                            <span class="badge bg-outline-dark border text-dark px-2 py-1">ESTUDO</span>
+                            <span class="badge bg-outline-dark border text-dark px-2 py-1">MULTICOLUNA</span>
+                        </div>
+
+                        <!-- Caixa 1: Texto Hebraico / Original -->
+                        <div class="sub-card-box">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small class="fw-bold text-uppercase" style="color: var(--c-terracota);">Texto Masorético</small>
+                                <small class="text-muted">Gn 1:1</small>
+                            </div>
+                            <div class="hebrew-text text-center py-1">
+                                בְּרֵאשִׁית בָּרָא אֱלֹהִים
+                            </div>
+                            <small class="d-block text-center text-muted fst-italic" style="font-size: 0.78rem;">
+                                Transliteração: Bereshit bara Elohim
+                            </small>
+                        </div>
+
+                        <!-- Caixa 2: Comentário Teológico -->
+                        <div class="sub-card-box flex-grow-1">
+                            <small class="fw-bold text-uppercase d-block mb-1" style="color: var(--c-terracota);">
+                                <i class="bi bi-journal-text me-1"></i> Comentário Teológico
+                            </small>
+                            <p class="mb-0 text-muted" style="line-height: 1.4; font-size: 0.82rem;">
+                                O termo hebreu <em>Elohim</em> enfatiza a majestade e a plenitude do Deus Criador. A criação <em>ex nihilo</em> revela o poder soberano da Palavra divina.
+                            </p>
+                        </div>
+
+                        <!-- Caixa 3: Referências Cruzadas -->
+                        <div class="sub-card-box">
+                            <small class="fw-bold text-uppercase d-block mb-1" style="color: var(--c-terracota);">
+                                <i class="bi bi-link-45deg me-1"></i> Referências Cruzadas
+                            </small>
+                            <ul class="list-unstyled mb-0 small text-muted">
+                                <li>• <strong>João 1:1-3</strong> - O Verbo na Criação</li>
+                                <li>• <strong>Colossenses 1:16</strong> - Tudo criado por Ele</li>
+                                <li>• <strong>Hebreus 11:3</strong> - Pela fé entendemos</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 MÓDULO 3: EDITORIAL MODERNO COM STORYTELLING
+                 ========================================== -->
+            <div class="col">
+                <div class="parchment-card h-100 d-flex flex-column">
+                    <div class="card-header-gold d-flex justify-content-between align-items-center">
+                        <span>3. EDITORIAL MODERNO</span>
+                        <small class="badge bg-danger">Media-Rich</small>
+                    </div>
+
+                    <div class="p-3 flex-grow-1 d-flex flex-column gap-3">
+                        
+                        <!-- Banner com imagem de destaque e play overlay -->
+                        <div class="media-banner">
+                            <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=600&q=80" alt="História da Páscoa" onerror="this.src='https://placehold.co/600x300/6B472A/FAF0D7?text=Pascoa'">
+                            <div class="media-overlay-title">
+                                <span class="badge bg-warning text-dark mb-1">Especial</span>
+                                <h4 class="h6 mb-0 text-white font-sacra fw-bold">A HISTÓRIA DA PÁSCOA</h4>
+                            </div>
+                        </div>
+
+                        <!-- Reprodutor de Áudio Customizado -->
+                        <div class="audio-player-gold d-flex align-items-center gap-2">
+                            <button id="btnPlayAudio" class="btn btn-sm btn-warning rounded-circle" onclick="toggleAudioMock()">
+                                <i class="bi bi-play-fill fs-5" id="playIcon"></i>
+                            </button>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between" style="font-size: 0.75rem;">
+                                    <span class="fw-bold text-dark">Devocional em Áudio</span>
+                                    <span class="text-muted" id="audioTime">02:45</span>
+                                </div>
+                                <div class="progress mt-1" style="height: 5px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 45%" id="audioProgress"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card de Recurso Multimídia -->
+                        <div class="sub-card-box d-flex align-items-center gap-3">
+                            <div class="fs-2 text-warning">
+                                <i class="bi bi-journal-album"></i>
+                            </div>
+                            <div>
+                                <h5 class="h6 mb-1 fw-bold font-sacra">Guia de Leitura Diária</h5>
+                                <p class="mb-0 text-muted small">Plano anual de leitura bíblica com mapas e contexto histórico.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 MÓDULO 4: SACRO CLÁSSICO & HISTÓRICO
+                 ========================================== -->
+            <div class="col">
+                <div class="parchment-card h-100 d-flex flex-column">
+                    <div class="card-header-gold d-flex justify-content-between align-items-center">
+                        <span>4. SACRO CLÁSSICO</span>
+                        <small class="badge bg-warning text-dark">Histórico</small>
+                    </div>
+
+                    <div class="p-3 flex-grow-1 d-flex flex-column justify-content-center">
+                        
+                        <!-- Moldura Dupla Ornamentada -->
+                        <div class="sacred-frame rounded shadow-sm flex-grow-1">
+                            
+                            <!-- Ícone da Rosa dos Ventos / Bússola Sacra -->
+                            <svg class="compass-rose" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="var(--c-ouro)" stroke="var(--c-couro)" stroke-width="0.5"/>
+                            </svg>
+
+                            <!-- Manuscrito Iluminado -->
+                            <div class="font-biblica mt-2" style="color: var(--c-escuro); font-size: 0.95rem; line-height: 1.7;">
+                                <span class="drop-cap-illuminated">N</span>
+                                <strong>O PRINCÍPIO</strong>, Deus criou os céus e a terra. E a terra era sem forma e vazia; e havia trevas sobre a face do abismo; e o Espírito de Deus se movia sobre a face das águas. E disse Deus: Haja luz; e houve luz.
+                            </div>
+
+                            <hr style="border-color: var(--c-ouro); opacity: 0.5;">
+
+                            <div class="text-center">
+                                <small class="font-sacra fw-bold text-uppercase" style="color: var(--c-terracota); letter-spacing: 1px;">
+                                    Gênesis 1:1-3
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- RODAPÉ DO PORTAL -->
+    <footer class="mt-auto py-3 text-center text-light" style="background: rgba(26, 12, 4, 0.9); border-top: 1px solid var(--c-ouro);">
+        <div class="container">
+            <p class="mb-1 small font-sacra" style="color: var(--bg-pergaminho);">
+                PORTAL BÍBLICO SCRIPTURA &copy; <span id="currentYear"></span> - Palavra, Verdade e Vida
+            </p>
+            <small class="text-muted" style="font-size: 0.75rem;">
+                Desenvolvido com HTML5, Bootstrap 5 e CSS Customizado | Compatível com WordPress
+            </small>
+        </div>
+    </footer>
+
+    <!-- MODAL DE NOTAS (Modulo 1) -->
+    <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content parchment-card">
+                <div class="card-header-gold d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title font-sacra h6 mb-0" id="noteModalLabel">Nova Anotação Pessoal</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="noteInput" class="form-label fw-bold small text-uppercase" style="color: var(--c-couro);">Sua Nota sobre o Salmo 23:</label>
+                    <textarea class="form-control" id="noteInput" rows="4" style="background: #FFFDF7; border: 1px solid var(--c-ouro);" placeholder="Escreva aqui suas reflexões ou estudos..."></textarea>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-sm badge-gold" onclick="saveNote()">Salvar Nota</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST DE NOTIFICAÇÃO -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="actionToast" class="toast toast-custom align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2" id="toastMessage">
+                    <i class="bi bi-check-circle-fill text-warning"></i> Texto copiado com sucesso!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JavaScript Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        /**
+         * PORTAL BÍBLICO SCRIPTURA - LOGIC ENGINE
+         * Gerenciador de Background Dinâmico, Leitor Bíblico e Componentes Interativos
+         */
+        (function() {
+            "use strict";
+
+            // 1. BANCO DE IMAGENS SACRAS E HISTÓRICAS DE FUNDO
+            const bgImages = [
+                "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80",
+                "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&w=1920&q=80",
+                "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=80",
+                "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80",
+                "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1920&q=80"
+            ];
+
+            // Variáveis de Estado do Background
+            let activeLayer = 1;
+            let currentIndex = -1;
+            let bgTimer = null;
+
+            const layer1 = document.getElementById("bg-layer-1");
+            const layer2 = document.getElementById("bg-layer-2");
+            const btnNextBg = document.getElementById("btnNextBg");
+
+            // Atualiza ano no footer
+            document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+            // Pré-carregamento de imagem para performance
+            function preload(url, cb) {
+                const img = new Image();
+                img.onload = cb;
+                img.onerror = cb;
+                img.src = url;
+            }
+
+            // Alternar plano de fundo com Crossfade
+            function switchBackground(index) {
+                if (index === currentIndex) {
+                    index = (index + 1) % bgImages.length;
+                }
+                currentIndex = index;
+                const nextUrl = bgImages[currentIndex];
+
+                preload(nextUrl, function() {
+                    if (activeLayer === 1) {
+                        layer2.style.backgroundImage = `url('${nextUrl}')`;
+                        layer2.classList.add("active");
+                        layer1.classList.remove("active");
+                        activeLayer = 2;
+                    } else {
+                        layer1.style.backgroundImage = `url('${nextUrl}')`;
+                        layer1.classList.add("active");
+                        layer2.classList.remove("active");
+                        activeLayer = 1;
+                    }
+                });
+            }
+
+            function getRandomIndex() {
+                return Math.floor(Math.random() * bgImages.length);
+            }
+
+            function startBgCycle() {
+                if (bgTimer) clearInterval(bgTimer);
+                bgTimer = setInterval(function() {
+                    switchBackground((currentIndex + 1) % bgImages.length);
+                }, 9000);
+            }
+
+            // Inicialização do Background (Sorteio Aleatório no Load)
+            function initBackground() {
+                const initialIdx = getRandomIndex();
+                layer1.style.backgroundImage = `url('${bgImages[initialIdx]}')`;
+                layer1.classList.add("active");
+                currentIndex = initialIdx;
+
+                startBgCycle();
+
+                if (btnNextBg) {
+                    btnNextBg.addEventListener("click", function() {
+                        switchBackground(getRandomIndex());
+                        startBgCycle();
+                    });
+                }
+            }
+
+            // 2. MÓDULO LEITOR - AJUSTE DE FONTE (A+ / A-)
+            let currentFontSize = 1.05;
+            const psalmText = document.getElementById("psalmTextContainer");
+            const btnFontInc = document.getElementById("btnFontInc");
+            const btnFontDec = document.getElementById("btnFontDec");
+
+            if (btnFontInc && btnFontDec && psalmText) {
+                btnFontInc.addEventListener("click", function() {
+                    if (currentFontSize < 1.6) {
+                        currentFontSize += 0.1;
+                        psalmText.style.fontSize = currentFontSize + "rem";
+                    }
+                });
+
+                btnFontDec.addEventListener("click", function() {
+                    if (currentFontSize > 0.8) {
+                        currentFontSize -= 0.1;
+                        psalmText.style.fontSize = currentFontSize + "rem";
+                    }
+                });
+            }
+
+            // Start background manager on page load
+            document.addEventListener("DOMContentLoaded", initBackground);
+
+        })();
+
+        // FUNÇÕES GLOBAIS DE INTERAÇÃO DA UI
+
+        // Mudar tema do Leitor Bíblico
+        function setReaderTheme(theme) {
+            const container = document.getElementById("readerCardBody");
+            if (!container) return;
+            container.classList.remove("theme-claro", "theme-sepia", "theme-escuro");
+            container.classList.add("theme-" + theme);
+        }
+
+        // Exibir Toast de Notificação
+        function showToast(msg) {
+            const toastEl = document.getElementById("actionToast");
+            const toastMsg = document.getElementById("toastMessage");
+            if (toastEl && toastMsg) {
+                toastMsg.innerHTML = '<i class="bi bi-check-circle-fill text-warning"></i> ' + msg;
+                const bsToast = new bootstrap.Toast(toastEl);
+                bsToast.show();
+            }
+        }
+
+        // Copiar Salmo 23 para Clipboard
+        function copyPsalmText() {
+            const textToCopy = "SALMO 23: O Senhor é o meu pastor; nada me faltará. Deitar-me faz em verdes pastos, guia-me suavemente a águas tranquilas. Refrigera a minha alma; guia-me pelas veredas da justiça por amor do seu nome.";
+            
+            // Método seguro de cópia compatível com iFrames
+            const tempInput = document.createElement("textarea");
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            showToast("Salmo 23 copiado para a área de transferência!");
+        }
+
+        // Modal de Nota
+        function openNoteModal() {
+            const noteModal = new bootstrap.Modal(document.getElementById('noteModal'));
+            noteModal.show();
+        }
+
+        function saveNote() {
+            const noteContent = document.getElementById("noteInput").value;
+            const modalEl = document.getElementById('noteModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+            
+            showToast("Sua anotação bíblica foi salva!");
+        }
+
+        // Compartilhar Passagem
+        function sharePassage() {
+            showToast("Link de compartilhamento do versículo gerado!");
+        }
+
+        // Simulação do Player de Áudio
+        let isPlaying = false;
+        function toggleAudioMock() {
+            const playIcon = document.getElementById("playIcon");
+            const progressBar = document.getElementById("audioProgress");
+            if (!playIcon || !progressBar) return;
+
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playIcon.classList.remove("bi-play-fill");
+                playIcon.classList.add("bi-pause-fill");
+                progressBar.style.width = "75%";
+                showToast("Reproduzindo Devocional em Áudio...");
+            } else {
+                playIcon.classList.remove("bi-pause-fill");
+                playIcon.classList.add("bi-play-fill");
+                progressBar.style.width = "45%";
+            }
+        }
+    </script>
+</body>
+</html>
