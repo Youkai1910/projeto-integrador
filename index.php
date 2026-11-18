@@ -17,8 +17,7 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 <div class="container">
     <header>
         <div class="logo-area">
-            PORTAL
-            <div class="logo"></div>
+            <img class="logo" src="biblia_catolica/imagens/logo.png" alt="Portal Diário">
         </div>
         <div class="menu-area">
             <nav class="banner" aria-label="Navegação principal">
@@ -41,34 +40,34 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
         <section class="principal">
             <div>
                 <h3>LEITURA DIÁRIA</h3>
-                <div class="card-principal">Clique para ver a leitura diária</div>
+                <div class="card-principal card-leitura">Clique para ver a leitura diária</div>
             </div>
             <div>
                 <h3>NOVO TESTAMENTO</h3>
-                <div class="card-principal">Clique para ver o novo testamento</div>
+                <div class="card-principal card-novo-testamento">Clique para ver o novo testamento</div>
             </div>
             <div>
                 <h3>ANTIGO TESTAMENTO</h3>
-                <div class="card-principal">Clique para ver o antigo testamento</div>
+                <div class="card-principal card-antigo-testamento">Clique para ver o antigo testamento</div>
             </div>
         </section>
 
         <section class="inferior">
             <div>
                 <h3>SALMOS</h3>
-                <div class="card-inferior">Ver Salmo</div>
+                <div class="card-inferior card-salmos">Ver Salmo</div>
             </div>
             <div>
                 <h3>VERSÍCULOS</h3>
-                <div class="card-inferior">Ver Versículo</div>
+                <div class="card-inferior card-versiculos">Ver Versículo</div>
             </div>
             <div>
                 <h3>EVANGELHO</h3>
-                <div class="card-inferior">Ver Evangelho</div>
+                <div class="card-inferior card-evangelho">Ver Evangelho</div>
             </div>
             <div>
                 <h3>AUTO AJUDA</h3>
-                <div class="card-inferior">Ver Conteúdo</div>
+                <div class="card-inferior card-auto-ajuda">Ver Conteúdo</div>
             </div>
         </section>
 

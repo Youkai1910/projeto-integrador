@@ -33,19 +33,15 @@ header {
 
 .logo-area {
     text-align: center;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 1px;
 }
 
 .logo {
-    width: 120px;
-    height: 105px;
-    background: #89502b;
-    border-radius: 50%;
+    display: block;
+    width: 125px;
+    height: 125px;
+    object-fit: contain;
     margin: 8px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
 .menu-area {
@@ -160,12 +156,29 @@ main {
     justify-content: center;
     color: #fcecdb;
     font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    padding: 16px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.card-leitura {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../biblia_catolica/imagens/leitura-diaria.jpg");
+}
+
+.card-novo-testamento {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../biblia_catolica/imagens/novo-testamento.jpg");
+}
+
+.card-antigo-testamento {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../biblia_catolica/imagens/antigo-testamento.jpg");
 }
 
 .card-principal:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-    background: #754221;
 }
 
 .inferior {
@@ -187,12 +200,33 @@ main {
     justify-content: center;
     color: #fcecdb;
     font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    padding: 12px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.card-salmos {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../biblia_catolica/imagens/salmos.jpg");
+}
+
+.card-versiculos {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../biblia_catolica/imagens/versiculos.jpg");
+}
+
+.card-evangelho {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../biblia_catolica/imagens/evangelho.jpg");
+}
+
+.card-auto-ajuda {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../biblia_catolica/imagens/auto-ajuda.jpg");
 }
 
 .card-inferior:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-    background: #754221;
 }
 
 .livros-biblia {
