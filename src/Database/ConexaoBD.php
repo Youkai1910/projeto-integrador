@@ -19,7 +19,7 @@ final class ConexaoBD
             $host = getenv('DB_HOST') ?: 'localhost';
             $database = getenv('DB_NAME') ?: 'biblia_catolica';
             $username = getenv('DB_USER') ?: 'root';
-            $password = getenv('DB_PASSWORD') ?: 'senacpenha';
+            $password = getenv('DB_PASSWORD') ?: 'senacPenha123';
             $dsn = "mysql:host={$host};dbname={$database};charset=utf8mb4";
 
             $options = [

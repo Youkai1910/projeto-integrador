@@ -165,15 +165,15 @@ main {
 }
 
 .card-leitura {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../biblia_catolica/imagens/leitura-diaria.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../images/leitura-diaria.jpg");
 }
 
 .card-novo-testamento {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../biblia_catolica/imagens/novo-testamento.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../images/novo-testamento.jpg");
 }
 
 .card-antigo-testamento {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../biblia_catolica/imagens/antigo-testamento.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../images/antigo-testamento.jpg");
 }
 
 .card-principal:hover {
@@ -209,19 +209,19 @@ main {
 }
 
 .card-salmos {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../biblia_catolica/imagens/salmos.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/salmos.jpg");
 }
 
 .card-versiculos {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../biblia_catolica/imagens/versiculos.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/versiculos.jpg");
 }
 
 .card-evangelho {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../biblia_catolica/imagens/evangelho.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/evangelho.jpg");
 }
 
 .card-auto-ajuda {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../biblia_catolica/imagens/auto-ajuda.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/auto-ajuda.jpg");
 }
 
 .card-inferior:hover {

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/database/conexao.php';
+require_once __DIR__ . '/vendor/autoload.php';
 $pdo = \ProjetoIntegrador\Database\ConexaoBD::getConexao();
 $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 ?>
@@ -17,7 +17,7 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 <div class="container">
     <header>
         <div class="logo-area">
-            <img class="logo" src="biblia_catolica/imagens/logo.png" alt="Portal Diário">
+            <img class="logo" src="images/logo.png" alt="Portal Diário">
         </div>
         <div class="menu-area">
             <nav class="banner" aria-label="Navegação principal">
