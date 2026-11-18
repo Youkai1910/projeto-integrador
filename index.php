@@ -19,7 +19,7 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
         <div class="logo-area">
             PORTAL
             <div class="logo">
-                <img src="biblia_catolica/imagens/logo.png" alt="Logo Portal Diário">
+                <img src="biblia_catolica/imagens/logo.png" alt="Logo Portal Diário" width="270" height="262">
             </div>
         </div>
         <div class="menu-area">
@@ -44,21 +44,21 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
             <div>
                 <h3>LEITURA DIÁRIA</h3>
                 <div class="card-principal">
-                    <img src="biblia_catolica/imagens/leitura-diaria.jpg" alt="Leitura diária">
+                    <img src="biblia_catolica/imagens/leitura-diaria.jpg" alt="Leitura diária" width="450" height="193" loading="eager" decoding="async">
                     <span>Clique para ver a leitura diária</span>
                 </div>
             </div>
             <div>
                 <h3>NOVO TESTAMENTO</h3>
                 <div class="card-principal">
-                    <img src="biblia_catolica/imagens/novo-testamento.jpg" alt="Novo Testamento">
+                    <img src="biblia_catolica/imagens/novo-testamento.jpg" alt="Novo Testamento" width="426" height="193" loading="eager" decoding="async">
                     <span>Clique para ver o novo testamento</span>
                 </div>
             </div>
             <div>
                 <h3>ANTIGO TESTAMENTO</h3>
                 <div class="card-principal">
-                    <img src="biblia_catolica/imagens/antigo-testamento.jpg" alt="Antigo Testamento">
+                    <img src="biblia_catolica/imagens/antigo-testamento.jpg" alt="Antigo Testamento" width="430" height="193" loading="eager" decoding="async">
                     <span>Clique para ver o antigo testamento</span>
                 </div>
             </div>
@@ -68,28 +68,28 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
             <div>
                 <h3>SALMOS</h3>
                 <div class="card-inferior">
-                    <img src="biblia_catolica/imagens/salmos.jpg" alt="Salmos">
+                    <img src="biblia_catolica/imagens/salmos.jpg" alt="Salmos" width="320" height="134" loading="lazy" decoding="async">
                     <span>Ver Salmo</span>
                 </div>
             </div>
             <div>
                 <h3>VERSÍCULOS</h3>
                 <div class="card-inferior">
-                    <img src="biblia_catolica/imagens/versiculos.jpg" alt="Versículos">
+                    <img src="biblia_catolica/imagens/versiculos.jpg" alt="Versículos" width="314" height="134" loading="lazy" decoding="async">
                     <span>Ver Versículo</span>
                 </div>
             </div>
             <div>
                 <h3>EVANGELHO</h3>
                 <div class="card-inferior">
-                    <img src="biblia_catolica/imagens/evangelho.jpg" alt="Evangelho">
+                    <img src="biblia_catolica/imagens/evangelho.jpg" alt="Evangelho" width="318" height="134" loading="lazy" decoding="async">
                     <span>Ver Evangelho</span>
                 </div>
             </div>
             <div>
                 <h3>AUTO AJUDA</h3>
                 <div class="card-inferior">
-                    <img src="biblia_catolica/imagens/auto-ajuda.jpg" alt="Auto ajuda">
+                    <img src="biblia_catolica/imagens/auto-ajuda.jpg" alt="Auto ajuda" width="316" height="134" loading="lazy" decoding="async">
                     <span>Ver Conteúdo</span>
                 </div>
             </div>
