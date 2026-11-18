@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/database/conexao.php';
+$pdo = \ProjetoIntegrador\Database\ConexaoBD::getConexao();
 $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 ?>
 
