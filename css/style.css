@@ -42,10 +42,16 @@ header {
 .logo {
     width: 120px;
     height: 105px;
-    background: #89502b;
     border-radius: 50%;
     margin: 8px auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .menu-area {
@@ -56,6 +62,10 @@ header {
 .banner {
     height: 97px;
     background: #89502b;
+    background-image: linear-gradient(rgba(137, 80, 43, 0.82), rgba(137, 80, 43, 0.82)),
+        url("../biblia_catolica/imagens/hero.jpg");
+    background-size: cover;
+    background-position: center;
     border-radius: 15px;
     margin-top: 15px;
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -155,11 +165,39 @@ main {
     border-radius: 15px;
     transition: all 0.3s ease;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fcecdb;
     font-size: 14px;
+}
+
+.card-principal img,
+.card-inferior img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+}
+
+.card-principal::after,
+.card-inferior::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(69, 39, 22, 0.42);
+}
+
+.card-principal span,
+.card-inferior span {
+    position: relative;
+    z-index: 1;
+    padding: 10px 14px;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.55);
 }
 
 .card-principal:hover {
@@ -182,6 +220,8 @@ main {
     border-radius: 15px;
     transition: all 0.3s ease;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -18,7 +18,9 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
     <header>
         <div class="logo-area">
             PORTAL
-            <div class="logo"></div>
+            <div class="logo">
+                <img src="biblia_catolica/imagens/logo.png" alt="Logo Portal Diário">
+            </div>
         </div>
         <div class="menu-area">
             <nav class="banner" aria-label="Navegação principal">
@@ -41,34 +43,55 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
         <section class="principal">
             <div>
                 <h3>LEITURA DIÁRIA</h3>
-                <div class="card-principal">Clique para ver a leitura diária</div>
+                <div class="card-principal">
+                    <img src="biblia_catolica/imagens/leitura-diaria.jpg" alt="Leitura diária">
+                    <span>Clique para ver a leitura diária</span>
+                </div>
             </div>
             <div>
                 <h3>NOVO TESTAMENTO</h3>
-                <div class="card-principal">Clique para ver o novo testamento</div>
+                <div class="card-principal">
+                    <img src="biblia_catolica/imagens/novo-testamento.jpg" alt="Novo Testamento">
+                    <span>Clique para ver o novo testamento</span>
+                </div>
             </div>
             <div>
                 <h3>ANTIGO TESTAMENTO</h3>
-                <div class="card-principal">Clique para ver o antigo testamento</div>
+                <div class="card-principal">
+                    <img src="biblia_catolica/imagens/antigo-testamento.jpg" alt="Antigo Testamento">
+                    <span>Clique para ver o antigo testamento</span>
+                </div>
             </div>
         </section>
 
         <section class="inferior">
             <div>
                 <h3>SALMOS</h3>
-                <div class="card-inferior">Ver Salmo</div>
+                <div class="card-inferior">
+                    <img src="biblia_catolica/imagens/salmos.jpg" alt="Salmos">
+                    <span>Ver Salmo</span>
+                </div>
             </div>
             <div>
                 <h3>VERSÍCULOS</h3>
-                <div class="card-inferior">Ver Versículo</div>
+                <div class="card-inferior">
+                    <img src="biblia_catolica/imagens/versiculos.jpg" alt="Versículos">
+                    <span>Ver Versículo</span>
+                </div>
             </div>
             <div>
                 <h3>EVANGELHO</h3>
-                <div class="card-inferior">Ver Evangelho</div>
+                <div class="card-inferior">
+                    <img src="biblia_catolica/imagens/evangelho.jpg" alt="Evangelho">
+                    <span>Ver Evangelho</span>
+                </div>
             </div>
             <div>
                 <h3>AUTO AJUDA</h3>
-                <div class="card-inferior">Ver Conteúdo</div>
+                <div class="card-inferior">
+                    <img src="biblia_catolica/imagens/auto-ajuda.jpg" alt="Auto ajuda">
+                    <span>Ver Conteúdo</span>
+                </div>
             </div>
         </section>
 
