@@ -1,41 +1,33 @@
-# Resumo do projeto até agora
+# Resumo da branch `biblia_alexandre`
 
-## Arquivos e organização
+Este resumo inclui somente o trabalho exclusivo desta branch em relação à
+`main`. Nenhuma outra branch foi alterada.
 
-- Os arquivos de conexão e criação das tabelas estão na pasta `database/`.
-- O caminho de importação do script SQL foi atualizado no `README.md`.
+## Página inicial
 
-## Banco de dados
+- Foi criada a página inicial do Portal Diário em `index.php`, com navegação,
+  pesquisa, cards de conteúdo, lista de livros e rodapé.
+- A página busca os nomes dos livros na tabela existente `books` e escapa o
+  conteúdo exibido com `htmlspecialchars()`.
+- Foi criado `css/style.css` com o estilo da página e ajustes responsivos para
+  telas menores.
 
-O arquivo `database/tabelas_usuarios_anotacoes.sql` seleciona o banco
-`biblia_catolica` e cria:
+## Imagens
 
-- `usuarios`, com nome, senha (que deve guardar apenas o hash), email único e
-  perfil (`usuario`, `editor` ou `admin`). O perfil padrão é `usuario`.
-- `anotacoes`, com texto, favorito e vínculo obrigatório com um usuário. Um
-  usuário pode ter várias anotações; ao excluir o usuário, suas anotações também
-  são excluídas.
+- Foram adicionadas imagens para o logotipo, leitura diária, Novo Testamento,
+  Antigo Testamento, Salmos, versículos, Evangelho, autoajuda e uma imagem hero.
+- O logotipo e as imagens dos cards foram ligados à página usando os arquivos
+  em `biblia_catolica/imagens/`.
+- Os cards usam uma camada escura sobre as imagens para manter o texto legível.
 
-O script não cria contas automaticamente. Ele também não adiciona um vínculo
-entre uma anotação e um livro da Bíblia (`livro_id`).
+## Prompt
 
-## Conexão e página inicial
+- Foi adicionado `prompts.md` para guardar o prompt de desenvolvimento da Bíblia.
 
-- `database/conexao.php` contém a classe final `ConexaoBD`, que cria e reutiliza
-  uma conexão PDO por meio de `getConexao()`.
-- `index.php` usa essa classe e lista os livros consultando a tabela `books`,
-  ordenada pela coluna `id`. O texto exibido é escapado com
-  `htmlspecialchars()`.
-- A senha do banco ainda tem um valor padrão no arquivo de conexão. Antes de
-  publicar o projeto, configure `DB_PASSWORD` no ambiente e retire esse padrão.
+## Verificações
 
-## Estado atual
-
-A sintaxe PHP de `index.php` e `database/conexao.php` foi verificada. O script
-SQL foi preparado para importar pelo phpMyAdmin; a conexão real com o banco não
-foi testada nesta etapa.
-
-Ainda não foram implementados cadastro/login, autorização dos perfis ou uma
-tela para criar e consultar anotações. A coluna `tipo` registra o perfil, mas a
-aplicação deverá verificar esse perfil no servidor antes de permitir ações
-administrativas ou de edição.
+- A sintaxe PHP de `index.php` foi verificada.
+- Os arquivos de imagem referenciados na página foram confirmados como
+  existentes.
+- A conexão real com o banco e a aparência no navegador não foram verificadas
+  nesta etapa.

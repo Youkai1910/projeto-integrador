@@ -19,3 +19,12 @@ banco, sozinho, não controla permissões.
 `CREATE TABLE IF NOT EXISTS` não altera tabelas que já existam. Se essas tabelas
 já foram criadas, a estrutura existente precisará de uma alteração específica
 para restringir `tipo` aos três perfis.
+
+## Página inicial e imagens
+
+- A página inicial fica em `index.php` e seus estilos ficam em `css/style.css`.
+- As imagens do site ficam em `biblia_catolica/imagens/`.
+- Caminhos de imagens definidos no CSS são relativos a `css/style.css`, por
+  exemplo `../biblia_catolica/imagens/logo.png`.
+- Ao renomear ou mover uma imagem, atualize também o caminho correspondente na
+  página ou no CSS.
