@@ -43,3 +43,123 @@ Observações:
 - O script SQL não cria usuários automaticamente.
 - A importação das tabelas usuarios e anotacoes depende da execução manual no phpMyAdmin.
 -->
+
+<!--
+Prompt 3 (branch biblia_anderson):
+“Na branch biblia_alexandre quero q tu copie tudo desta branch codigo pastas
+menos o prompt.md resumo.md agents.md, e substitua tudo dentro da branch
+biblia_anderson”
+
+Registro: as diferenças da origem foram aplicadas na árvore de trabalho da
+branch de destino, preservando a documentação indicada. O nome existente era
+prompts.md, em minúsculas.
+
+Prompt 4:
+“realise os codigos dapasta composer e do arquivo autoload.php”
+
+Registro: autoload gerado com Composer a partir do mapeamento PSR-4 do
+composer.json e validado com php -l e teste de carregamento de classe.
+
+Prompt 5:
+“analize o prompts.md para fins de norteio [...] e embasado no index.php,
+ConexaoBD.php e autoload.php programe o arquivo/página usuários.php. Atente-se
+aos padrões das classes, os nomes de métodos, propriedades, variáveis, arquivos,
+namespaces, etc.”
+
+Registro: primeira implementação da página administrativa de usuários.
+
+Prompt 6:
+“usuários.php ficou muito extenso [...] desmembre usuarios.php [...] distribua
+entre usuario-insere.php, usuario-atualiza.php, usuario-exclui.php, Usuário.php,
+TipoUsuario.php e UsuarioServico.php [...]”
+
+Registro: responsabilidades separadas entre apresentação, endpoints, modelo,
+perfis, serviço e helper de segurança.
+
+Prompt 7:
+“analise se há alguma conexao com o localhost:650, localhost:4000, localhost:890
+e o site Portal Diário. Analise tmb se há conexões entre usuarios.php,
+usuario-insere.php, usuario-atualiza.php, usuario-exclui.php, Usuário.php,
+TipoUsuario.php, UsuarioServico.php e a área de cadastro, contato e o link rápido
+Seja um Colaborador. Se hover arrume e/ou atualize senão faça/programe.”
+
+Registro: portas e rotas verificadas; integrações de cadastro, login, contato,
+colaboração e administração implementadas; conexões de bancos e navegação da
+home alinhadas.
+
+Prompt 8:
+“programe Utils.php e Validacoes.php”
+
+Registro: helpers implementados e ligados ao serviço de usuários e ao helper de
+segurança.
+
+Prompt 9:
+“A pesquisa de livros esta funcionando mas ainda na é possível clicar, abrir e
+realizar a leitura dos tais. programe para que isso seja solucionado.”
+
+Registro: links de livros e cards adicionados; leitor de livros, capítulos,
+versículos e leitura aleatória implementado e validado no servidor local.
+
+Prompt 10:
+“Atualize sem alterar mas sim adicionando o resumo.md de acordo com as alterações
+feitas neste branch, verifique e atualize sem alterar mas sim adicionando o
+AGENTS.md de acordo com as alterações au longo do branch atual e guarde os
+prompts aqui realizados no PROMPTS.md.”
+
+Registro: documentação atualizada somente por acréscimo. O arquivo do workspace
+chama-se prompts.md (minúsculo); Windows trata PROMPTS.md e prompts.md como o
+mesmo caminho.
+-->
+
+<!--
+Respostas do assistente aos prompts 3–10
+
+Resposta 3 (Prompt 3):
+Copiei para a árvore de trabalho da branch biblia_anderson as diferenças da
+origin/biblia_alexandre, preservando AGENTS.md, resumo.md e prompts.md. As
+alterações ficaram sem commit.
+
+Resposta 4 (Prompt 4):
+Executei composer dump-autoload. O autoload foi gerado pelo Composer a partir do
+mapeamento PSR-4; validei a sintaxe e o carregamento de
+ProjetoIntegrador\Database\ConexaoBD.
+
+Resposta 5 (Prompt 5):
+Implementei admin/usuarios.php como página administrativa integrada ao
+ConexaoBD/autoload. A página listava e pesquisava contas e permitia alterar
+perfis e excluir usuários, com verificação de administrador, CSRF, consultas
+preparadas e proteção contra remover a própria conta ou o último administrador.
+Registrei que o acesso dependia de sessão administrativa existente.
+
+Resposta 6 (Prompt 6):
+Separei a apresentação dos endpoints de inserção, atualização e exclusão;
+concentrei as regras em UsuarioServico, representei a conta em Usuario, defini
+os perfis em TipoUsuario e extraí rotinas comuns de segurança. Também validei a
+sintaxe PHP e o autoload PSR-4.
+
+Resposta 7 (Prompt 7):
+Verifiquei que as portas 650 e 4000 serviam o Portal Diário e a porta 890 servia
+o phpMyAdmin. Corrigi as ligações de cadastro, login, contato e colaboração,
+adicionei autenticação e logout, alinhei as conexões e os dumps SQL ao banco
+biblia_catolica e documentei a configuração. Validei as páginas e rotas; o
+envio de e-mail depende de MAIL_TO, MAIL_FROM e da configuração do PHP. A conta
+administradora inicial continua exigindo provisionamento pelo responsável pelo
+banco.
+
+Resposta 8 (Prompt 8):
+Implementei Utils.php para escaping, normalização e limite de texto, tokens,
+URLs locais e datas; implementei Validacoes.php para nome, e-mail, senha, URL,
+mensagem e ID. Integrei os validadores ao serviço de usuários e reutilizei os
+utilitários em Seguranca. A sintaxe e testes básicos passaram.
+
+Resposta 9 (Prompt 9):
+Transformei livros e atalhos da home em links e implementei leitura.php com
+seleção de livro, capítulos, versículos, navegação e versículo aleatório. Criei
+LeituraBiblicaServico para as consultas e estilos próprios para o leitor. Testei
+Gênesis 1 (31 versículos), a pesquisa de Mateus e a navegação entre capítulos.
+
+Resposta 10 (Prompt 10):
+Acrescentei ao resumo.md o estado atual do branch, ao AGENTS.md as orientações
+de arquitetura e segurança e ao prompts.md o histórico dos pedidos. Preservei o
+texto pré-existente e validei o diff.
+-->

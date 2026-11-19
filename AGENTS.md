@@ -44,3 +44,52 @@ que o envio não está disponível e oferece o endereço de contato.
 `login.php` autentica contas pelo hash de senha e abre a sessão usada pela área
 administrativa. O primeiro administrador precisa ser provisionado pelo
 responsável pelo banco; o cadastro público nunca concede esse perfil.
+
+## Organização das funcionalidades
+
+- `src/Database/ConexaoBD.php` fornece `getConexao()` para o banco de aplicação
+  (`DB_NAME`, padrão `biblia_catolica`) e `getConexaoBiblia()` para o banco
+  bíblico (`BIBLIA_DB_NAME`, padrão igual a `DB_NAME`, com fallback para
+  `biblia_catolica`). As configurações de host e credenciais são compartilhadas.
+- `src/Services/UsuarioServico.php` concentra consultas e regras de usuários;
+  recebe uma conexão PDO no construtor. `Models/Usuario.php` representa os dados
+  públicos da conta, sem expor o hash da senha, e `Enum/TipoUsuario.php` define
+  os três perfis permitidos.
+- `src/Helpers/Seguranca.php` deve ser usado para iniciar sessões, validar CSRF,
+  escapar saída HTML e emitir mensagens temporárias. `Utils.php` reúne
+  utilitários sem estado; `Validacoes.php` centraliza validação de dados.
+- A autenticação pública está em `login.php`; `logout.php` aceita apenas POST
+  com token CSRF. O cadastro em `cadastro.php` sempre cria perfil `usuario`.
+- O painel `admin/usuarios.php` e os controladores
+  `admin/usuario-insere.php`, `admin/usuario-atualiza.php` e
+  `admin/usuario-exclui.php` incluem `admin/_bootstrap.php`. O bootstrap exige
+  sessão com `$_SESSION['usuario']['id']` e confirma o perfil atual no banco.
+  Controladores de alteração devem continuar aceitando somente POST e CSRF.
+- `src/Services/LeituraBiblicaServico.php` consulta `books`, `testament` e
+  `verses`; `leitura.php` apresenta livros, capítulos e versículos. Use consultas
+  preparadas para parâmetros de usuário e escape toda saída dinâmica.
+- `contato.php` e `colaborador.php` encaminham mensagens por
+  `src/Services/ContatoServico.php`. Configure `MAIL_TO` e `MAIL_FROM` e o
+  transporte de e-mail do PHP; as páginas precisam continuar oferecendo o
+  endereço `contato@portaldiario.com` quando o envio não estiver configurado.
+
+## Navegação e validação
+
+Os links da página inicial devem apontar para rotas existentes; evite deixar
+`href="#"` ou formulários sem destino funcional. Os livros exibidos na home
+devem abrir `leitura.php?livro=<id>`; a pesquisa usa `q`, e o leitor usa
+`livro`, `capitulo`, `testamento` ou `aleatoria=1`.
+
+Não fixe portas HTTP no código ou na documentação da aplicação: elas pertencem
+ao servidor de desenvolvimento. No ambiente local podem existir servidores em
+650 e 4000 para o site e em 890 para o phpMyAdmin, mas isso não é configuração
+portável do projeto.
+
+Antes de importar SQL, confira o banco selecionado. Os dumps bíblicos não devem
+conter comandos que apaguem o banco inteiro; execute-os na ordem descrita neste
+guia e saiba que os arquivos de carga substituem os dados das tabelas
+correspondentes.
+
+Depois de alterar PHP, valide com `php -l` nos arquivos afetados e verifique o
+autoload PSR-4. Testes de rotas e consultas locais são úteis, mas não substituem
+testes funcionais com banco de desenvolvimento e formulários reais controlados.
