@@ -34,8 +34,12 @@ para restringir `tipo` aos três perfis.
 ## Anotações
 
 - A página `admin/anotacoes.php` exige uma sessão autenticada com o identificador
-  positivo do usuário em `$_SESSION['usuario_id']`.
-- A listagem e as operações de anotação são limitadas ao usuário autenticado.
+  positivo do usuário em `$_SESSION['usuario_id']`; o fluxo de autenticação deve
+  definir esse valor após o login.
+- `AnotacaoServico` limita listagem, edição, favoritos e exclusão ao dono da
+  anotação e usa consultas preparadas.
+- A página usa token CSRF nos formulários e `Validacoes::textoAnotacao()` para
+  exigir texto válido de até 65.535 bytes.
 
 ## Página inicial e imagens
 

@@ -35,21 +35,37 @@ Este resumo inclui somente o trabalho exclusivo desta branch em relação à
 
 - Foi adicionado `prompts.md` para guardar o prompt de desenvolvimento da Bíblia.
 
+## Consulta da Bíblia
+
+- `src/Services/BibliaServico.php` consulta testamentos, livros, capítulos e
+  versículos; os modelos correspondentes ficam em `src/Models/`.
+- A página inicial e `admin/biblia.php` usam `Validacoes` para os parâmetros de
+  busca e `Utils::escaparHtml()` para o conteúdo exibido.
+
+## Anotações
+
+- `src/Models/Anotacao.php` representa os campos da tabela `anotacoes`.
+- `src/Services/AnotacaoServico.php` implementa listagem, criação, edição,
+  favoritos e remoção, sempre limitando as operações ao usuário proprietário.
+- `admin/anotacoes.php` requer `$_SESSION['usuario_id']`, protege os formulários
+  com token CSRF e escapa o conteúdo apresentado.
+- O login deve preencher `$_SESSION['usuario_id']` com o ID positivo do usuário.
+- A validação do texto exige conteúdo não vazio, UTF-8 válido e limite de
+  65.535 bytes.
+
 ## Banco de dados e funcionalidades pendentes
 
 - O script de criação das tabelas de usuários e anotações está em
   `biblia_catolica/tabelas_usuarios_anotacoes.sql`.
-- `admin/usuarios.php` está vazio; a funcionalidade administrativa ainda não foi
-  implementada.
+- `admin/usuarios.php` permanece sem implementação; os arquivos relacionados
+  aos usuários não foram alterados nesta branch.
 
 ## Verificações
 
-- A sintaxe PHP de `index.php` e da classe de conexão foi verificada.
-- O autoload do Composer foi gerado e a classe de conexão foi carregada com
-  sucesso pelo mapeamento PSR-4.
+- `php -l` passou nos arquivos PHP alterados para as anotações.
+- Foram verificadas a validação do texto, o autoload PSR-4 e a hidratação do
+  modelo `Anotacao`.
 - `composer validate` confirmou a validade da configuração, com aviso opcional
   de licença não informada.
-- Os arquivos de imagem referenciados na página foram confirmados como
-  existentes.
-- A conexão real com o banco e a aparência no navegador não foram verificadas
-  nesta etapa.
+- Não foi feito teste integrado com o banco de dados nem verificação visual no
+  navegador.
