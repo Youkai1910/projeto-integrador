@@ -31,6 +31,12 @@ banco, sozinho, não controla permissões.
 já foram criadas, a estrutura existente precisará de uma alteração específica
 para restringir `tipo` aos três perfis.
 
+## Anotações
+
+- A página `admin/anotacoes.php` exige uma sessão autenticada com o identificador
+  positivo do usuário em `$_SESSION['usuario_id']`.
+- A listagem e as operações de anotação são limitadas ao usuário autenticado.
+
 ## Página inicial e imagens
 
 - A página inicial fica em `index.php` e seus estilos ficam em `css/style.css`.

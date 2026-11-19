@@ -33,4 +33,18 @@ final class Validacoes
 
         return $valor;
     }
+
+    public static function textoAnotacao($valor): string
+    {
+        if (!is_string($valor)) {
+            throw new InvalidArgumentException('A anotação precisa ser um texto.');
+        }
+
+        $valor = trim($valor);
+        if ($valor === '' || strlen($valor) > 65535 || preg_match('//u', $valor) !== 1) {
+            throw new InvalidArgumentException('A anotação é obrigatória e deve ter até 65.535 bytes.');
+        }
+
+        return $valor;
+    }
 }
