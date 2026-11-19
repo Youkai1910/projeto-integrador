@@ -74,12 +74,26 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 
         <section class="livros-biblia">
             <h3>Livros da Bíblia</h3>
-            <div class="lista-livros">
-                <?php foreach ($livros as $livro): ?>
-                    <div>
-                        <?= htmlspecialchars($livro['label'], ENT_QUOTES, 'UTF-8') ?>
-                    </div>
-                <?php endforeach; ?>
+            <button
+                class="btn btn-outline-light d-lg-none mb-3"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#lista-livros-collapse"
+                aria-expanded="false"
+                aria-controls="lista-livros-collapse"
+                aria-label="Abrir ou fechar a lista de livros da Bíblia"
+            >
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                <span>Livros da Bíblia</span>
+            </button>
+            <div class="collapse d-lg-block" id="lista-livros-collapse">
+                <div class="lista-livros">
+                    <?php foreach ($livros as $livro): ?>
+                        <div>
+                            <?= htmlspecialchars($livro['label'], ENT_QUOTES, 'UTF-8') ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </section>
     </main>
