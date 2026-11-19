@@ -247,10 +247,148 @@ main {
     gap: 8px 16px;
 }
 
-.lista-livros div {
+.lista-livros a {
     padding: 6px 8px;
     border-radius: 6px;
     background: rgba(117, 66, 33, 0.55);
+    color: #fcecdb;
+    text-decoration: none;
+}
+
+.lista-livros a:hover {
+    background: #754221;
+}
+
+.lista-livros small {
+    display: block;
+    font-size: 11px;
+    opacity: 0.85;
+}
+
+.grupo-livros {
+    margin-top: 20px;
+}
+
+.grupo-livros h4,
+.selecao-biblia h4,
+.selecao-biblia h5 {
+    margin: 0 0 10px;
+}
+
+.biblia-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.biblia-filtros input,
+.biblia-filtros select,
+.biblia-filtros button {
+    min-height: 38px;
+    border: 1px solid #754221;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font: inherit;
+}
+
+.biblia-filtros button {
+    background: #754221;
+    color: #fff;
+    cursor: pointer;
+}
+
+.biblia-mensagem {
+    margin: 12px 0;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.biblia-erro {
+    background: #fff0ef;
+    color: #7f1d1d;
+}
+
+.selecao-biblia {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(252, 236, 219, 0.35);
+}
+
+.lista-versiculos p {
+    padding: 8px 0;
+    line-height: 1.6;
+    border-bottom: 1px solid rgba(252, 236, 219, 0.18);
+}
+
+.lista-versiculos strong {
+    margin-right: 6px;
+}
+
+.admin-biblia-page {
+    min-height: 100vh;
+    padding: 30px 5%;
+    background: #f3f1f1;
+}
+
+.admin-biblia-painel {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.admin-biblia-painel > a {
+    color: #754221;
+}
+
+.admin-biblia-painel h1 {
+    margin: 18px 0 8px;
+}
+
+.admin-biblia-resumo {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 22px 0;
+}
+
+.admin-biblia-resumo div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px;
+    border-radius: 8px;
+    background: #f5eee8;
+}
+
+.admin-biblia-resumo strong {
+    color: #754221;
+    font-size: 24px;
+}
+
+.admin-biblia-tabela-wrap {
+    overflow-x: auto;
+}
+
+.admin-biblia-tabela {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-biblia-tabela th,
+.admin-biblia-tabela td {
+    padding: 10px;
+    border-bottom: 1px solid #e8dfd8;
+    text-align: left;
+}
+
+.admin-biblia-tabela th {
+    background: #89502b;
+    color: #fff;
 }
 
 footer {
@@ -354,5 +492,9 @@ footer {
     .inferior,
     .lista-livros {
         grid-template-columns: 1fr;
+    }
+
+    .admin-biblia-resumo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
