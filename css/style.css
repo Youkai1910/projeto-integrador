@@ -5,15 +5,15 @@
 }
 
 body {
-    background: #f3f1f1;
+    background: #eef3f8;
     font-family: 'Segoe UI', Arial, sans-serif;
-    color: #333;
+    color: #26384a;
 }
 
 .container {
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(135deg, #d9b334 0%, #c49f25 100%);
+    background: linear-gradient(135deg, #e7eff7 0%, #d7e4f1 100%);
     padding: 30px 5% 20px 5%;
     display: flex;
     flex-direction: column;
@@ -51,7 +51,7 @@ header {
 
 .banner {
     height: 97px;
-    background: #89502b;
+    background: #173653;
     border-radius: 15px;
     margin-top: 15px;
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -75,14 +75,14 @@ header {
 }
 
 .banner a:hover {
-    color: #fcecdb;
+    color: #e5eef8;
     transform: translateY(-2px);
 }
 
 .search-box {
     display: flex;
     align-items: center;
-    background: #754221;
+    background: #173653;
     border-radius: 8px;
     padding: 5px 12px;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -90,7 +90,7 @@ header {
 }
 
 .search-box:focus-within {
-    background: #5e3318;
+    background: #24476b;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
@@ -105,13 +105,13 @@ header {
 }
 
 .search-box input::placeholder {
-    color: #dec2a9;
+    color: #c4d5e7;
 }
 
 .search-box button {
     background: transparent;
     border: none;
-    color: #fcecdb;
+    color: #e5eef8;
     cursor: pointer;
     font-size: 14px;
     transition: 0.3s;
@@ -147,14 +147,14 @@ main {
 .card-principal {
     aspect-ratio: 16 / 10;
     min-height: 220px;
-    background: #89502b;
+    background: #24476b;
     border-radius: 15px;
     transition: all 0.3s ease;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fcecdb;
+    color: #f3f7fc;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
@@ -191,14 +191,14 @@ main {
 .card-inferior {
     aspect-ratio: 16 / 7;
     min-height: 110px;
-    background: #89502b;
+    background: #24476b;
     border-radius: 15px;
     transition: all 0.3s ease;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fcecdb;
+    color: #f3f7fc;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
@@ -231,14 +231,15 @@ main {
 
 .livros-biblia {
     margin-top: 40px;
-    background: #89502b;
-    color: #fcecdb;
+    background: #e7eff7;
+    color: #26384a;
     border-radius: 15px;
     padding: 25px;
 }
 
 .livros-biblia h3 {
     margin-bottom: 20px;
+    color: #24476b;
 }
 
 .lista-livros {
@@ -250,13 +251,13 @@ main {
 .lista-livros a {
     padding: 6px 8px;
     border-radius: 6px;
-    background: rgba(117, 66, 33, 0.55);
-    color: #fcecdb;
+    background: #d7e4f1;
+    color: #173653;
     text-decoration: none;
 }
 
 .lista-livros a:hover {
-    background: #754221;
+    background: #c4d5e7;
 }
 
 .lista-livros small {
@@ -287,14 +288,14 @@ main {
 .biblia-filtros select,
 .biblia-filtros button {
     min-height: 38px;
-    border: 1px solid #754221;
+    border: 1px solid #587596;
     border-radius: 6px;
     padding: 7px 10px;
     font: inherit;
 }
 
 .biblia-filtros button {
-    background: #754221;
+    background: #24476b;
     color: #fff;
     cursor: pointer;
 }
@@ -313,23 +314,24 @@ main {
 .selecao-biblia {
     margin-top: 24px;
     padding-top: 18px;
-    border-top: 1px solid rgba(252, 236, 219, 0.35);
+    border-top: 1px solid rgba(36, 71, 107, 0.22);
 }
 
 .lista-versiculos p {
     padding: 8px 0;
     line-height: 1.6;
-    border-bottom: 1px solid rgba(252, 236, 219, 0.18);
+    border-bottom: 1px solid rgba(36, 71, 107, 0.14);
 }
 
 .lista-versiculos strong {
     margin-right: 6px;
+    color: #173653;
 }
 
 .admin-biblia-page {
     min-height: 100vh;
     padding: 30px 5%;
-    background: #f3f1f1;
+    background: #eef3f8;
 }
 
 .admin-biblia-painel {
@@ -342,7 +344,7 @@ main {
 }
 
 .admin-biblia-painel > a {
-    color: #754221;
+    color: #24476b;
 }
 
 .admin-biblia-painel h1 {
@@ -362,11 +364,11 @@ main {
     gap: 4px;
     padding: 14px;
     border-radius: 8px;
-    background: #f5eee8;
+    background: #e6eef7;
 }
 
 .admin-biblia-resumo strong {
-    color: #754221;
+    color: #24476b;
     font-size: 24px;
 }
 
@@ -382,12 +384,12 @@ main {
 .admin-biblia-tabela th,
 .admin-biblia-tabela td {
     padding: 10px;
-    border-bottom: 1px solid #e8dfd8;
+    border-bottom: 1px solid #d1deeb;
     text-align: left;
 }
 
 .admin-biblia-tabela th {
-    background: #89502b;
+    background: #24476b;
     color: #fff;
 }
 
@@ -395,8 +397,8 @@ footer {
     max-width: 1300px;
     margin: 40px auto 0 auto;
     width: 100%;
-    background: #89502b;
-    color: #fcecdb;
+    background: #173653;
+    color: #e5eef8;
     border-radius: 15px;
     padding: 30px;
     display: grid;
@@ -410,13 +412,13 @@ footer {
     color: #ffffff;
     font-size: 15px;
     margin-bottom: 12px;
-    border-bottom: 2px solid #754221;
+    border-bottom: 2px solid #24476b;
     padding-bottom: 5px;
 }
 
 .footer-col p,
 .footer-col a {
-    color: #fcecdb;
+    color: #e5eef8;
     text-decoration: none;
     line-height: 1.6;
     display: block;
@@ -436,7 +438,7 @@ footer {
     padding-top: 15px;
     margin-top: 10px;
     font-size: 12px;
-    color: #dec2a9;
+    color: #c4d5e7;
 }
 
 @media (max-width: 900px) {
