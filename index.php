@@ -25,20 +25,21 @@ $livros = [];
 $erroLivros = false;
 
 try {
-    $pdoBiblia = \ProjetoIntegrador\Database\ConexaoBD::getConexaoBiblia();
-    if ($busca === '') {
-        $consulta = $pdoBiblia->query('SELECT label FROM books ORDER BY id');
-    } else {
-        $consulta = $pdoBiblia->prepare(
-            'SELECT label FROM books WHERE label LIKE :label OR search_name LIKE :nome_busca ORDER BY id'
-        );
-        $termo = '%' . $busca . '%';
-        $consulta->execute(['label' => $termo, 'nome_busca' => $termo]);
-    }
-    $livros = $consulta->fetchAll();
+    $servicoLeitura = new \ProjetoIntegrador\Services\LeituraBiblicaServico(
+        \ProjetoIntegrador\Database\ConexaoBD::getConexaoBiblia()
+    );
+    $livros = $servicoLeitura->listarLivros($busca);
 } catch (\Throwable $e) {
     error_log($e->getMessage());
     $erroLivros = true;
+}
+
+$idSalmos = null;
+foreach ($livros as $livroItem) {
+    if ((string) $livroItem['label'] === 'Salmos') {
+        $idSalmos = (int) $livroItem['id'];
+        break;
+    }
 }
 ?>
 
@@ -89,34 +90,34 @@ try {
         <section class="principal">
             <div>
                 <h3>LEITURA DIÁRIA</h3>
-                <div class="card-principal card-leitura">Clique para ver a leitura diária</div>
+                <a class="card-principal card-leitura" href="leitura.php?aleatoria=1">Clique para ver uma leitura diária</a>
             </div>
             <div>
                 <h3>NOVO TESTAMENTO</h3>
-                <div class="card-principal card-novo-testamento">Clique para ver o novo testamento</div>
+                <a class="card-principal card-novo-testamento" href="leitura.php?testamento=2">Clique para abrir o Novo Testamento</a>
             </div>
             <div>
                 <h3>ANTIGO TESTAMENTO</h3>
-                <div class="card-principal card-antigo-testamento">Clique para ver o antigo testamento</div>
+                <a class="card-principal card-antigo-testamento" href="leitura.php?testamento=1">Clique para abrir o Antigo Testamento</a>
             </div>
         </section>
 
         <section class="inferior">
             <div>
                 <h3>SALMOS</h3>
-                <div class="card-inferior card-salmos">Ver Salmo</div>
+                <a class="card-inferior card-salmos" href="<?= $idSalmos !== null ? 'leitura.php?livro=' . $idSalmos : 'leitura.php?q=Salmos' ?>">Abrir o livro de Salmos</a>
             </div>
             <div>
                 <h3>VERSÍCULOS</h3>
-                <div class="card-inferior card-versiculos">Ver Versículo</div>
+                <a class="card-inferior card-versiculos" href="leitura.php?aleatoria=1">Ler um versículo</a>
             </div>
             <div>
                 <h3>EVANGELHO</h3>
-                <div class="card-inferior card-evangelho">Ver Evangelho</div>
+                <a class="card-inferior card-evangelho" href="leitura.php?testamento=2">Abrir os Evangelhos</a>
             </div>
             <div>
                 <h3>AUTO AJUDA</h3>
-                <div class="card-inferior card-auto-ajuda">Ver Conteúdo</div>
+                <a class="card-inferior card-auto-ajuda" href="contato.php">Fale conosco</a>
             </div>
         </section>
 
@@ -129,9 +130,9 @@ try {
             <?php endif; ?>
             <div class="lista-livros">
                 <?php foreach ($livros as $livro): ?>
-                    <div>
-                        <?= htmlspecialchars($livro['label'], ENT_QUOTES, 'UTF-8') ?>
-                    </div>
+                    <a href="leitura.php?livro=<?= (int) $livro['id'] ?>">
+                        <?= htmlspecialchars((string) $livro['label'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </section>

@@ -178,6 +178,8 @@ main {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    color: #fcecdb;
+    text-decoration: none;
 }
 
 .card-leitura {
@@ -222,6 +224,8 @@ main {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    color: #fcecdb;
+    text-decoration: none;
 }
 
 .card-salmos {
@@ -263,10 +267,26 @@ main {
     gap: 8px 16px;
 }
 
-.lista-livros div {
+.lista-livros a {
+    display: block;
     padding: 6px 8px;
     border-radius: 6px;
     background: rgba(117, 66, 33, 0.55);
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.lista-livros a:hover,
+.lista-livros a:focus-visible {
+    background: #754221;
+    transform: translateY(-2px);
+}
+
+.card-principal:focus-visible,
+.card-inferior:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 4px;
 }
 
 footer {

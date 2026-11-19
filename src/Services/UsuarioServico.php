@@ -6,6 +6,7 @@ namespace ProjetoIntegrador\Services;
 use DomainException;
 use PDO;
 use ProjetoIntegrador\Enum\TipoUsuario;
+use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Models\Usuario;
 use Throwable;
 
@@ -54,7 +55,7 @@ final class UsuarioServico
 	public function autenticar(string $email, string $senha): ?Usuario
 	{
 		$email = trim($email);
-		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false || $senha === '') {
+		if (!Validacoes::email($email) || $senha === '') {
 			return null;
 		}
 
@@ -85,13 +86,13 @@ final class UsuarioServico
 		$email = trim($email);
 		$tipo = TipoUsuario::validar($tipo);
 
-		if ($nome === '' || !preg_match('/^.{1,150}$/us', $nome)) {
+		if (!Validacoes::nome($nome)) {
 			throw new DomainException('Informe um nome com até 150 caracteres.');
 		}
-		if (strlen($email) > 254 || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+		if (!Validacoes::email($email)) {
 			throw new DomainException('Informe um e-mail válido com até 254 caracteres.');
 		}
-		if (strlen($senha) < 8 || strlen($senha) > 4096) {
+		if (!Validacoes::senha($senha)) {
 			throw new DomainException('A senha deve ter pelo menos 8 caracteres.');
 		}
 

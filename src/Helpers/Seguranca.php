@@ -28,7 +28,7 @@ final class Seguranca
     public static function obterTokenCsrf(): string
     {
         if (!isset($_SESSION['usuarios_csrf']) || !is_string($_SESSION['usuarios_csrf'])) {
-            $_SESSION['usuarios_csrf'] = bin2hex(random_bytes(32));
+            $_SESSION['usuarios_csrf'] = Utils::gerarToken();
         }
 
         return $_SESSION['usuarios_csrf'];
@@ -45,7 +45,7 @@ final class Seguranca
 
     public static function escapar(string $valor): string
     {
-        return htmlspecialchars($valor, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return Utils::escapar($valor);
     }
 
     public static function guardarMensagem(string $mensagem, string $tipo): void
