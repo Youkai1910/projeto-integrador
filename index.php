@@ -17,7 +17,7 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 <div class="container">
     <header>
         <div class="logo-area">
-            <img class="logo" src="images/logo.png" alt="Portal Diário">
+            <img class="logo" src="images/logo_biblico.png" alt="Portal Diário">
         </div>
         <div class="menu-area">
             <nav class="banner" aria-label="Navegação principal">
@@ -85,7 +85,7 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 
     <footer>
         <div class="footer-col">
-            <h4>Portal Diário</h4>
+            <h4>Portal Bíblico</h4>
             <p>Um espaço dedicado a nutrir a sua espiritualidade todos os dias com conteúdos atualizados, leituras, salmos e reflexões.</p>
         </div>
         <div class="footer-col">
@@ -100,7 +100,7 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
             <p><i class="fa-solid fa-phone"></i> (00) 0000-0000</p>
         </div>
         <div class="footer-bottom">
-            &copy; 2026 Portal Diário. Todos os direitos reservados.
+            &copy; 2026 Portal bíblico. Todos os direitos reservados.
         </div>
     </footer>
 </div>
