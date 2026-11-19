@@ -11,10 +11,11 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Diário</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="container">
+<div class="page-container">
     <header>
         <div class="logo-area">
             <img class="logo" src="images/logo_biblico.png" alt="Portal Diário">
@@ -96,13 +97,14 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
         </div>
         <div class="footer-col">
             <h4>Fale Conosco</h4>
-            <p><i class="fa-solid fa-envelope"></i> contato@portaldiario.com</p>
-            <p><i class="fa-solid fa-phone"></i> (00) 0000-0000</p>
+            <p><i class="fa-solid fa-envelope"></i> contato@portalbiblico.com</p>
+            <p><i class="fa-solid fa-phone"></i> (11) 95648-2343</p>
         </div>
         <div class="footer-bottom">
             &copy; 2026 Portal bíblico. Todos os direitos reservados.
         </div>
     </footer>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

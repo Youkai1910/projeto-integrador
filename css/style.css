@@ -5,15 +5,15 @@
 }
 
 body {
-    background: #f3f1f1;
+    background: #f3f7fb;
     font-family: 'Segoe UI', Arial, sans-serif;
     color: #333;
 }
 
-.container {
+.page-container {
     width: 100%;
     min-height: 100vh;
-    background:#00C1D9;
+    background: #e8f1fa;
     padding: 30px 5% 20px 5%;
     display: flex;
     flex-direction: column;
@@ -76,14 +76,14 @@ header {
 }
 
 .banner a:hover {
-    color: #fcecdb;
+    color: #eef5fc;
     transform: translateY(-2px);
 }
 
 .search-box {
     display: flex;
     align-items: center;
-    background: #5f7adb;
+    background: #4777a8;
     border-radius: 8px;
     padding: 5px 12px;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -91,7 +91,7 @@ header {
 }
 
 .search-box:focus-within {
-    background: #5f7adb;
+    background: #eef5fc;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
@@ -106,13 +106,13 @@ header {
 }
 
 .search-box input::placeholder {
-    color: #dec2a9;
+    color: #ccdded;
 }
 
 .search-box button {
     background: transparent;
     border: none;
-    color: #fcecdb;
+    color: #eef5fc;
     cursor: pointer;
     font-size: 14px;
     transition: 0.3s;
@@ -148,14 +148,14 @@ main {
 .card-principal {
     aspect-ratio: 16 / 10;
     min-height: 220px;
-    background: #5f7adb;
+    background: #4777a8;
     border-radius: 15px;
     transition: all 0.3s ease;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fcecdb;
+    color: #eef5fc;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
@@ -192,14 +192,14 @@ main {
 .card-inferior {
     aspect-ratio: 16 / 7;
     min-height: 110px;
-    background: #5f7adb;
+    background: #4777a8;
     border-radius: 15px;
     transition: all 0.3s ease;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fcecdb;
+    color: #eef5fc;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
@@ -233,7 +233,7 @@ main {
 .livros-biblia {
     margin-top: 40px;
     background: #326099;
-    color: #fcecdb;
+    color: #eef5fc;
     border-radius: 15px;
     padding: 25px;
 }
@@ -251,7 +251,7 @@ main {
 .lista-livros div {
     padding: 6px 8px;
     border-radius: 6px;
-    background: #5f7adb;
+    background: #4777a8;
 }
 
 footer {
@@ -259,7 +259,7 @@ footer {
     margin: 40px auto 0 auto;
     width: 100%;
     background: #326099;
-    color: #fcecdb;
+    color: #eef5fc;
     border-radius: 15px;
     padding: 30px;
     display: grid;
@@ -279,7 +279,7 @@ footer {
 
 .footer-col p,
 .footer-col a {
-    color: #fcecdb;
+    color: #eef5fc;
     text-decoration: none;
     line-height: 1.6;
     display: block;
@@ -299,7 +299,7 @@ footer {
     padding-top: 15px;
     margin-top: 10px;
     font-size: 12px;
-    color: #dec2a9;
+    color: #ccdded;
 }
 
 @media (max-width: 900px) {
