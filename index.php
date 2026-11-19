@@ -84,7 +84,7 @@ if ($livroId !== null && $livroSelecionado === null) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Diário</title>
+    <title>Portal Bíblico</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -92,7 +92,7 @@ if ($livroId !== null && $livroSelecionado === null) {
 <div class="container">
     <header>
         <div class="logo-area">
-            <img class="logo" src="images/logo.png" alt="Portal Diário">
+            <img class="logo" src="images/logo.png?v=<?= filemtime(__DIR__ . '/images/logo.png') ?>" alt="Portal Bíblico">
         </div>
         <div class="menu-area">
             <nav class="banner" aria-label="Navegação principal">
