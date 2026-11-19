@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/database/conexao.php';
+require_once __DIR__ . '/vendor/autoload.php';
 $pdo = \ProjetoIntegrador\Database\ConexaoBD::getConexao();
 $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 ?>
@@ -17,10 +17,7 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 <div class="container">
     <header>
         <div class="logo-area">
-            PORTAL
-            <div class="logo">
-                <img src="biblia_catolica/imagens/logo.png" alt="Logo Portal Diário" width="270" height="262">
-            </div>
+            <img class="logo" src="images/logo.png" alt="Portal Diário">
         </div>
         <div class="menu-area">
             <nav class="banner" aria-label="Navegação principal">
@@ -43,55 +40,34 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
         <section class="principal">
             <div>
                 <h3>LEITURA DIÁRIA</h3>
-                <div class="card-principal">
-                    <img src="biblia_catolica/imagens/leitura-diaria.jpg" alt="Leitura diária" width="450" height="193" loading="eager" decoding="async">
-                    <span>Clique para ver a leitura diária</span>
-                </div>
+                <div class="card-principal card-leitura">Clique para ver a leitura diária</div>
             </div>
             <div>
                 <h3>NOVO TESTAMENTO</h3>
-                <div class="card-principal">
-                    <img src="biblia_catolica/imagens/novo-testamento.jpg" alt="Novo Testamento" width="426" height="193" loading="eager" decoding="async">
-                    <span>Clique para ver o novo testamento</span>
-                </div>
+                <div class="card-principal card-novo-testamento">Clique para ver o novo testamento</div>
             </div>
             <div>
                 <h3>ANTIGO TESTAMENTO</h3>
-                <div class="card-principal">
-                    <img src="biblia_catolica/imagens/antigo-testamento.jpg" alt="Antigo Testamento" width="430" height="193" loading="eager" decoding="async">
-                    <span>Clique para ver o antigo testamento</span>
-                </div>
+                <div class="card-principal card-antigo-testamento">Clique para ver o antigo testamento</div>
             </div>
         </section>
 
         <section class="inferior">
             <div>
                 <h3>SALMOS</h3>
-                <div class="card-inferior">
-                    <img src="biblia_catolica/imagens/salmos.jpg" alt="Salmos" width="320" height="134" loading="lazy" decoding="async">
-                    <span>Ver Salmo</span>
-                </div>
+                <div class="card-inferior card-salmos">Ver Salmo</div>
             </div>
             <div>
                 <h3>VERSÍCULOS</h3>
-                <div class="card-inferior">
-                    <img src="biblia_catolica/imagens/versiculos.jpg" alt="Versículos" width="314" height="134" loading="lazy" decoding="async">
-                    <span>Ver Versículo</span>
-                </div>
+                <div class="card-inferior card-versiculos">Ver Versículo</div>
             </div>
             <div>
                 <h3>EVANGELHO</h3>
-                <div class="card-inferior">
-                    <img src="biblia_catolica/imagens/evangelho.jpg" alt="Evangelho" width="318" height="134" loading="lazy" decoding="async">
-                    <span>Ver Evangelho</span>
-                </div>
+                <div class="card-inferior card-evangelho">Ver Evangelho</div>
             </div>
             <div>
                 <h3>AUTO AJUDA</h3>
-                <div class="card-inferior">
-                    <img src="biblia_catolica/imagens/auto-ajuda.jpg" alt="Auto ajuda" width="316" height="134" loading="lazy" decoding="async">
-                    <span>Ver Conteúdo</span>
-                </div>
+                <div class="card-inferior card-auto-ajuda">Ver Conteúdo</div>
             </div>
         </section>
 
