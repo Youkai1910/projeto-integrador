@@ -1,69 +1,67 @@
 <?php
-declare(strict_types=1);
-
 namespace ProjetoIntegrador\Helpers;
+
+use InvalidArgumentException;
 
 final class Validacoes
 {
-	private function __construct()
-	{
-	}
+    public static function idPositivo($valor): ?int
+    {
+        if (is_int($valor)) {
+            return $valor > 0 ? $valor : null;
+        }
 
-	public static function nome(string $nome, int $limite = 150): bool
-	{
-		$nome = trim($nome);
-		return $limite > 0 && $nome !== '' && self::comprimento($nome) <= $limite;
-	}
+        if (!is_string($valor) || !preg_match('/^[1-9][0-9]*$/D', $valor)) {
+            return null;
+        }
 
-	public static function email(string $email, int $limite = 254): bool
-	{
-		$email = trim($email);
-		return $limite > 0
-			&& self::comprimento($email) <= $limite
-			&& filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
-	}
+        $id = filter_var($valor, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 
-	public static function senha(string $senha, int $minimo = 8, int $maximo = 4096): bool
-	{
-		$comprimento = strlen($senha);
-		return $minimo >= 1 && $maximo >= $minimo
-			&& $comprimento >= $minimo && $comprimento <= $maximo;
-	}
+        return $id === false ? null : $id;
+    }
 
-	public static function url(string $url, bool $opcional = false): bool
-	{
-		$url = trim($url);
-		if ($url === '') {
-			return $opcional;
-		}
+    public static function termoBusca($valor): string
+    {
+        if (!is_string($valor)) {
+            throw new InvalidArgumentException('O termo de busca precisa ser um texto.');
+        }
 
-		if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-			return false;
-		}
+        $valor = trim($valor);
+        if (strlen($valor) > 200 || preg_match('//u', $valor) !== 1) {
+            throw new InvalidArgumentException('O termo de busca é inválido ou muito longo.');
+        }
 
-		$esquema = strtolower((string) parse_url($url, PHP_URL_SCHEME));
-		return in_array($esquema, ['http', 'https'], true);
-	}
+        return $valor;
+    }
 
-	public static function mensagem(string $mensagem, int $limite = 10000): bool
-	{
-		return $limite > 0 && trim($mensagem) !== '' && strlen($mensagem) <= $limite;
-	}
+    public static function textoAnotacao($valor): string
+    {
+        if (!is_string($valor)) {
+            throw new InvalidArgumentException('A anotação precisa ser um texto.');
+        }
 
-	/** @param mixed $valor */
-	public static function inteiroPositivo($valor): bool
-	{
-		$inteiro = filter_var($valor, FILTER_VALIDATE_INT);
-		return $inteiro !== false && $inteiro > 0;
-	}
+        $valor = trim($valor);
+        if ($valor === '' || strlen($valor) > 65535 || preg_match('//u', $valor) !== 1) {
+            throw new InvalidArgumentException('A anotação é obrigatória e deve ter até 65.535 bytes.');
+        }
 
-	private static function comprimento(string $valor): int
-	{
-		if (function_exists('mb_strlen')) {
-			return mb_strlen($valor, 'UTF-8');
-		}
+        return $valor;
+    }
 
-		$quantidade = preg_match_all('/./us', $valor, $correspondencias);
-		return $quantidade === false ? PHP_INT_MAX : $quantidade;
-	}
+    public static function nome(string $valor): bool
+    {
+        $valor = trim($valor);
+        return $valor !== '' && mb_strlen($valor, 'UTF-8') <= 150;
+    }
+
+    public static function email(string $valor): bool
+    {
+        $valor = trim($valor);
+        return mb_strlen($valor, 'UTF-8') <= 254 && filter_var($valor, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    public static function senha(string $valor): bool
+    {
+        return mb_strlen($valor, 'UTF-8') >= 8 && mb_strlen($valor, 'UTF-8') <= 4096;
+    }
 }

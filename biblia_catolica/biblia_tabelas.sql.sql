@@ -5,10 +5,12 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-CREATE DATABASE IF NOT EXISTS `biblia_catolica` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `biblia_catolica`;
+DROP DATABASE IF EXISTS `biblia`;
+CREATE DATABASE `biblia` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `biblia`;
 
-CREATE TABLE IF NOT EXISTS `books` (
+DROP TABLE IF EXISTS `books`;
+CREATE TABLE `books` (
   `id` int NOT NULL AUTO_INCREMENT,
   `label` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `search_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
@@ -17,14 +19,16 @@ CREATE TABLE IF NOT EXISTS `books` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 
-CREATE TABLE IF NOT EXISTS `testament` (
+DROP TABLE IF EXISTS `testament`;
+CREATE TABLE `testament` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 
-CREATE TABLE IF NOT EXISTS `verses` (
+DROP TABLE IF EXISTS `verses`;
+CREATE TABLE `verses` (
   `id` int NOT NULL AUTO_INCREMENT,
   `book` int DEFAULT NULL,
   `chapter` int DEFAULT NULL,

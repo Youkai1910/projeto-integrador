@@ -5,7 +5,9 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-USE `biblia_catolica`;
+DROP DATABASE IF EXISTS `biblia`;
+CREATE DATABASE `biblia` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `biblia`;
 
 TRUNCATE `books`;
 INSERT INTO `books` (`id`, `label`, `search_name`, `testament`) VALUES
