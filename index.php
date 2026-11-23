@@ -263,7 +263,7 @@ if ($livroId !== null && $livroSelecionado === null) {
                 <div class="lista-livros">
                     <?php foreach ($livros as $livro): ?>
                         <div>
-                            <?= htmlspecialchars($livro['label'], ENT_QUOTES, 'UTF-8') ?>
+                            <?= Utils::escaparHtml($livro->nome) ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
