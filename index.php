@@ -21,7 +21,16 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
             <img class="logo" src="images/logo_biblico.png" alt="Portal Diário">
         </div>
         <div class="menu-area">
-            <nav class="banner" aria-label="Navegação principal">
+            <button
+                class="menu-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="menu-principal"
+                aria-label="Abrir menu de navegação"
+            >
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+            <nav class="banner" id="menu-principal" aria-label="Navegação principal">
                 <form class="search-box" action="#" method="GET">
                     <input type="text" placeholder="Pesquisar..." name="q" aria-label="Pesquisar">
                     <button type="submit" aria-label="Enviar pesquisa">
@@ -120,5 +129,18 @@ $livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
     </footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menuPrincipal = document.querySelector('#menu-principal');
+
+    if (menuToggle && menuPrincipal) {
+        menuToggle.addEventListener('click', () => {
+            const aberto = menuPrincipal.classList.toggle('menu-aberto');
+            menuToggle.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+            menuToggle.setAttribute('aria-label', aberto ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+            menuToggle.querySelector('i').className = aberto ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        });
+    }
+</script>
 </body>
 </html>
