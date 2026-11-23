@@ -103,12 +103,27 @@ function escaparLeitura(string $valor): string
 <div class="container">
     <header class="leitura-topo">
         <a class="leitura-marca" href="index.php"><img src="images/logo.png" alt="Portal Bíblico"><span>Portal Bíblico</span></a>
-        <nav class="leitura-nav" aria-label="Navegação da leitura">
+        <button class="leitura-menu-toggle" type="button" aria-expanded="false" aria-controls="leitura-menu" id="leitura-menu-toggle" aria-label="Abrir ou fechar o menu">
+            <span aria-hidden="true">☰</span>
+        </button>
+        <nav class="leitura-nav" id="leitura-menu" aria-label="Navegação da leitura">
             <a href="index.php">Início</a>
             <a href="leitura.php">Todos os livros</a>
             <a href="leitura.php?testamento=1">Antigo Testamento</a>
             <a href="leitura.php?testamento=2">Novo Testamento</a>
         </nav>
+        <script>
+            (function () {
+                var botao = document.getElementById('leitura-menu-toggle');
+                var menu = document.getElementById('leitura-menu');
+                if (!botao || !menu) return;
+                botao.addEventListener('click', function () {
+                    var aberto = botao.getAttribute('aria-expanded') === 'true';
+                    botao.setAttribute('aria-expanded', aberto ? 'false' : 'true');
+                    menu.classList.toggle('aberto', !aberto);
+                });
+            }());
+        </script>
     </header>
 
     <main class="leitura-main">
