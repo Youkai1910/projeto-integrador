@@ -257,16 +257,6 @@ if ($livroId !== null && $livroSelecionado === null) {
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <span>Livros da Bíblia</span>
-            </button>
-            <div class="collapse d-lg-block" id="lista-livros-collapse">
-                <div class="lista-livros">
-                    <?php foreach ($livros as $livro): ?>
-                        <div>
-                            <?= htmlspecialchars($livro['label'], ENT_QUOTES, 'UTF-8') ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
             </div>
 
             <?php if ($livroSelecionado !== null): ?>
