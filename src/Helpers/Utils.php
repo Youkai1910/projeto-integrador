@@ -20,11 +20,39 @@ final class Utils
 
     public static function normalizarEspacos(string $valor): string
     {
-        return trim(preg_replace('/\s+/u', ' ', $valor) ?? '');
+        $resultado = '';
+        $espacoAnterior = false;
+
+        for ($indice = 0; $indice < strlen($valor); $indice++) {
+            $caractere = $valor[$indice];
+            $espaco = ctype_space($caractere);
+
+            if ($espaco) {
+                if (!$espacoAnterior && $resultado !== '') {
+                    $resultado .= ' ';
+                }
+                $espacoAnterior = true;
+            } else {
+                $resultado .= $caractere;
+                $espacoAnterior = false;
+            }
+        }
+
+        return rtrim($resultado);
     }
 
     public static function textoLimite(string $valor, int $limite): string
     {
-        return mb_substr(trim($valor), 0, $limite, 'UTF-8');
+        $valor = trim($valor);
+        if ($limite < 1) {
+            return '';
+        }
+
+        $tamanho = strlen($valor);
+        if ($tamanho <= $limite) {
+            return $valor;
+        }
+
+        return substr($valor, 0, $limite);
     }
 }

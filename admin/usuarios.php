@@ -41,7 +41,7 @@ $urlLista = 'usuarios.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Gerenciar usuários | Portal Diário</title>
+    <title>Gerenciar usuários | Portal Bíblico</title>
     <link rel="stylesheet" href="../css/admin-usuarios.css">
 </head>
 <body>
@@ -49,7 +49,7 @@ $urlLista = 'usuarios.php';
         <div class="topo-conteudo">
             <a class="marca" href="../index.php">
                 <img src="../images/logo.png" alt="">
-                <span>Portal Diário · Administração</span>
+                <span>Portal Bíblico · Administração</span>
             </a>
             <a class="link-inicio" href="../index.php">Voltar ao início</a>
         </div>

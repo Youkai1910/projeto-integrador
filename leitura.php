@@ -94,15 +94,15 @@ function escaparLeitura(string $valor): string
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Leia os livros, capítulos e versículos da Bíblia Católica no Portal Diário.">
-    <title><?= $livro !== null ? escaparLeitura((string) $livro['label']) . ($numeroCapitulo !== null ? ' ' . $numeroCapitulo : '') . ' | ' : '' ?>Leitura bíblica | Portal Diário</title>
+    <meta name="description" content="Leia os livros, capítulos e versículos da Bíblia Católica no Portal Bíblico.">
+    <title><?= $livro !== null ? escaparLeitura((string) $livro['label']) . ($numeroCapitulo !== null ? ' ' . $numeroCapitulo : '') . ' | ' : '' ?>Leitura bíblica | Portal Bíblico</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/leitura.css">
 </head>
 <body>
 <div class="container">
     <header class="leitura-topo">
-        <a class="leitura-marca" href="index.php"><img src="images/logo.png" alt="Portal Diário"><span>Portal Diário</span></a>
+        <a class="leitura-marca" href="index.php"><img src="images/logo.png" alt="Portal Bíblico"><span>Portal Bíblico</span></a>
         <nav class="leitura-nav" aria-label="Navegação da leitura">
             <a href="index.php">Início</a>
             <a href="leitura.php">Todos os livros</a>

@@ -59,14 +59,14 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrar | Portal Diário</title>
+    <title>Entrar | Portal Bíblico</title>
     <link rel="stylesheet" href="css/publico.css">
 </head>
 <body>
     <main class="cartao-publico">
-        <a class="voltar" href="index.php">← Voltar ao Portal Diário</a>
+        <a class="voltar" href="index.php">← Voltar ao Portal Bíblico</a>
         <h1>Entrar</h1>
-        <p>Acesse sua conta do Portal Diário.</p>
+        <p>Acesse sua conta do Portal Bíblico.</p>
         <?php if ($mensagem !== ''): ?>
             <p class="aviso erro" role="alert"><?= Seguranca::escapar($mensagem) ?></p>
         <?php endif; ?>

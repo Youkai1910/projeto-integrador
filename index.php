@@ -105,7 +105,7 @@ if ($livroId !== null && $livroSelecionado === null) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Diário</title>
+    <title>Portal Bíblico</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" media="screen and (max-width: 767.98px)">
     <link rel="stylesheet" href="css/style.css">
@@ -310,7 +310,7 @@ if ($livroId !== null && $livroSelecionado === null) {
 
     <footer>
         <div class="footer-col">
-            <h4>Portal Diário</h4>
+            <h4>Portal Bíblico</h4>
             <p id="quem-somos">Um espaço dedicado a nutrir a sua espiritualidade todos os dias com conteúdos atualizados, leituras, salmos e reflexões.</p>
         </div>
         <div class="footer-col">
@@ -324,7 +324,7 @@ if ($livroId !== null && $livroSelecionado === null) {
             <p><i class="fa-solid fa-phone"></i> (00) 0000-0000</p>
         </div>
         <div class="footer-bottom">
-            &copy; 2026 Portal Diário. Todos os direitos reservados.
+            &copy; 2026 Portal Bíblico. Todos os direitos reservados.
         </div>
     </footer>
 </div>

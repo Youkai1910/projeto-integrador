@@ -44,14 +44,14 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro | Portal Diário</title>
+    <title>Cadastro | Portal Bíblico</title>
     <link rel="stylesheet" href="css/publico.css">
 </head>
 <body>
     <main class="cartao-publico">
-        <a class="voltar" href="index.php">← Voltar ao Portal Diário</a>
+        <a class="voltar" href="index.php">← Voltar ao Portal Bíblico</a>
         <h1>Crie sua conta</h1>
-        <p>Cadastre-se para fazer parte do Portal Diário.</p>
+        <p>Cadastre-se para fazer parte do Portal Bíblico.</p>
         <?php if ($mensagem !== ''): ?>
             <p class="aviso <?= $tipoMensagem === 'sucesso' ? 'sucesso' : 'erro' ?>" role="status"><?= Seguranca::escapar($mensagem) ?></p>
         <?php endif; ?>

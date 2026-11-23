@@ -1,7 +1,7 @@
-:root { --leitura-marrom: #89502b; --leitura-escuro: #603719; --leitura-fundo: #f5f2ed; --leitura-texto: #302820; }
+:root { --leitura-marrom: #24476b; --leitura-escuro: #173653; --leitura-fundo: #eef3f8; --leitura-texto: #26384a; --leitura-borda: #d1deeb; --leitura-suave: #e7eff7; }
 body { background: var(--leitura-fundo); }
 .container { min-height: 100vh; padding-top: 20px; }
-.leitura-topo { display: flex; grid-template-columns: none; justify-content: space-between; gap: 20px; padding: 14px 20px; border-radius: 15px; background: var(--leitura-marrom); }
+.leitura-topo { display: flex; grid-template-columns: none; justify-content: space-between; gap: 20px; padding: 14px 20px; border-radius: 15px; background: var(--leitura-escuro); }
 .leitura-marca { display: flex; align-items: center; gap: 12px; color: white; font-weight: 700; text-decoration: none; }
 .leitura-marca img { width: 58px; height: 58px; object-fit: contain; }
 .leitura-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 18px; }
@@ -10,47 +10,47 @@ body { background: var(--leitura-fundo); }
 .leitura-main { width: min(1120px, 100%); }
 .leitura-cabecalho { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 24px; padding: 24px 0 8px; }
 .leitura-cabecalho h1 { margin: 4px 0 8px; color: var(--leitura-escuro); font-size: clamp(1.8rem, 5vw, 2.6rem); }
-.leitura-cabecalho p { margin: 0; color: #71685f; }
+.leitura-cabecalho p { margin: 0; color: #587596; }
 .leitura-cabecalho .sobretitulo, .sobretitulo { color: var(--leitura-marrom); font-size: .75rem; font-weight: 750; letter-spacing: .12em; }
 .voltar-inicio { padding: 10px 14px; border-radius: 8px; background: var(--leitura-marrom); white-space: nowrap; }
 .busca-leitura { display: grid; gap: 8px; margin: 0 0 22px; color: var(--leitura-escuro); font-weight: 650; }
 .busca-leitura > div { display: flex; gap: 8px; }
-.busca-leitura input { min-width: 0; flex: 1; padding: 12px; border: 1px solid #d8cfc4; border-radius: 8px; font: inherit; }
+.busca-leitura input { min-width: 0; flex: 1; padding: 12px; border: 1px solid var(--leitura-borda); border-radius: 8px; font: inherit; }
 .busca-leitura button { padding: 10px 16px; border: 0; border-radius: 8px; background: var(--leitura-marrom); color: white; font: inherit; font-weight: 650; cursor: pointer; }
 .grade-livros { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.cartao-livro { display: flex; min-height: 130px; flex-direction: column; justify-content: space-between; padding: 16px; border: 1px solid #e8dfd3; border-radius: 12px; background: white; color: var(--leitura-texto); text-decoration: none; box-shadow: 0 5px 16px #39230c0a; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
-.cartao-livro:hover, .cartao-livro:focus-visible { transform: translateY(-3px); border-color: #c49f25; box-shadow: 0 10px 22px #39230c16; }
-.livro-testamento { color: #71685f; font-size: .74rem; text-transform: uppercase; }
+.cartao-livro { display: flex; min-height: 130px; flex-direction: column; justify-content: space-between; padding: 16px; border: 1px solid var(--leitura-borda); border-radius: 12px; background: white; color: var(--leitura-texto); text-decoration: none; box-shadow: 0 5px 16px rgba(23,54,83,.08); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.cartao-livro:hover, .cartao-livro:focus-visible { transform: translateY(-3px); border-color: #24476b; box-shadow: 0 10px 22px rgba(23,54,83,.14); }
+.livro-testamento { color: #587596; font-size: .74rem; text-transform: uppercase; }
 .cartao-livro strong { margin: 12px 0; color: var(--leitura-escuro); font-size: 1.08rem; }
 .abrir-livro { display: flex; justify-content: space-between; color: var(--leitura-marrom); font-size: .86rem; font-weight: 650; }
-.sem-livros, .leitura-alerta { padding: 18px; border-radius: 10px; background: white; color: #71685f; }
-.leitura-alerta { background: #fff0ed; color: #9c3022; }
-.versiculo-dia { margin: 20px 0; padding: clamp(20px, 4vw, 32px); border-radius: 14px; background: #89502b; color: #fff7e7; }
+.sem-livros, .leitura-alerta { padding: 18px; border-radius: 10px; background: white; color: #587596; }
+.leitura-alerta { background: #fff0ef; color: #7f1d1d; }
+.versiculo-dia { margin: 20px 0; padding: clamp(20px, 4vw, 32px); border-radius: 14px; background: var(--leitura-marrom); color: #f3f7fc; }
 .versiculo-dia > span { font-size: .76rem; font-weight: 750; letter-spacing: .12em; }
 .versiculo-dia blockquote { margin: 14px 0; font-family: Georgia, serif; font-size: clamp(1.15rem, 3vw, 1.6rem); line-height: 1.65; }
-.versiculo-dia a { color: #ffe6a3; font-weight: 650; }
-.capitulos, .texto-capitulo { margin: 20px 0; padding: clamp(18px, 3vw, 28px); border: 1px solid #e8dfd3; border-radius: 14px; background: white; }
+.versiculo-dia a { color: #d7e8f7; font-weight: 650; }
+.capitulos, .texto-capitulo { margin: 20px 0; padding: clamp(18px, 3vw, 28px); border: 1px solid var(--leitura-borda); border-radius: 14px; background: white; }
 .secao-leitura-titulo { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .secao-leitura-titulo h2, .texto-capitulo h2 { margin: 0; color: var(--leitura-escuro); }
-.secao-leitura-titulo span { color: #71685f; font-size: .88rem; }
+.secao-leitura-titulo span { color: #587596; font-size: .88rem; }
 .grade-capitulos { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 8px; }
-.numero-capitulo { display: grid; min-height: 42px; place-items: center; border: 1px solid #e8dfd3; border-radius: 8px; color: var(--leitura-marrom); font-weight: 650; text-decoration: none; }
+.numero-capitulo { display: grid; min-height: 42px; place-items: center; border: 1px solid var(--leitura-borda); border-radius: 8px; color: var(--leitura-marrom); font-weight: 650; text-decoration: none; }
 .numero-capitulo:hover, .numero-capitulo.selecionado { border-color: var(--leitura-marrom); background: var(--leitura-marrom); color: white; }
-.texto-capitulo-cabecalho { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid #eee8e0; }
+.texto-capitulo-cabecalho { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid #d1deeb; }
 .texto-capitulo-cabecalho h2 { margin-top: 5px; }
 .navegacao-capitulo { display: flex; gap: 8px; }
-.navegacao-capitulo a, .troca-livro a { padding: 9px 12px; border-radius: 8px; background: #f7f3ed; color: var(--leitura-marrom); font-weight: 650; text-decoration: none; }
-.navegacao-capitulo a:hover, .troca-livro a:hover { background: #efe3d5; }
+.navegacao-capitulo a, .troca-livro a { padding: 9px 12px; border-radius: 8px; background: var(--leitura-suave); color: var(--leitura-marrom); font-weight: 650; text-decoration: none; }
+.navegacao-capitulo a:hover, .troca-livro a:hover { background: #d7e4f1; }
 .lista-versiculos { margin: 0; padding: 10px 0; list-style: none; }
-.lista-versiculos li { display: grid; grid-template-columns: 34px 1fr; gap: 8px; padding: 12px 6px; border-bottom: 1px solid #f1ece5; scroll-margin-top: 20px; }
+.lista-versiculos li { display: grid; grid-template-columns: 34px 1fr; gap: 8px; padding: 12px 6px; border-bottom: 1px solid #e7eff7; scroll-margin-top: 20px; }
 .lista-versiculos li:last-child { border-bottom: 0; }
-.lista-versiculos li:target { border-radius: 8px; background: #fff7df; }
+.lista-versiculos li:target { border-radius: 8px; background: #eef5fb; }
 .numero-versiculo { padding-top: 2px; color: var(--leitura-marrom); font-size: .83rem; font-weight: 750; }
 .lista-versiculos p { margin: 0; color: var(--leitura-texto); font-family: Georgia, 'Times New Roman', serif; font-size: 1.08rem; line-height: 1.8; }
-.troca-livro { display: flex; justify-content: space-between; gap: 12px; padding-top: 18px; border-top: 1px solid #eee8e0; }
-.leitura-rodape { display: flex; justify-content: space-between; gap: 12px; padding: 18px 22px; }
+.troca-livro { display: flex; justify-content: space-between; gap: 12px; padding-top: 18px; border-top: 1px solid #d1deeb; }
+.leitura-rodape { display: flex; justify-content: space-between; gap: 12px; padding: 18px 22px; background: var(--leitura-escuro); }
 .leitura-rodape a { color: white; font-weight: 700; text-decoration: none; }
-.leitura-rodape span { color: #fcecdb; }
+.leitura-rodape span { color: #e5eef8; }
 
 @media (max-width: 900px) {
     .leitura-topo { flex-direction: column; align-items: flex-start; }
