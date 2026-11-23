@@ -77,6 +77,8 @@ if ($livroId !== null && $livroSelecionado === null) {
         }
     }
 }
+$pdo = \ProjetoIntegrador\Database\ConexaoBD::getConexao();
+$livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -229,6 +231,16 @@ if ($livroId !== null && $livroSelecionado === null) {
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
+                <span>Livros da Bíblia</span>
+            </button>
+            <div class="collapse d-lg-block" id="lista-livros-collapse">
+                <div class="lista-livros">
+                    <?php foreach ($livros as $livro): ?>
+                        <div>
+                            <?= htmlspecialchars($livro['label'], ENT_QUOTES, 'UTF-8') ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
 
             <?php if ($livroSelecionado !== null): ?>
@@ -275,7 +287,7 @@ if ($livroId !== null && $livroSelecionado === null) {
 
     <footer>
         <div class="footer-col">
-            <h4>Portal Diário</h4>
+            <h4>Portal Bíblico</h4>
             <p>Um espaço dedicado a nutrir a sua espiritualidade todos os dias com conteúdos atualizados, leituras, salmos e reflexões.</p>
         </div>
         <div class="footer-col">
@@ -286,14 +298,27 @@ if ($livroId !== null && $livroSelecionado === null) {
         </div>
         <div class="footer-col">
             <h4>Fale Conosco</h4>
-            <p><i class="fa-solid fa-envelope"></i> contato@portaldiario.com</p>
-            <p><i class="fa-solid fa-phone"></i> (00) 0000-0000</p>
+            <p><i class="fa-solid fa-envelope"></i> contato@portalbiblico.com</p>
+            <p><i class="fa-solid fa-phone"></i> (11) 95648-2343</p>
         </div>
         <div class="footer-bottom">
-            &copy; 2026 Portal Diário. Todos os direitos reservados.
+            &copy; 2026 Portal bíblico. Todos os direitos reservados.
         </div>
     </footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menuPrincipal = document.querySelector('#menu-principal');
+
+    if (menuToggle && menuPrincipal) {
+        menuToggle.addEventListener('click', () => {
+            const aberto = menuPrincipal.classList.toggle('menu-aberto');
+            menuToggle.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+            menuToggle.setAttribute('aria-label', aberto ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+            menuToggle.querySelector('i').className = aberto ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        });
+    }
+</script>
 </body>
 </html>

@@ -49,3 +49,17 @@ para restringir `tipo` aos três perfis.
   exemplo `../images/logo.png`.
 - Ao renomear ou mover uma imagem, atualize também o caminho correspondente na
   página ou no CSS.
+## Interface da página inicial
+
+- Mantenha o PHP da consulta e da conexão no início de `index.php`.
+- Renderize dados vindos do banco com `htmlspecialchars()` ou outra proteção
+  equivalente.
+- Coloque os estilos da interface em `css/style.css`; não misture CSS extenso
+  dentro de `index.php`.
+- Preserve arquivos no diretório `biblia_catolica/imagens/` e use caminhos
+  relativos a partir da raiz da aplicação.
+- Utilize `alt` em todas as imagens informativas e preserve `aria-label` em
+  controles importantes de navegação e pesquisa.
+- Preserve o layout responsivo em larguras menores com media queries.
+- Valide a sintaxe PHP e confirme que a página e os recursos CSS e de imagem
+  respondem corretamente em servidor local.

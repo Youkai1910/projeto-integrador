@@ -138,7 +138,7 @@ header {
 }
 
 h3 {
-    color: white;
+    color: rgb(89, 74, 233);
     font-size: 15px;
     font-weight: 600;
     text-align: center;
@@ -428,6 +428,7 @@ main {
 .admin-biblia-tabela th {
     background: #24476b;
     color: #fff;
+    background: #4777a8;
 }
 
 footer {
@@ -484,11 +485,28 @@ footer {
         justify-items: center;
     }
 
+    .menu-area {
+        width: 100%;
+        align-items: center;
+    }
+
+    .menu-toggle {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
     .banner {
+        display: none;
+        width: 100%;
         height: auto;
         padding: 15px;
         flex-direction: column;
         gap: 10px;
+        margin-top: 0;
+    }
+
+    .banner.menu-aberto {
+        display: flex;
     }
 
     .search-box {
