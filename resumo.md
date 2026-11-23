@@ -1,41 +1,53 @@
-# Resumo do projeto até agora
+# Resumo da branch biblia_marcelo
 
-## Arquivos e organização
+## Trabalho realizado
 
-- Os arquivos de conexão e criação das tabelas estão na pasta `database/`.
-- O caminho de importação do script SQL foi atualizado no `README.md`.
+- Integração da interface do Portal Diário no `index.php`.
+- Separação dos estilos em `css/style.css`.
+- Adição de layout responsivo para desktop, tablet e celular.
+- Uso de Font Awesome para os ícones da navegação e do rodapé.
+- Inclusão das imagens da Bíblia em `biblia_catolica/imagens/`.
+- Associação das imagens aos cartões de leitura diária, Novo Testamento,
+  Antigo Testamento, Salmos, Versículos, Evangelho e Auto Ajuda.
+- Inclusão de atributos de acessibilidade nas imagens e na navegação.
+- Uso de carregamento otimizado nas imagens da página.
 
-## Banco de dados
+## Estrutura da página
 
-O arquivo `database/tabelas_usuarios_anotacoes.sql` seleciona o banco
-`biblia_catolica` e cria:
+- Cabeçalho com logo e menu de navegação.
+- Barra de pesquisa no cabeçalho.
+- Três cartões principais para leitura diária e Testamentos.
+- Quatro cartões inferiores para Salmos, Versículos, Evangelho e Auto Ajuda.
+- Lista dos livros da Bíblia consultados no banco de dados.
+- Rodapé com descrição, links rápidos e contatos.
 
-- `usuarios`, com nome, senha (que deve guardar apenas o hash), email único e
-  perfil (`usuario`, `editor` ou `admin`). O perfil padrão é `usuario`.
-- `anotacoes`, com texto, favorito e vínculo obrigatório com um usuário. Um
-  usuário pode ter várias anotações; ao excluir o usuário, suas anotações também
-  são excluídas.
+## Consulta ao banco
 
-O script não cria contas automaticamente. Ele também não adiciona um vínculo
-entre uma anotação e um livro da Bíblia (`livro_id`).
+O `index.php` mantém a consulta existente à tabela `books` e preserva o escape
+de saída com `htmlspecialchars()`.
 
-## Conexão e página inicial
+## Imagens adicionadas
 
-- `database/conexao.php` contém a classe final `ConexaoBD`, que cria e reutiliza
-  uma conexão PDO por meio de `getConexao()`.
-- `index.php` usa essa classe e lista os livros consultando a tabela `books`,
-  ordenada pela coluna `id`. O texto exibido é escapado com
-  `htmlspecialchars()`.
-- A senha do banco ainda tem um valor padrão no arquivo de conexão. Antes de
-  publicar o projeto, configure `DB_PASSWORD` no ambiente e retire esse padrão.
+- `logo.png`
+- `leitura-diaria.jpg`
+- `novo-testamento.jpg`
+- `antigo-testamento.jpg`
+- `salmos.jpg`
+- `versiculos.jpg`
+- `evangelho.jpg`
+- `auto-ajuda.jpg`
+- `hero.jpg`
 
-## Estado atual
+## Validações realizadas
 
-A sintaxe PHP de `index.php` e `database/conexao.php` foi verificada. O script
-SQL foi preparado para importar pelo phpMyAdmin; a conexão real com o banco não
-foi testada nesta etapa.
+- Sintaxe PHP do `index.php` validada.
+- Arquivos de imagem referenciados confirmados no diretório do projeto.
+- Página e arquivo CSS testados em servidor PHP local com respostas HTTP 200.
 
-Ainda não foram implementados cadastro/login, autorização dos perfis ou uma
-tela para criar e consultar anotações. A coluna `tipo` registra o perfil, mas a
-aplicação deverá verificar esse perfil no servidor antes de permitir ações
-administrativas ou de edição.
+## Arquivos principais desta branch
+
+- `index.php`
+- `css/style.css`
+- `biblia_catolica/imagens/`
+- `prompts.md`
+- `resumo.md`
