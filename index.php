@@ -86,16 +86,28 @@ if ($livroId !== null && $livroSelecionado === null) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Bíblico</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" media="screen and (max-width: 767.98px)">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="container">
+<div class="page-container">
     <header>
         <div class="logo-area">
             <img class="logo" src="images/logo.png?v=<?= filemtime(__DIR__ . '/images/logo.png') ?>" alt="Portal Bíblico">
         </div>
         <div class="menu-area">
-            <nav class="banner" aria-label="Navegação principal">
+            <button
+                class="menu-toggle"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#menu-principal"
+                aria-expanded="false"
+                aria-controls="menu-principal"
+                aria-label="Abrir ou fechar o menu de navegação"
+            >
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+            <nav class="banner collapse" id="menu-principal" aria-label="Navegação principal">
                 <form class="search-box" action="#" method="GET">
                     <input type="text" placeholder="Pesquisar..." name="q" aria-label="Pesquisar" value="<?= Utils::escaparHtml($termo) ?>">
                     <button type="submit" aria-label="Enviar pesquisa">
@@ -112,35 +124,35 @@ if ($livroId !== null && $livroSelecionado === null) {
     </header>
 
     <main>
-        <section class="principal">
-            <div>
+        <section class="principal row row-cols-1 justify-content-center g-3">
+            <div class="col">
                 <h3>LEITURA DIÁRIA</h3>
                 <div class="card-principal card-leitura">Clique para ver a leitura diária</div>
             </div>
-            <div>
+            <div class="col">
                 <h3>NOVO TESTAMENTO</h3>
                 <div class="card-principal card-novo-testamento">Clique para ver o novo testamento</div>
             </div>
-            <div>
+            <div class="col">
                 <h3>ANTIGO TESTAMENTO</h3>
                 <div class="card-principal card-antigo-testamento">Clique para ver o antigo testamento</div>
             </div>
         </section>
 
-        <section class="inferior">
-            <div>
+        <section class="inferior row row-cols-1 row-cols-sm-2 justify-content-center g-3">
+            <div class="col">
                 <h3>SALMOS</h3>
                 <div class="card-inferior card-salmos">Ver Salmo</div>
             </div>
-            <div>
+            <div class="col">
                 <h3>VERSÍCULOS</h3>
                 <div class="card-inferior card-versiculos">Ver Versículo</div>
             </div>
-            <div>
+            <div class="col">
                 <h3>EVANGELHO</h3>
                 <div class="card-inferior card-evangelho">Ver Evangelho</div>
             </div>
-            <div>
+            <div class="col">
                 <h3>AUTO AJUDA</h3>
                 <div class="card-inferior card-auto-ajuda">Ver Conteúdo</div>
             </div>
@@ -148,6 +160,18 @@ if ($livroId !== null && $livroSelecionado === null) {
 
         <section class="livros-biblia">
             <h3>Livros da Bíblia</h3>
+            <button
+                class="livros-toggle"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#lista-livros-collapse"
+                aria-expanded="false"
+                aria-controls="lista-livros-collapse"
+                aria-label="Abrir ou fechar a lista de livros da Bíblia"
+            >
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                <span>Ver livros da Bíblia</span>
+            </button>
             <form class="biblia-filtros" action="index.php" method="GET">
                 <label for="busca-livro">Buscar livro</label>
                 <input id="busca-livro" type="search" name="q" maxlength="200" value="<?= Utils::escaparHtml($termo) ?>">
@@ -175,35 +199,37 @@ if ($livroId !== null && $livroSelecionado === null) {
                 <p>Nenhum livro corresponde à busca.</p>
             <?php endif; ?>
 
-            <?php foreach ($testamentos as $testamento): ?>
-                <?php
-                $livrosDoTestamento = array_filter($livros, function ($livro) use ($testamento) {
-                    return $livro->testamentoId === $testamento->id;
-                });
-                ?>
-                <?php if ($livrosDoTestamento): ?>
-                    <div class="grupo-livros">
-                        <h4><?= Utils::escaparHtml($testamento->nome) ?></h4>
-                        <div class="lista-livros">
-                            <?php foreach ($livrosDoTestamento as $livro): ?>
-                                <?php
-                                $parametrosLivro = ['livro' => $livro->id];
-                                if ($testamentoId !== null) {
-                                    $parametrosLivro['testamento'] = $testamentoId;
-                                }
-                                if ($termo !== '') {
-                                    $parametrosLivro['q'] = $termo;
-                                }
-                                ?>
-                                <a href="?<?= Utils::escaparHtml(http_build_query($parametrosLivro)) ?>">
-                                    <?= Utils::escaparHtml($livro->nome) ?>
-                                    <small>(<?= $livro->totalCapitulos ?> capítulos)</small>
-                                </a>
-                            <?php endforeach; ?>
+            <div class="collapse" id="lista-livros-collapse">
+                <?php foreach ($testamentos as $testamento): ?>
+                    <?php
+                    $livrosDoTestamento = array_filter($livros, function ($livro) use ($testamento) {
+                        return $livro->testamentoId === $testamento->id;
+                    });
+                    ?>
+                    <?php if ($livrosDoTestamento): ?>
+                        <div class="grupo-livros">
+                            <h4><?= Utils::escaparHtml($testamento->nome) ?></h4>
+                            <div class="lista-livros">
+                                <?php foreach ($livrosDoTestamento as $livro): ?>
+                                    <?php
+                                    $parametrosLivro = ['livro' => $livro->id];
+                                    if ($testamentoId !== null) {
+                                        $parametrosLivro['testamento'] = $testamentoId;
+                                    }
+                                    if ($termo !== '') {
+                                        $parametrosLivro['q'] = $termo;
+                                    }
+                                    ?>
+                                    <a href="?<?= Utils::escaparHtml(http_build_query($parametrosLivro)) ?>">
+                                        <?= Utils::escaparHtml($livro->nome) ?>
+                                        <small>(<?= $livro->totalCapitulos ?> capítulos)</small>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                    </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
 
             <?php if ($livroSelecionado !== null): ?>
                 <section class="selecao-biblia" aria-labelledby="titulo-leitura">
@@ -268,5 +294,6 @@ if ($livroId !== null && $livroSelecionado === null) {
         </div>
     </footer>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
