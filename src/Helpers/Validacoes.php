@@ -47,4 +47,24 @@ final class Validacoes
 
         return $valor;
     }
+
+    public static function nome(string $valor): bool
+    {
+        $valor = trim($valor);
+        return $valor !== '' && strlen($valor) <= 150 && preg_match('//u', $valor) === 1;
+    }
+
+    public static function email(string $valor): bool
+    {
+        $valor = trim($valor);
+        return strlen($valor) <= 254
+            && preg_match('//u', $valor) === 1
+            && filter_var($valor, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    public static function senha(string $valor): bool
+    {
+        $comprimento = strlen($valor);
+        return $comprimento >= 8 && $comprimento <= 4096;
+    }
 }

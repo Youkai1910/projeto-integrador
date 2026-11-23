@@ -31,6 +31,15 @@ banco, sozinho, não controla permissões.
 já foram criadas, a estrutura existente precisará de uma alteração específica
 para restringir `tipo` aos três perfis.
 
+## Cadastro e administração de usuários
+
+- `cadastro.php` sempre cria contas com perfil `usuario`; `TipoUsuario` centraliza
+  os perfis válidos e seus rótulos.
+- `login.php` define `$_SESSION['usuario']['id']` e `$_SESSION['usuario_id']`.
+  `logout.php` aceita somente POST com token CSRF.
+- `admin/usuarios.php` e suas ações exigem uma sessão autenticada e confirmam o
+  perfil de administrador no banco antes de permitir operações.
+
 ## Anotações
 
 - A página `admin/anotacoes.php` exige uma sessão autenticada com o identificador
