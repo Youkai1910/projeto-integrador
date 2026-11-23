@@ -16,11 +16,13 @@ $idUsuarioSessao = is_array($usuarioSessao)
     : false;
 $estaLogado = $idUsuarioSessao !== false && $idUsuarioSessao > 0;
 $ehAdministrador = false;
+$ehEditor = false;
 
 if ($estaLogado) {
     try {
         $servicoUsuario = new UsuarioServico(ConexaoBD::getConexao());
         $ehAdministrador = $servicoUsuario->ehAdministrador((int) $idUsuarioSessao);
+        $ehEditor = $servicoUsuario->ehEditor((int) $idUsuarioSessao);
     } catch (Throwable $e) {
         error_log($e->getMessage());
     }
@@ -139,7 +141,7 @@ if ($livroId !== null && $livroSelecionado === null) {
                 <a href="index.php"><i class="fa-solid fa-house"></i> HOME</a>
                 <a href="#quem-somos"><i class="fa-solid fa-users"></i> QUEM SOMOS</a>
                 <a href="contato.php"><i class="fa-solid fa-envelope"></i> CONTATO</a>
-                <?php if ($ehAdministrador): ?>
+                <?php if ($ehAdministrador || $ehEditor): ?>
                     <a href="admin/usuarios.php"><i class="fa-solid fa-user-gear"></i> ADMINISTRAÇÃO</a>
                 <?php endif; ?>
                 <?php if ($estaLogado): ?>

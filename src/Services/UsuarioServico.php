@@ -80,11 +80,17 @@ final class UsuarioServico
 		return Usuario::deDados($dados);
 	}
 
-	public function inserir(string $nome, string $email, string $senha, string $tipo = TipoUsuario::USUARIO): int
+	public function inserir(string $nome, string $email, string $senha, string $tipo = TipoUsuario::USUARIO, ?int $idSolicitante = null): int
 	{
+		$tipo = TipoUsuario::validar($tipo);
+		if ($tipo !== TipoUsuario::USUARIO) {
+			if ($idSolicitante === null || !$this->ehAdministrador($idSolicitante)) {
+				throw new DomainException('Somente administradores podem criar contas de editor ou administrador.');
+			}
+		}
+
 		$nome = trim($nome);
 		$email = trim($email);
-		$tipo = TipoUsuario::validar($tipo);
 
 		if (!Validacoes::nome($nome)) {
 			throw new DomainException('Informe um nome com até 150 caracteres.');
@@ -123,6 +129,9 @@ final class UsuarioServico
 
 	public function atualizarTipo(int $idUsuario, string $tipo, int $idAdministrador): void
 	{
+		if (!$this->ehAdministrador($idAdministrador)) {
+			throw new DomainException('Somente administradores podem alterar perfis de acesso.');
+		}
 		$tipo = TipoUsuario::validar($tipo);
 		if ($idUsuario === $idAdministrador) {
 			throw new DomainException('Não é permitido alterar o próprio perfil.');
@@ -152,6 +161,10 @@ final class UsuarioServico
 
 	public function excluir(int $idUsuario, int $idAdministrador): void
 	{
+		if (!$this->ehAdministrador($idAdministrador)) {
+			throw new DomainException('A exclusão permanente exige autorização de um administrador.');
+		}
+
 		if ($idUsuario === $idAdministrador) {
 			throw new DomainException('Não é permitido excluir a própria conta.');
 		}
@@ -208,5 +221,24 @@ final class UsuarioServico
 		if ($this->conexao->inTransaction()) {
 			$this->conexao->rollBack();
 		}
+	}
+
+	public function obterTipoUsuario(int $idUsuario): ?string
+	{
+		$consulta = $this->conexao->prepare('SELECT tipo FROM usuarios WHERE id = :id LIMIT 1');
+		$consulta->execute(['id' => $idUsuario]);
+		$tipo = $consulta->fetchColumn();
+		return $tipo === false ? null : (string) $tipo;
+	}
+
+	public function ehEditor(int $idUsuario): bool
+	{
+		return $this->obterTipoUsuario($idUsuario) === TipoUsuario::EDITOR;
+	}
+
+	public function ehPrivilegiado(int $idUsuario): bool
+	{
+		$tipo = $this->obterTipoUsuario($idUsuario);
+		return $tipo === TipoUsuario::ADMIN || $tipo === TipoUsuario::EDITOR;
 	}
 }

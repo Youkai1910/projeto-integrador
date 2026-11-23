@@ -20,6 +20,12 @@ try {
 		throw new DomainException('Os dados enviados são inválidos.');
 	}
 
+	if (!$ehAdministrador) {
+		http_response_code(403);
+		Seguranca::guardarMensagem('Somente administradores podem alterar perfis de acesso.', 'erro');
+		Seguranca::redirecionarParaLista($busca);
+	}
+
 	$usuarioServico->atualizarTipo((int) $idUsuario, $tipo, $idAdministrador);
 	Seguranca::guardarMensagem('O perfil do usuário foi atualizado.', 'sucesso');
 } catch (DomainException $e) {

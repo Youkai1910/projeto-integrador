@@ -4,6 +4,7 @@ declare(strict_types=1);
 use ProjetoIntegrador\Database\ConexaoBD;
 use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Services\UsuarioServico;
+use ProjetoIntegrador\Enum\TipoUsuario;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -16,15 +17,19 @@ try {
         ? filter_var($usuarioSessao['id'] ?? null, FILTER_VALIDATE_INT)
         : false;
 
-    if ($idAdministrador === false || $idAdministrador < 1 || !$usuarioServico->ehAdministrador((int) $idAdministrador)) {
+    $tipoSessao = $usuarioServico->obterTipoUsuario((int) $idAdministrador);
+    $ehPrivilegiado = $tipoSessao === TipoUsuario::ADMIN || $tipoSessao === TipoUsuario::EDITOR;
+
+    if ($idAdministrador === false || $idAdministrador < 1 || !$ehPrivilegiado) {
         http_response_code(403);
         echo '<!DOCTYPE html><html lang="pt-BR"><meta charset="UTF-8"><title>Acesso restrito</title>'
-            . '<body><h1>Acesso restrito</h1><p>Esta área exige uma sessão de administrador autenticada.</p>'
+            . '<body><h1>Acesso restrito</h1><p>Esta área exige uma sessão de administrador ou editor autenticada.</p>'
             . '<a href="../index.php">Voltar ao início</a></body></html>';
         exit;
     }
 
     $idAdministrador = (int) $idAdministrador;
+    $ehAdministrador = $tipoSessao === TipoUsuario::ADMIN;
 } catch (Throwable $e) {
     error_log($e->getMessage());
     http_response_code(500);
