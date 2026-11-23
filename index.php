@@ -93,8 +93,6 @@ if ($livroId !== null && $livroSelecionado === null) {
         }
     }
 }
-$pdo = \ProjetoIntegrador\Database\ConexaoBD::getConexao();
-$livros = $pdo->query('SELECT label FROM books ORDER BY id')->fetchAll();
 ?>
 
 <!DOCTYPE html>
