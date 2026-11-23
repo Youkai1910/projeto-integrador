@@ -19,8 +19,11 @@ final class ConexaoBD
         if (self::$conexao === null) {
             $host = getenv('DB_HOST') ?: 'localhost';
             $database = getenv('DB_NAME') ?: 'biblia_catolica';
-            $username = getenv('DB_USER') ?: 'root';
-            $password = getenv('DB_PASSWORD') ?: 'senacpenha';
+            $username = getenv('DB_USER');
+            $password = getenv('DB_PASSWORD');
+            if ($username === false || $username === '' || $password === false) {
+                throw new RuntimeException('Configure DB_USER e DB_PASSWORD antes de conectar ao banco de dados.');
+            }
             $dsn = "mysql:host={$host};dbname={$database};charset=utf8mb4";
 
             $options = [
@@ -49,8 +52,11 @@ final class ConexaoBD
         if (self::$conexaoBiblia === null) {
             $host = getenv('DB_HOST') ?: 'localhost';
             $database = getenv('BIBLIA_DB_NAME') ?: (getenv('DB_NAME') ?: 'biblia_catolica');
-            $username = getenv('DB_USER') ?: 'root';
-            $password = getenv('DB_PASSWORD') ?: 'senacpenha';
+            $username = getenv('DB_USER');
+            $password = getenv('DB_PASSWORD');
+            if ($username === false || $username === '' || $password === false) {
+                throw new RuntimeException('Configure DB_USER e DB_PASSWORD antes de conectar ao banco bíblico.');
+            }
             $dsn = "mysql:host={$host};dbname={$database};charset=utf8mb4";
 
             $options = [

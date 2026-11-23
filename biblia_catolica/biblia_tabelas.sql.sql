@@ -1,41 +1,36 @@
 -- Adminer 4.8.1 MySQL 8.0.32 dump
 
-SET NAMES utf8;
+-- Importe este arquivo no banco configurado em DB_NAME/BIBLIA_DB_NAME.
+-- Não contém DROP DATABASE nem USE fixo.
+SET NAMES utf8mb4;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-DROP DATABASE IF EXISTS `biblia`;
-CREATE DATABASE `biblia` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `biblia`;
-
-DROP TABLE IF EXISTS `books`;
-CREATE TABLE `books` (
+CREATE TABLE IF NOT EXISTS `books` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `label` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
-  `search_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `label` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `search_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `testament` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`id`),
+  INDEX `idx_books_testament` (`testament`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-DROP TABLE IF EXISTS `testament`;
-CREATE TABLE `testament` (
+CREATE TABLE IF NOT EXISTS `testament` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-DROP TABLE IF EXISTS `verses`;
-CREATE TABLE `verses` (
+CREATE TABLE IF NOT EXISTS `verses` (
   `id` int NOT NULL AUTO_INCREMENT,
   `book` int DEFAULT NULL,
   `chapter` int DEFAULT NULL,
   `verse` int DEFAULT NULL,
-  `text` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`id`),
+  INDEX `idx_verses_book_chapter` (`book`, `chapter`),
+  INDEX `idx_verses_chapter_verse` (`chapter`, `verse`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
--- 2024-09-06 01:48:51
+SET foreign_key_checks = 1;

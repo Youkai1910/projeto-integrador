@@ -1,16 +1,11 @@
--- Adminer 4.8.1 MySQL 8.0.32 dump
-
-SET NAMES utf8;
+-- Carga controlada: selecione DB_NAME/BIBLIA_DB_NAME antes de importar.
+-- Este arquivo não cria nem remove banco e não usa USE fixo.
+SET NAMES utf8mb4;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-DROP DATABASE IF EXISTS `biblia`;
-CREATE DATABASE `biblia` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `biblia`;
-
-TRUNCATE `books`;
-INSERT INTO `books` (`id`, `label`, `search_name`, `testament`) VALUES
+REPLACE INTO `books` (`id`, `label`, `search_name`, `testament`) VALUES
 (1,	'Gênesis',	'genesis',	1),
 (2,	'Êxodo',	'exodo',	1),
 (3,	'Levítico',	'levitico',	1),
@@ -85,9 +80,10 @@ INSERT INTO `books` (`id`, `label`, `search_name`, `testament`) VALUES
 (72,	'Judas',	'judas',	2),
 (73,	'Apocalipse',	'apocalipse',	2);
 
-TRUNCATE `testament`;
-INSERT INTO `testament` (`id`, `name`) VALUES
+REPLACE INTO `testament` (`id`, `name`) VALUES
 (1,	'Antigo testamento'),
 (2,	'Novo testamento');
+
+SET foreign_key_checks = 1;
 
 -- 2024-09-06 01:49:35
