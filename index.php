@@ -1,9 +1,25 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+use ProjetoIntegrador\Database\ConexaoBD;
+use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Helpers\Utils;
 use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Services\BibliaServico;
+use ProjetoIntegrador\Services\UsuarioServico;
+
+Seguranca::iniciarSessao();
+$usuarioSessao = $_SESSION['usuario'] ?? null;
+$idUsuarioSessao = is_array($usuarioSessao)
+    ? Validacoes::idPositivo($usuarioSessao['id'] ?? null)
+    : null;
+$estaLogado = $idUsuarioSessao !== null;
+$ehAdministrador = false;
+
+if ($estaLogado) {
+    $servicoUsuario = new UsuarioServico(ConexaoBD::getConexao());
+    $ehAdministrador = $servicoUsuario->ehAdministrador($idUsuarioSessao);
+}
 
 $biblia = new BibliaServico();
 $erros = [];
@@ -118,7 +134,19 @@ if ($livroId !== null && $livroSelecionado === null) {
                 <a href="#"><i class="fa-solid fa-house"></i> HOME</a>
                 <a href="#"><i class="fa-solid fa-users"></i> QUEM SOMOS</a>
                 <a href="#"><i class="fa-solid fa-envelope"></i> CONTATO</a>
-                <a href="#"><i class="fa-solid fa-user-plus"></i> ÁREA DE CADASTRO</a>
+                <?php if ($ehAdministrador): ?>
+                    <a href="admin/usuarios.php"><i class="fa-solid fa-user-gear"></i> ADMINISTRAÇÃO</a>
+                <?php endif; ?>
+                <?php if ($estaLogado): ?>
+                    <a href="admin/anotacoes.php"><i class="fa-solid fa-bookmark"></i> ANOTAÇÕES</a>
+                    <form class="logout-form" method="post" action="logout.php">
+                        <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar(Seguranca::obterTokenCsrf()) ?>">
+                        <button type="submit">SAIR</button>
+                    </form>
+                <?php else: ?>
+                    <a href="cadastro.php"><i class="fa-solid fa-user-plus"></i> ÁREA DE CADASTRO</a>
+                    <a href="login.php"><i class="fa-solid fa-right-to-bracket"></i> ENTRAR</a>
+                <?php endif; ?>
             </nav>
         </div>
     </header>

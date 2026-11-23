@@ -95,6 +95,27 @@ header {
     transform: translateY(-2px);
 }
 
+.logout-form {
+    display: flex;
+    align-items: center;
+}
+
+.logout-form button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-form button:hover {
+    color: #e5eef8;
+}
+
 .search-box {
     display: flex;
     align-items: center;
