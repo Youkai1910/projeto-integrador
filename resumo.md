@@ -1,41 +1,124 @@
-# Resumo do projeto até agora
+# Resumo da branch `biblia_alexandre`
 
-## Arquivos e organização
+Este resumo inclui somente o trabalho exclusivo desta branch em relação à
+`main`. Nenhuma outra branch foi alterada.
 
-- Os arquivos de conexão e criação das tabelas estão na pasta `database/`.
-- O caminho de importação do script SQL foi atualizado no `README.md`.
+## Página inicial
 
-## Banco de dados
+- Foi criada a página inicial do Portal Diário em `index.php`, com navegação,
+  pesquisa, cards de conteúdo, lista de livros e rodapé.
+- `index.php` carrega `vendor/autoload.php` e usa a classe de conexão
+  `ProjetoIntegrador\Database\ConexaoBD`, em `src/Database/ConexaoBD.php`.
+- A página busca os nomes dos livros na tabela existente `books` e escapa o
+  conteúdo exibido com `htmlspecialchars()`.
+- Foi criado `css/style.css` com o estilo da página e ajustes responsivos para
+  telas menores.
 
-O arquivo `database/tabelas_usuarios_anotacoes.sql` seleciona o banco
-`biblia_catolica` e cria:
+## Composer
 
-- `usuarios`, com nome, senha (que deve guardar apenas o hash), email único e
-  perfil (`usuario`, `editor` ou `admin`). O perfil padrão é `usuario`.
-- `anotacoes`, com texto, favorito e vínculo obrigatório com um usuário. Um
-  usuário pode ter várias anotações; ao excluir o usuário, suas anotações também
-  são excluídas.
+- `composer.json` exige PHP 7.4 ou superior e configura o autoload PSR-4 de
+  `ProjetoIntegrador\` para `src/`.
+- `composer.lock` registra o estado das dependências; atualmente não há pacotes
+  externos declarados.
+- Use `composer install` na raiz para preparar o projeto. `vendor/` é gerado
+  localmente e não é versionado.
 
-O script não cria contas automaticamente. Ele também não adiciona um vínculo
-entre uma anotação e um livro da Bíblia (`livro_id`).
+## Imagens
 
-## Conexão e página inicial
+- Foram adicionadas imagens para o logotipo, leitura diária, Novo Testamento,
+  Antigo Testamento, Salmos, versículos, Evangelho, autoajuda e uma imagem hero.
+- O logotipo e as imagens dos cards foram ligados à página usando os arquivos
+  em `images/`.
+- Os cards usam uma camada escura sobre as imagens para manter o texto legível.
 
-- `database/conexao.php` contém a classe final `ConexaoBD`, que cria e reutiliza
-  uma conexão PDO por meio de `getConexao()`.
-- `index.php` usa essa classe e lista os livros consultando a tabela `books`,
-  ordenada pela coluna `id`. O texto exibido é escapado com
-  `htmlspecialchars()`.
-- A senha do banco ainda tem um valor padrão no arquivo de conexão. Antes de
-  publicar o projeto, configure `DB_PASSWORD` no ambiente e retire esse padrão.
+## Prompt
 
-## Estado atual
+- Foi adicionado `prompts.md` para guardar o prompt de desenvolvimento da Bíblia.
 
-A sintaxe PHP de `index.php` e `database/conexao.php` foi verificada. O script
-SQL foi preparado para importar pelo phpMyAdmin; a conexão real com o banco não
-foi testada nesta etapa.
+## Consulta da Bíblia
 
-Ainda não foram implementados cadastro/login, autorização dos perfis ou uma
-tela para criar e consultar anotações. A coluna `tipo` registra o perfil, mas a
-aplicação deverá verificar esse perfil no servidor antes de permitir ações
-administrativas ou de edição.
+- `src/Services/BibliaServico.php` consulta testamentos, livros, capítulos e
+  versículos; os modelos correspondentes ficam em `src/Models/`.
+- A página inicial e `admin/biblia.php` usam `Validacoes` para os parâmetros de
+  busca e `Utils::escaparHtml()` para o conteúdo exibido.
+
+## Anotações
+
+- `src/Models/Anotacao.php` representa os campos da tabela `anotacoes`.
+- `src/Services/AnotacaoServico.php` implementa listagem, criação, edição,
+  favoritos e remoção, sempre limitando as operações ao usuário proprietário.
+- `admin/anotacoes.php` requer `$_SESSION['usuario_id']`, protege os formulários
+  com token CSRF e escapa o conteúdo apresentado.
+- O login deve preencher `$_SESSION['usuario_id']` com o ID positivo do usuário.
+- A validação do texto exige conteúdo não vazio, UTF-8 válido e limite de
+  65.535 bytes.
+
+## Banco de dados e funcionalidades pendentes
+
+- O script de criação das tabelas de usuários e anotações está em
+  `biblia_catolica/tabelas_usuarios_anotacoes.sql`.
+- `admin/usuarios.php` permanece sem implementação; os arquivos relacionados
+  aos usuários não foram alterados nesta branch.
+
+## Verificações
+
+- `php -l` passou nos arquivos PHP alterados para as anotações.
+- Foram verificadas a validação do texto, o autoload PSR-4 e a hidratação do
+  modelo `Anotacao`.
+- `composer validate` confirmou a validade da configuração, com aviso opcional
+  de licença não informada.
+- Não foi feito teste integrado com o banco de dados nem verificação visual no
+  navegador.
+# Resumo da branch biblia_marcelo
+
+## Trabalho realizado
+
+- Integração da interface do Portal Diário no `index.php`.
+- Separação dos estilos em `css/style.css`.
+- Adição de layout responsivo para desktop, tablet e celular.
+- Uso de Font Awesome para os ícones da navegação e do rodapé.
+- Inclusão das imagens da Bíblia em `biblia_catolica/imagens/`.
+- Associação das imagens aos cartões de leitura diária, Novo Testamento,
+  Antigo Testamento, Salmos, Versículos, Evangelho e Auto Ajuda.
+- Inclusão de atributos de acessibilidade nas imagens e na navegação.
+- Uso de carregamento otimizado nas imagens da página.
+
+## Estrutura da página
+
+- Cabeçalho com logo e menu de navegação.
+- Barra de pesquisa no cabeçalho.
+- Três cartões principais para leitura diária e Testamentos.
+- Quatro cartões inferiores para Salmos, Versículos, Evangelho e Auto Ajuda.
+- Lista dos livros da Bíblia consultados no banco de dados.
+- Rodapé com descrição, links rápidos e contatos.
+
+## Consulta ao banco
+
+O `index.php` mantém a consulta existente à tabela `books` e preserva o escape
+de saída com `htmlspecialchars()`.
+
+## Imagens adicionadas
+
+- `logo.png`
+- `leitura-diaria.jpg`
+- `novo-testamento.jpg`
+- `antigo-testamento.jpg`
+- `salmos.jpg`
+- `versiculos.jpg`
+- `evangelho.jpg`
+- `auto-ajuda.jpg`
+- `hero.jpg`
+
+## Validações realizadas
+
+- Sintaxe PHP do `index.php` validada.
+- Arquivos de imagem referenciados confirmados no diretório do projeto.
+- Página e arquivo CSS testados em servidor PHP local com respostas HTTP 200.
+
+## Arquivos principais desta branch
+
+- `index.php`
+- `css/style.css`
+- `biblia_catolica/imagens/`
+- `prompts.md`
+- `resumo.md`

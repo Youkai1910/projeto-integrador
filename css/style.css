@@ -1,0 +1,594 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #eef3f8;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #26384a;
+}
+
+.page-container {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e7eff7 0%, #d7e4f1 100%);
+    padding: 30px 5% 20px 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* CABECALHO */
+header {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 30px;
+    align-items: center;
+    max-width: 1300px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.logo-area {
+    text-align: center;
+}
+
+.logo {
+    display: block;
+    width: 125px;
+    height: 125px;
+    object-fit: contain;
+    margin: 8px auto;
+    border-radius: 12px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.menu-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-toggle {
+    display: none;
+    width: 48px;
+    height: 48px;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 10px;
+    background: #173653;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.banner {
+    height: 97px;
+    background: #173653;
+    border-radius: 15px;
+    margin-top: 15px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.banner a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.banner a:hover {
+    color: #e5eef8;
+    transform: translateY(-2px);
+}
+
+.logout-form {
+    display: flex;
+    align-items: center;
+}
+
+.logout-form button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-form button:hover {
+    color: #e5eef8;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #d7e8f7;
+    border-radius: 8px;
+    padding: 5px 12px;
+    box-shadow: inset 0 1px 3px rgba(23, 54, 83, 0.12);
+    transition: 0.3s;
+}
+
+.search-box:focus-within {
+    background: #eef5fb;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.65);
+}
+
+.search-box input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #173653;
+    font-size: 14px;
+    padding: 6px;
+    width: 160px;
+}
+
+.search-box input::placeholder {
+    color: #587596;
+}
+
+.search-box button {
+    background: transparent;
+    border: none;
+    color: #173653;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.search-box button:hover {
+    color: #24476b;
+}
+
+h3 {
+    color: rgb(89, 74, 233);
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.principal h3,
+.inferior h3 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.75);
+}
+
+main {
+    max-width: 1300px;
+    margin: 30px auto;
+    width: 100%;
+}
+
+.principal {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+    justify-content: center;
+}
+
+.card-principal {
+    aspect-ratio: 16 / 10;
+    min-height: 220px;
+    background: #24476b;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f3f7fc;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    padding: 16px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.card-leitura {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../images/leitura-diaria.jpg");
+}
+
+.card-novo-testamento {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../images/novo-testamento.jpg");
+}
+
+.card-antigo-testamento {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../images/antigo-testamento.jpg");
+}
+
+.card-principal:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.inferior {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 35px;
+    justify-content: center;
+}
+
+.card-inferior {
+    aspect-ratio: 16 / 7;
+    min-height: 110px;
+    background: #24476b;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f3f7fc;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    padding: 12px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.card-salmos {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/salmos.jpg");
+}
+
+.card-versiculos {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/versiculos.jpg");
+}
+
+.card-evangelho {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/evangelho.jpg");
+}
+
+.card-auto-ajuda {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/auto-ajuda.jpg");
+}
+
+.card-inferior:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.livros-biblia {
+    margin-top: 40px;
+    background: #e7eff7;
+    color: #26384a;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.livros-biblia h3 {
+    margin-bottom: 20px;
+    color: #24476b;
+}
+
+.livros-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin: 0 auto 16px;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 8px;
+    background: #173653;
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.lista-livros {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px 16px;
+}
+
+.lista-livros a {
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: #d7e4f1;
+    color: #173653;
+    text-decoration: none;
+}
+
+.lista-livros a:hover {
+    background: #c4d5e7;
+}
+
+.lista-livros small {
+    display: block;
+    font-size: 11px;
+    opacity: 0.85;
+}
+
+.grupo-livros {
+    margin-top: 20px;
+}
+
+.grupo-livros h4,
+.selecao-biblia h4,
+.selecao-biblia h5 {
+    margin: 0 0 10px;
+}
+
+.biblia-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.biblia-filtros input,
+.biblia-filtros select,
+.biblia-filtros button {
+    min-height: 38px;
+    border: 1px solid #587596;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font: inherit;
+}
+
+.biblia-filtros button {
+    background: #24476b;
+    color: #fff;
+    cursor: pointer;
+}
+
+.biblia-mensagem {
+    margin: 12px 0;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.biblia-erro {
+    background: #fff0ef;
+    color: #7f1d1d;
+}
+
+.selecao-biblia {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(36, 71, 107, 0.22);
+}
+
+.lista-versiculos p {
+    padding: 8px 0;
+    line-height: 1.6;
+    border-bottom: 1px solid rgba(36, 71, 107, 0.14);
+}
+
+.lista-versiculos strong {
+    margin-right: 6px;
+    color: #173653;
+}
+
+.admin-biblia-page {
+    min-height: 100vh;
+    padding: 30px 5%;
+    background: #eef3f8;
+}
+
+.admin-biblia-painel {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.admin-biblia-painel > a {
+    color: #24476b;
+}
+
+.admin-biblia-painel h1 {
+    margin: 18px 0 8px;
+}
+
+.admin-biblia-resumo {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 22px 0;
+}
+
+.admin-biblia-resumo div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px;
+    border-radius: 8px;
+    background: #e6eef7;
+}
+
+.admin-biblia-resumo strong {
+    color: #24476b;
+    font-size: 24px;
+}
+
+.admin-biblia-tabela-wrap {
+    overflow-x: auto;
+}
+
+.admin-biblia-tabela {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-biblia-tabela th,
+.admin-biblia-tabela td {
+    padding: 10px;
+    border-bottom: 1px solid #d1deeb;
+    text-align: left;
+}
+
+.admin-biblia-tabela th {
+    background: #24476b;
+    color: #fff;
+    background: #4777a8;
+}
+
+footer {
+    max-width: 1300px;
+    margin: 40px auto 0 auto;
+    width: 100%;
+    background: #173653;
+    color: #e5eef8;
+    border-radius: 15px;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    font-size: 13px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.footer-col h4 {
+    color: #ffffff;
+    font-size: 15px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #24476b;
+    padding-bottom: 5px;
+}
+
+.footer-col p,
+.footer-col a {
+    color: #e5eef8;
+    text-decoration: none;
+    line-height: 1.6;
+    display: block;
+    margin-bottom: 6px;
+    transition: 0.3s;
+}
+
+.footer-col a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    grid-column: 1 / -1;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 15px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #c4d5e7;
+}
+
+@media (max-width: 900px) {
+    header {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .menu-area {
+        width: 100%;
+        align-items: center;
+    }
+
+    .menu-toggle {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .banner {
+        display: none;
+        width: 100%;
+        height: auto;
+        padding: 15px;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 0;
+    }
+
+    .banner.menu-aberto {
+        display: flex;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .principal {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .card-principal {
+        aspect-ratio: 16 / 9;
+    }
+
+    .inferior {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 25px;
+    }
+
+    .lista-livros {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    footer {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-col h4 {
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .livros-toggle {
+        display: flex;
+    }
+
+    .principal.row,
+    .inferior.row {
+        display: flex;
+        gap: 0;
+    }
+}
+
+@media (max-width: 500px) {
+    .inferior,
+    .lista-livros {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-biblia-resumo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
