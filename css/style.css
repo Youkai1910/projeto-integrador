@@ -41,6 +41,7 @@ header {
     height: 125px;
     object-fit: contain;
     margin: 8px auto;
+    border-radius: 12px;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
@@ -82,43 +83,43 @@ header {
 .search-box {
     display: flex;
     align-items: center;
-    background: #173653;
+    background: #d7e8f7;
     border-radius: 8px;
     padding: 5px 12px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 3px rgba(23, 54, 83, 0.12);
     transition: 0.3s;
 }
 
 .search-box:focus-within {
-    background: #24476b;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+    background: #eef5fb;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.65);
 }
 
 .search-box input {
     background: transparent;
     border: none;
     outline: none;
-    color: #fff;
+    color: #173653;
     font-size: 14px;
     padding: 6px;
     width: 160px;
 }
 
 .search-box input::placeholder {
-    color: #c4d5e7;
+    color: #587596;
 }
 
 .search-box button {
     background: transparent;
     border: none;
-    color: #e5eef8;
+    color: #173653;
     cursor: pointer;
     font-size: 14px;
     transition: 0.3s;
 }
 
 .search-box button:hover {
-    color: #ffffff;
+    color: #24476b;
 }
 
 h3 {
@@ -128,6 +129,11 @@ h3 {
     text-align: center;
     margin-bottom: 12px;
     letter-spacing: 0.5px;
+}
+
+.principal h3,
+.inferior h3 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.75);
 }
 
 main {
