@@ -62,6 +62,7 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
             <label>Senha (mínimo 8 caracteres)<input type="password" name="senha" minlength="8" maxlength="4096" autocomplete="new-password" required></label>
             <button type="submit">Criar conta</button>
         </form>
+        <p class="nota">Já possui uma conta? <a href="login.php">Entrar</a>.</p>
         <p class="nota">Novas contas recebem o perfil de usuário. Perfis administrativos são atribuídos somente pela equipe autorizada.</p>
     </main>
 </body>
