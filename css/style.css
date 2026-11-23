@@ -169,6 +169,7 @@ h3 {
 
 .principal h3,
 .inferior h3 {
+    color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.75);
 }
 
