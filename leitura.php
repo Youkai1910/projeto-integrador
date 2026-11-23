@@ -138,11 +138,28 @@ function escaparLeitura(string $valor): string
         <?php if ($livro !== null): ?>
             <section class="capitulos" aria-labelledby="titulo-capitulos">
                 <div class="secao-leitura-titulo"><h2 id="titulo-capitulos">Capítulos</h2><span><?= count($capitulos) ?> disponíveis</span></div>
-                <nav class="grade-capitulos" aria-label="Capítulos de <?= escaparLeitura((string) $livro['label']) ?>">
+                <button class="capitulos-toggle" type="button" aria-expanded="false" aria-controls="grade-capitulos" id="capitulos-toggle">
+                    <span>Escolher capítulo</span>
+                    <span class="capitulos-toggle-atual"><?= $numeroCapitulo !== null ? 'Capítulo ' . $numeroCapitulo : 'Selecionar' ?></span>
+                    <span class="capitulos-toggle-icone" aria-hidden="true">☰</span>
+                </button>
+                <nav class="grade-capitulos" id="grade-capitulos" aria-label="Capítulos de <?= escaparLeitura((string) $livro['label']) ?>">
                     <?php foreach ($capitulos as $capitulo): ?>
                         <a class="numero-capitulo <?= $numeroCapitulo === $capitulo ? 'selecionado' : '' ?>" href="leitura.php?livro=<?= (int) $livro['id'] ?>&amp;capitulo=<?= $capitulo ?>#texto" <?= $numeroCapitulo === $capitulo ? 'aria-current="page"' : '' ?>><?= $capitulo ?></a>
                     <?php endforeach; ?>
                 </nav>
+                <script>
+                    (function () {
+                        var botao = document.getElementById('capitulos-toggle');
+                        var grade = document.getElementById('grade-capitulos');
+                        if (!botao || !grade) return;
+                        botao.addEventListener('click', function () {
+                            var aberto = botao.getAttribute('aria-expanded') === 'true';
+                            botao.setAttribute('aria-expanded', aberto ? 'false' : 'true');
+                            grade.classList.toggle('aberta', !aberto);
+                        });
+                    }());
+                </script>
             </section>
 
             <?php if ($numeroCapitulo !== null): ?>

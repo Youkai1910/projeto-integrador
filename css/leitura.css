@@ -51,6 +51,7 @@ body { background: var(--leitura-fundo); }
 .leitura-rodape { display: flex; justify-content: space-between; gap: 12px; padding: 18px 22px; background: var(--leitura-escuro); }
 .leitura-rodape a { color: white; font-weight: 700; text-decoration: none; }
 .leitura-rodape span { color: #e5eef8; }
+.capitulos-toggle { display: none; }
 
 @media (max-width: 900px) {
     .leitura-topo { flex-direction: column; align-items: flex-start; }
@@ -61,6 +62,36 @@ body { background: var(--leitura-fundo); }
     .leitura-cabecalho, .texto-capitulo-cabecalho { align-items: flex-start; flex-direction: column; }
     .grade-livros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .leitura-rodape { flex-direction: column; }
+    .capitulos-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+        min-height: 48px;
+        margin: 0 0 12px;
+        padding: 11px 13px;
+        border: 1px solid var(--leitura-borda);
+        border-radius: 10px;
+        background: var(--leitura-suave);
+        color: var(--leitura-escuro);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .capitulos-toggle-atual { color: var(--leitura-marrom); font-size: .88rem; }
+    .capitulos-toggle-icone {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 8px;
+        background: var(--leitura-marrom);
+        color: white;
+    }
+    .capitulos-toggle[aria-expanded="true"] .capitulos-toggle-icone { background: var(--leitura-escuro); }
+    .grade-capitulos { display: none; }
+    .grade-capitulos.aberta { display: grid; }
 }
 @media (max-width: 420px) {
     .grade-livros { grid-template-columns: 1fr; }
