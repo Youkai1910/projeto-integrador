@@ -20,6 +20,11 @@ final class ConexaoBD
             $database = getenv('DB_NAME') ?: 'biblia_catolica';
             $username = getenv('DB_USER') ?: 'root';
             $password = getenv('DB_PASSWORD') ?: 'senacpenha';
+
+            if ($username === false || $username === '' || $password === false) {
+                throw new RuntimeException('Configure DB_USER e DB_PASSWORD antes de conectar ao banco de dados.');
+            }
+
             $dsn = "mysql:host={$host};dbname={$database};charset=utf8mb4";
 
             $options = [
@@ -41,5 +46,10 @@ final class ConexaoBD
         }
 
         return self::$conexao;
+    }
+
+    public static function getConexaoBiblia(): PDO
+    {
+        return self::getConexao();
     }
 }

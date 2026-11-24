@@ -95,27 +95,6 @@ header {
     transform: translateY(-2px);
 }
 
-.logout-form {
-    display: flex;
-    align-items: center;
-}
-
-.logout-form button {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: #fff;
-    font: inherit;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.logout-form button:hover {
-    color: #e5eef8;
-}
-
 .search-box {
     display: flex;
     align-items: center;
@@ -159,7 +138,7 @@ header {
 }
 
 h3 {
-    color: rgb(89, 74, 233);
+    color: white;
     font-size: 15px;
     font-weight: 600;
     text-align: center;
@@ -449,7 +428,6 @@ main {
 .admin-biblia-tabela th {
     background: #24476b;
     color: #fff;
-    background: #4777a8;
 }
 
 footer {
@@ -500,34 +478,37 @@ footer {
     color: #c4d5e7;
 }
 
+.logout-form button {
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.logout-form button:hover { background: rgba(255, 255, 255, 0.12); }
+
+.card-principal,
+.card-inferior { text-decoration: none; }
+
+.card-principal:focus-visible,
+.card-inferior:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+
 @media (max-width: 900px) {
     header {
         grid-template-columns: 1fr;
         justify-items: center;
     }
 
-    .menu-area {
-        width: 100%;
-        align-items: center;
-    }
-
-    .menu-toggle {
-        display: flex;
-        margin-bottom: 10px;
-    }
-
     .banner {
-        display: none;
-        width: 100%;
         height: auto;
         padding: 15px;
         flex-direction: column;
         gap: 10px;
-        margin-top: 0;
-    }
-
-    .banner.menu-aberto {
-        display: flex;
     }
 
     .search-box {

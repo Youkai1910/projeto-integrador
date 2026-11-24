@@ -4,6 +4,10 @@ declare(strict_types=1);
 use ProjetoIntegrador\Helpers\Seguranca;
 
 require_once __DIR__ . '/vendor/autoload.php';
+
+use ProjetoIntegrador\Helpers\LogServico;
+
+LogServico::configurar();
 Seguranca::iniciarSessao();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

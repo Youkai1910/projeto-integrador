@@ -1,4 +1,4 @@
-USE biblia_catolica;
+-- Selecione o banco configurado em DB_NAME antes de importar.
 
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -25,3 +25,6 @@ CREATE TABLE IF NOT EXISTS anotacoes (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE usuarios
+    MODIFY tipo ENUM('usuario', 'editor', 'admin') NOT NULL DEFAULT 'usuario';

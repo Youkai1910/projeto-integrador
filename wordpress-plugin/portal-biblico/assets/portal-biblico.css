@@ -1,0 +1,31 @@
+.portal-biblico-integrado {
+    width: 100%;
+    max-width: 100%;
+}
+
+.portal-biblico-frame-wrap {
+    --bs-aspect-ratio: 100%;
+    display: block;
+    min-height: 820px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.portal-biblico-frame {
+    display: block;
+    width: 100%;
+    min-height: 820px;
+    border: 0;
+    background: #eef3f8;
+}
+
+@media (max-width: 767.98px) {
+    .portal-biblico-frame-wrap,
+    .portal-biblico-frame {
+        min-height: 100vh;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .portal-biblico-frame { scroll-behavior: auto; }
+}

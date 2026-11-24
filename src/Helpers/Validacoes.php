@@ -11,12 +11,15 @@ final class Validacoes
             return $valor > 0 ? $valor : null;
         }
 
-        if (!is_string($valor) || !preg_match('/^[1-9][0-9]*$/D', $valor)) {
+        if (!is_string($valor) || $valor === '' || strspn($valor, '0123456789') !== strlen($valor)) {
+            return null;
+        }
+
+        if ($valor[0] === '0') {
             return null;
         }
 
         $id = filter_var($valor, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-
         return $id === false ? null : $id;
     }
 
@@ -27,7 +30,7 @@ final class Validacoes
         }
 
         $valor = trim($valor);
-        if (strlen($valor) > 200 || preg_match('//u', $valor) !== 1) {
+        if (strlen($valor) > 200 || !self::textoUtf8Valido($valor)) {
             throw new InvalidArgumentException('O termo de busca é inválido ou muito longo.');
         }
 
@@ -41,7 +44,7 @@ final class Validacoes
         }
 
         $valor = trim($valor);
-        if ($valor === '' || strlen($valor) > 65535 || preg_match('//u', $valor) !== 1) {
+        if ($valor === '' || strlen($valor) > 65535 || !self::textoUtf8Valido($valor)) {
             throw new InvalidArgumentException('A anotação é obrigatória e deve ter até 65.535 bytes.');
         }
 
@@ -51,14 +54,14 @@ final class Validacoes
     public static function nome(string $valor): bool
     {
         $valor = trim($valor);
-        return $valor !== '' && strlen($valor) <= 150 && preg_match('//u', $valor) === 1;
+        return $valor !== '' && self::textoUtf8Valido($valor) && strlen($valor) <= 150;
     }
 
     public static function email(string $valor): bool
     {
         $valor = trim($valor);
         return strlen($valor) <= 254
-            && preg_match('//u', $valor) === 1
+            && self::textoUtf8Valido($valor)
             && filter_var($valor, FILTER_VALIDATE_EMAIL) !== false;
     }
 
@@ -66,5 +69,15 @@ final class Validacoes
     {
         $comprimento = strlen($valor);
         return $comprimento >= 8 && $comprimento <= 4096;
+    }
+
+    private static function textoUtf8Valido(string $valor): bool
+    {
+        if (!function_exists('iconv')) {
+            return true;
+        }
+
+        $convertido = iconv('UTF-8', 'UTF-8//IGNORE', $valor);
+        return $convertido !== false && $convertido === $valor;
     }
 }
