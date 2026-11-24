@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $enviado = (new ContatoServico())->enviar(trim($nome), trim($email), 'Proposta de colaboração - Portal Diário', $detalhes);
         if (!$enviado) {
-            throw new DomainException('O envio pelo site ainda não está configurado. Você pode escrever diretamente para contato@portaldiario.com.');
+            throw new DomainException('O envio pelo site ainda não está configurado. Você pode escrever diretamente para contato@portalbiblico.com.');
         }
         $_SESSION['colaborador_flash'] = ['mensagem' => 'Sua proposta foi enviada. Obrigado pelo interesse em colaborar.', 'tipo' => 'sucesso'];
     } catch (DomainException $e) {
@@ -65,7 +65,7 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
         <?php if ($mensagemFlash !== ''): ?>
             <p class="aviso <?= $tipoFlash === 'sucesso' ? 'sucesso' : 'erro' ?>" role="status"><?= Seguranca::escapar($mensagemFlash) ?></p>
         <?php endif; ?>
-        <p class="contato-info">Prefere e-mail? <a href="mailto:contato@portaldiario.com?subject=Proposta%20de%20colabora%C3%A7%C3%A3o">contato@portaldiario.com</a></p>
+        <p class="contato-info">Prefere e-mail? <a href="mailto:contato@portalbiblico.com?subject=Proposta%20de%20colabora%C3%A7%C3%A3o">contato@portalbiblico.com</a></p>
         <form method="post" action="colaborador.php" class="form-publico">
             <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar($tokenCsrf) ?>">
             <label>Nome<input type="text" name="nome" maxlength="150" autocomplete="name" required></label>

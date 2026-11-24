@@ -5,6 +5,7 @@ use ProjetoIntegrador\Database\ConexaoBD;
 use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Services\UsuarioServico;
 use ProjetoIntegrador\Enum\TipoUsuario;
+use ProjetoIntegrador\Helpers\RegistradorErros;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -31,7 +32,7 @@ try {
     $idAdministrador = (int) $idAdministrador;
     $ehAdministrador = $tipoSessao === TipoUsuario::ADMIN;
 } catch (Throwable $e) {
-    error_log($e->getMessage());
+    RegistradorErros::registrar('critical', $e->getMessage(), $e->getFile(), $e->getLine(), $e);
     http_response_code(500);
     echo '<!DOCTYPE html><html lang="pt-BR"><meta charset="UTF-8"><title>Erro</title>'
         . '<body><h1>Não foi possível acessar a área administrativa</h1>'

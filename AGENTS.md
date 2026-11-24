@@ -72,7 +72,7 @@ responsável pelo banco; o cadastro público nunca concede esse perfil.
 - `contato.php` e `colaborador.php` encaminham mensagens por
   `src/Services/ContatoServico.php`. Configure `MAIL_TO` e `MAIL_FROM` e o
   transporte de e-mail do PHP; as páginas precisam continuar oferecendo o
-  endereço `contato@portaldiario.com` quando o envio não estiver configurado.
+  endereço `contato@portalbiblico.com` quando o envio não estiver configurado.
 
 ## Navegação e validação
 

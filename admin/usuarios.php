@@ -166,6 +166,13 @@ $urlLista = 'usuarios.php';
             <?php endif; ?>
             <div class="rodape">A exclusão de uma conta também remove as anotações vinculadas a ela.</div>
         </section>
+
+        <?php if ($ehAdministrador): ?>
+            <div class="barra-ferramentas">
+                <h2>Diagnósticos</h2>
+                <a class="botao botao-secundario" href="logs.php">Ver catálogo de erros</a>
+            </div>
+        <?php endif; ?>
     </main>
 </body>
 </html>

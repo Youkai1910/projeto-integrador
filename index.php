@@ -322,7 +322,7 @@ if ($livroId !== null && $livroSelecionado === null) {
         </div>
         <div class="footer-col">
             <h4>Fale Conosco</h4>
-            <p><i class="fa-solid fa-envelope"></i> contato@portaldiario.com</p>
+            <p><i class="fa-solid fa-envelope"></i> contato@portalbiblico.com</p>
             <p><i class="fa-solid fa-phone"></i> (00) 0000-0000</p>
         </div>
         <div class="footer-bottom">

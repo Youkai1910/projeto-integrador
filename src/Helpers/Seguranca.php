@@ -13,6 +13,8 @@ final class Seguranca
 
     public static function iniciarSessao(): void
     {
+        RegistradorErros::iniciar();
+
         if (session_status() === PHP_SESSION_ACTIVE) {
             return;
         }

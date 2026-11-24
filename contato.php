@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $enviado = (new ContatoServico())->enviar(trim($nome), trim($email), 'Contato pelo Portal Diário', trim($mensagem));
         if (!$enviado) {
-            throw new DomainException('O envio pelo site ainda não está configurado. Você pode escrever diretamente para contato@portaldiario.com.');
+            throw new DomainException('O envio pelo site ainda não está configurado. Você pode escrever diretamente para contato@portalbiblico.com.');
         }
         $_SESSION['contato_flash'] = ['mensagem' => 'Mensagem enviada. Obrigado por entrar em contato.', 'tipo' => 'sucesso'];
     } catch (DomainException $e) {
@@ -58,7 +58,7 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
         <?php if ($mensagemFlash !== ''): ?>
             <p class="aviso <?= $tipoFlash === 'sucesso' ? 'sucesso' : 'erro' ?>" role="status"><?= Seguranca::escapar($mensagemFlash) ?></p>
         <?php endif; ?>
-        <p class="contato-info">E-mail: <a href="mailto:contato@portaldiario.com">contato@portaldiario.com</a></p>
+        <p class="contato-info">E-mail: <a href="mailto:contato@portalbiblico.com">contato@portalbiblico.com</a></p>
         <form method="post" action="contato.php" class="form-publico">
             <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar($tokenCsrf) ?>">
             <label>Nome<input type="text" name="nome" maxlength="150" autocomplete="name" required></label>

@@ -30,7 +30,7 @@ DB_NAME=biblia_catolica
 BIBLIA_DB_NAME=biblia_catolica
 DB_USER=usuario_do_banco
 DB_PASSWORD=senha_segura
-MAIL_TO=contato@portaldiario.com
+MAIL_TO=contato@portalbiblico.com
 MAIL_FROM=nao-responda@seu-dominio.com
 ```
 
