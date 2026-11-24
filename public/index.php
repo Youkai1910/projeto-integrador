@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use ProjetoIntegrador\Helpers\LogServico;
 
@@ -107,7 +107,7 @@ if ($livroId !== null && $livroSelecionado === null) {
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -117,24 +117,14 @@ if ($livroId !== null && $livroSelecionado === null) {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
 <div class="page-container">
     <header>
         <div class="logo-area">
             <img class="logo" src="images/logo.png?v=<?= filemtime(__DIR__ . '/images/logo.png') ?>" alt="Portal Bíblico">
         </div>
         <div class="menu-area">
-            <button
-                class="menu-toggle"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#menu-principal"
-                aria-expanded="false"
-                aria-controls="menu-principal"
-                aria-label="Abrir ou fechar o menu de navegação"
-            >
-                <i class="fa-solid fa-bars" aria-hidden="true"></i>
-            </button>
-            <nav class="banner collapse" id="menu-principal" aria-label="Navegação principal">
+            <nav class="banner" id="menu-principal" aria-label="Navegação principal">
                 <form class="search-box" action="index.php" method="GET">
                     <input type="search" placeholder="Pesquisar..." name="q" aria-label="Pesquisar livros" value="<?= Utils::escaparHtml($termo) ?>">
                     <button type="submit" aria-label="Enviar pesquisa">
@@ -164,23 +154,26 @@ if ($livroId !== null && $livroSelecionado === null) {
         </div>
     </header>
 
-    <main>
-        <section class="principal row row-cols-1 justify-content-center g-3">
+    <main id="conteudo-principal" tabindex="-1">
+        <h1 class="visually-hidden">Portal Bíblico</h1>
+        <section class="principal row row-cols-1 justify-content-center g-3" aria-labelledby="titulo-leituras-destaque">
+            <h2 class="visually-hidden" id="titulo-leituras-destaque">Leituras em destaque</h2>
             <div class="col">
                 <h3>LEITURA DIÁRIA</h3>
-                <a class="card-principal card-leitura" href="leitura.php?aleatoria=1">Clique para ver uma leitura diária</a>
+                <a class="card-principal card-leitura" href="leitura.php?aleatoria=1">Ver uma leitura diária</a>
             </div>
             <div class="col">
                 <h3>NOVO TESTAMENTO</h3>
-                <a class="card-principal card-novo-testamento" href="leitura.php?testamento=2">Clique para abrir o Novo Testamento</a>
+                <a class="card-principal card-novo-testamento" href="leitura.php?testamento=2">Abrir o Novo Testamento</a>
             </div>
             <div class="col">
                 <h3>ANTIGO TESTAMENTO</h3>
-                <a class="card-principal card-antigo-testamento" href="leitura.php?testamento=1">Clique para abrir o Antigo Testamento</a>
+                <a class="card-principal card-antigo-testamento" href="leitura.php?testamento=1">Abrir o Antigo Testamento</a>
             </div>
         </section>
 
-        <section class="inferior row row-cols-1 row-cols-sm-2 justify-content-center g-3">
+        <section class="inferior row row-cols-1 row-cols-sm-2 justify-content-center g-3" aria-labelledby="titulo-outras-leituras">
+            <h2 class="visually-hidden" id="titulo-outras-leituras">Outras leituras</h2>
             <div class="col">
                 <h3>SALMOS</h3>
                 <a class="card-inferior card-salmos" href="leitura.php?livro=21">Abrir o livro de Salmos</a>
@@ -200,7 +193,7 @@ if ($livroId !== null && $livroSelecionado === null) {
         </section>
 
         <section class="livros-biblia">
-            <h3>Livros da Bíblia</h3>
+            <h2>Livros da Bíblia</h2>
             <button
                 class="livros-toggle"
                 type="button"
@@ -249,7 +242,7 @@ if ($livroId !== null && $livroSelecionado === null) {
                     ?>
                     <?php if ($livrosDoTestamento): ?>
                         <div class="grupo-livros">
-                            <h4><?= Utils::escaparHtml($testamento->nome) ?></h4>
+                            <h3><?= Utils::escaparHtml($testamento->nome) ?></h3>
                             <div class="lista-livros">
                                 <?php foreach ($livrosDoTestamento as $livro): ?>
                                     <?php
@@ -274,7 +267,7 @@ if ($livroId !== null && $livroSelecionado === null) {
 
             <?php if ($livroSelecionado !== null): ?>
                 <section class="selecao-biblia" aria-labelledby="titulo-leitura">
-                    <h4 id="titulo-leitura"><?= Utils::escaparHtml($livroSelecionado->nome) ?></h4>
+                    <h3 id="titulo-leitura"><?= Utils::escaparHtml($livroSelecionado->nome) ?></h3>
                     <?php if (!$capitulos): ?>
                         <p>Ainda não há capítulos com versículos cadastrados para este livro.</p>
                     <?php else: ?>
@@ -299,7 +292,7 @@ if ($livroId !== null && $livroSelecionado === null) {
                     <?php endif; ?>
 
                     <?php if ($capitulo !== null): ?>
-                        <h5>Capítulo <?= $capitulo ?></h5>
+                        <h4>Capítulo <?= $capitulo ?></h4>
                         <div class="lista-versiculos">
                             <?php foreach ($versiculos as $versiculo): ?>
                                 <p>
@@ -316,16 +309,16 @@ if ($livroId !== null && $livroSelecionado === null) {
 
     <footer>
         <div class="footer-col">
-            <h4>Portal Bíblico</h4>
+            <h2>Portal Bíblico</h2>
             <p id="quem-somos">Um espaço dedicado a nutrir a sua espiritualidade todos os dias com conteúdos atualizados, leituras, salmos e reflexões.</p>
         </div>
         <div class="footer-col">
-            <h4>Links Rápidos</h4>
+            <h2>Links Rápidos</h2>
             <a href="contato.php">Fale conosco</a>
             <a href="colaborador.php">Seja um Colaborador</a>
         </div>
         <div class="footer-col">
-            <h4>Fale Conosco</h4>
+            <h2>Fale Conosco</h2>
             <p><i class="fa-solid fa-envelope"></i> contato@portaldiario.com</p>
             <p><i class="fa-solid fa-phone"></i> (00) 0000-0000</p>
         </div>

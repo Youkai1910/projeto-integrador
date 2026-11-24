@@ -41,6 +41,11 @@ body { background: var(--leitura-fundo); }
 .navegacao-capitulo { display: flex; gap: 8px; }
 .navegacao-capitulo a, .troca-livro a { padding: 9px 12px; border-radius: 8px; background: var(--leitura-suave); color: var(--leitura-marrom); font-weight: 650; text-decoration: none; }
 .navegacao-capitulo a:hover, .troca-livro a:hover { background: #d7e4f1; }
+.leitura-audio-controles { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0; }
+.leitura-audio-controles button { padding: 9px 13px; border: 0; border-radius: 8px; background: var(--leitura-marrom); color: white; font: inherit; font-weight: 650; cursor: pointer; }
+.leitura-audio-controles button:disabled { cursor: not-allowed; opacity: .55; }
+.leitura-audio-controles button:focus-visible { outline: 3px solid #587596; outline-offset: 2px; }
+.leitura-audio-status { flex: 1 0 100%; min-height: 1.2em; margin: 0; color: #587596; font-size: .9rem; }
 .lista-versiculos { margin: 0; padding: 10px 0; list-style: none; }
 .lista-versiculos li { display: grid; grid-template-columns: 34px 1fr; gap: 8px; padding: 12px 6px; border-bottom: 1px solid #e7eff7; scroll-margin-top: 20px; }
 .lista-versiculos li:last-child { border-bottom: 0; }

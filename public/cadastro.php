@@ -6,7 +6,7 @@ use ProjetoIntegrador\Enum\TipoUsuario;
 use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Services\UsuarioServico;
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use ProjetoIntegrador\Helpers\LogServico;
 
@@ -15,6 +15,7 @@ LogServico::configurar();
 Seguranca::iniciarSessao();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $cadastroRealizado = false;
     try {
         Seguranca::validarTokenCsrf($_POST['csrf_token'] ?? null);
         $nome = $_POST['nome'] ?? '';
@@ -26,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $servico = new UsuarioServico(ConexaoBD::getConexao());
         $servico->inserir($nome, $email, $senha, TipoUsuario::USUARIO);
-        $_SESSION['cadastro_flash'] = ['mensagem' => 'Cadastro realizado. Sua conta foi criada como usuário.', 'tipo' => 'sucesso'];
+        $cadastroRealizado = true;
     } catch (\DomainException $e) {
         $_SESSION['cadastro_flash'] = ['mensagem' => $e->getMessage(), 'tipo' => 'erro'];
     } catch (\Throwable $e) {
@@ -34,7 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['cadastro_flash'] = ['mensagem' => 'Não foi possível concluir o cadastro. Confira a conexão e tente novamente.', 'tipo' => 'erro'];
     }
 
-    header('Location: cadastro.php', true, 303);
+    if ($cadastroRealizado) {
+        header('Location: login.php', true, 303);
+    } else {
+        header('Location: cadastro.php', true, 303);
+    }
     exit;
 }
 
