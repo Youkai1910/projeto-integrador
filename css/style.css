@@ -22,7 +22,7 @@ body {
 
 /* CABECALHO */
 header {
-    display: grid;
+    /* display: grid; */
     grid-template-columns: 140px 1fr;
     gap: 30px;
     align-items: center;
@@ -37,8 +37,8 @@ header {
 
 .logo {
     display: block;
-    width: 125px;
-    height: 125px;
+    width: 100%;
+    height: auto;
     object-fit: contain;
     margin: 8px auto;
     border-radius: 12px;
@@ -48,21 +48,6 @@ header {
 .menu-area {
     display: flex;
     flex-direction: column;
-}
-
-.menu-toggle {
-    display: none;
-    width: 48px;
-    height: 48px;
-    align-self: center;
-    align-items: center;
-    justify-content: center;
-    border: 0;
-    border-radius: 10px;
-    background: #173653;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
 }
 
 .banner {
@@ -82,12 +67,14 @@ header {
 .banner a {
     color: white;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     transition: 0.3s;
     display: flex;
     align-items: center;
     gap: 8px;
+    min-height: 44px;
+    padding: 8px 10px;
 }
 
 .banner a:hover {
@@ -115,7 +102,7 @@ header {
     border: none;
     outline: none;
     color: #173653;
-    font-size: 14px;
+    font-size: 16px;
     padding: 6px;
     width: 160px;
 }
@@ -479,13 +466,14 @@ footer {
 }
 
 .logout-form button {
-    padding: 8px 10px;
+    min-height: 44px;
+    padding: 8px 12px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 6px;
     background: transparent;
     color: #fff;
     font: inherit;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
 }
@@ -507,11 +495,13 @@ footer {
     .banner {
         height: auto;
         padding: 15px;
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        justify-content: center;
+        gap: 8px;
     }
 
     .search-box {
+        flex: 1 1 100%;
         width: 100%;
     }
 
@@ -548,10 +538,6 @@ footer {
 }
 
 @media (max-width: 767.98px) {
-    .menu-toggle {
-        display: flex;
-    }
-
     .livros-toggle {
         display: flex;
     }
