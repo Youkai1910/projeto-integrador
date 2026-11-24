@@ -14,7 +14,7 @@ final class BibliaServico
 
     public function __construct(?PDO $pdo = null)
     {
-        $this->pdo = $pdo ?? ConexaoBD::getConexao();
+        $this->pdo = $pdo ?? ConexaoBD::getConexaoBiblia();
     }
 
     /**

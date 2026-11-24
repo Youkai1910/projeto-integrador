@@ -24,7 +24,13 @@ try {
 		throw new DomainException('Os dados enviados são inválidos.');
 	}
 
-	$usuarioServico->inserir($nome, $email, $senha, $tipo);
+	if (!$ehAdministrador) {
+		http_response_code(403);
+		Seguranca::guardarMensagem('Somente administradores podem cadastrar ou alterar perfis de acesso.', 'erro');
+		Seguranca::redirecionarParaLista($busca);
+	}
+
+	$usuarioServico->inserir($nome, $email, $senha, $tipo, $idAdministrador);
 	Seguranca::guardarMensagem('A conta foi cadastrada com sucesso.', 'sucesso');
 } catch (DomainException $e) {
 	Seguranca::guardarMensagem($e->getMessage(), 'erro');

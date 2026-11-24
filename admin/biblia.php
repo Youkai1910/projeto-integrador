@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/_bootstrap.php';
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use ProjetoIntegrador\Helpers\Utils;

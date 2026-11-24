@@ -4,12 +4,14 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 use ProjetoIntegrador\Helpers\Utils;
 use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Services\AnotacaoServico;
+use ProjetoIntegrador\Helpers\Seguranca;
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+Seguranca::iniciarSessao();
 
-$usuarioId = Validacoes::idPositivo($_SESSION['usuario_id'] ?? null);
+$usuarioSessao = $_SESSION['usuario'] ?? null;
+$usuarioId = is_array($usuarioSessao)
+    ? Validacoes::idPositivo($usuarioSessao['id'] ?? null)
+    : null;
 if ($usuarioId === null) {
     http_response_code(401);
     ?>
