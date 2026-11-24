@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/_bootstrap.php';
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__, 2) . '/src/Bootstrap/admin.php';
+require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 use ProjetoIntegrador\Helpers\LogServico;
 

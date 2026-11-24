@@ -4,7 +4,7 @@ declare(strict_types=1);
 use ProjetoIntegrador\Enum\TipoUsuario;
 use ProjetoIntegrador\Helpers\Seguranca;
 
-require_once __DIR__ . '/_bootstrap.php';
+require_once dirname(__DIR__, 2) . '/src/Bootstrap/admin.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405);
