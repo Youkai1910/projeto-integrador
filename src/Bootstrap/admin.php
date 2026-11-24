@@ -6,7 +6,7 @@ use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Services\UsuarioServico;
 use ProjetoIntegrador\Enum\TipoUsuario;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 use ProjetoIntegrador\Helpers\LogServico;
 
