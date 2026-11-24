@@ -163,3 +163,75 @@ Acrescentei ao resumo.md o estado atual do branch, ao AGENTS.md as orientações
 de arquitetura e segurança e ao prompts.md o histórico dos pedidos. Preservei o
 texto pré-existente e validei o diff.
 -->
+
+<!--
+Prompt 11:
+"copie tudo da branch biblia_alexandre..., mantenha tudo da biblia_anderson"
+
+Resposta 11:
+Realizei uma cópia seletiva da branch biblia_alexandre para biblia_anderson,
+preservando os arquivos de usuários, login, cadastro e documentação existentes.
+Mantive a interface nova da branch copiada, incluindo os novos modelos e serviços
+de Bíblia e anotações, e atualizei o autoload.
+
+Prompt 12:
+"mantenha o q foi copiado mas conecta com minhas alterações anteriores"
+
+Resposta 12:
+Integrei a interface da branch copiada às sessões, login, cadastro, logout,
+administração e anotações da implementação anterior. Corrigi incompatibilidades
+de helpers, conexão bíblica e navegação real da home.
+
+Prompt 13:
+"padronize cadastro/login e o restante do portal, responsividade mobile/desktop"
+
+Resposta 13:
+Padronizei o tema azul do Portal Bíblico em login, cadastro, contato,
+colaboração, leitura e administração. O nome visual passou a ser Portal Bíblico.
+Implementei, testei e posteriormente revertimos ou ajustamos menus móveis da
+leitura conforme os comandos sequenciais.
+
+Prompt 14:
+"faça o projeto responsivo e compatível com Bootstrap e WordPress sem alterar o
+Portal existente"
+
+Resposta 14:
+Criei uma camada separada em wordpress-plugin/portal-biblico/. O plugin usa
+shortcode, Bootstrap 5 e iframe. Ele não altera nem compartilha arquivos,
+sessões ou banco com o Portal PHP original.
+
+Prompt 15:
+"defina usuários administradores, editores e usuários comuns"
+
+Resposta 15:
+Mantive os três perfis no enum e no banco. Admin recebeu acesso integral;
+editor recebeu acesso administrativo parcial e anotações sem exclusão
+permanente; usuário comum recebeu apenas acesso público e às próprias
+anotações. Login e bootstrap passaram a verificar perfil no servidor.
+
+Prompt 16:
+"analise profundamente todo o projeto e corrija problemas"
+
+Resposta 16:
+Auditei PHP, SQL, CSS, sessões, CSRF, autorização, banco e rotas. Removi
+fallback de credencial exposto, endureci cookies/sessão, tratei dumps bíblicos,
+validei todas as rotas PHP e atualizei o README. O dump de versículos deve
+continuar sujeito a revisão antes de importação porque mantém conteúdo legado.
+
+Prompt 17:
+"as portas locais são localhost:890 e localhost:4000"
+
+Resposta 17:
+Confirmei que http://localhost:890/ serve o Portal Bíblico e
+http://localhost:4000/ serve o phpMyAdmin. Nenhuma porta HTTP foi fixada no
+código PHP ou nos links relativos; AGENTS.md recebeu o registro do ambiente.
+
+Prompt 18:
+"Atualize sem alterar mas sim adicionando o resumo.md, AGENTS.md e este PROMPTS.md"
+
+Resposta 18:
+Acrescentei ao resumo.md o histórico da mesclagem, interface, perfis,
+integração WordPress, auditoria e novas portas. Acrescentei ao AGENTS.md as
+regras confirmadas do branch atual. Acrescentei esta seção ao PROMPTS.md sem
+alterar o registro histórico anterior.
+-->

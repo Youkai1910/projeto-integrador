@@ -32,9 +32,10 @@ outro banco, importe os arquivos bíblicos nesse banco em vez de
 
 A conexão padrão do PHP é `localhost` (porta MySQL padrão). Configure
 `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` (padrão `biblia_catolica`) e
-`BIBLIA_DB_NAME` (padrão igual a `DB_NAME`, normalmente `biblia_catolica`) conforme o ambiente. O site não fixa portas
-HTTP como 650, 4000 ou 890; a porta HTTP depende do servidor local usado para
-executar o projeto.
+`BIBLIA_DB_NAME` (padrão igual a `DB_NAME`, normalmente `biblia_catolica`) conforme o ambiente.
+O ambiente atual utiliza o Portal Bíblico em `http://localhost:890/` e o
+phpMyAdmin em `http://localhost:4000/`. As portas HTTP são específicas do
+servidor local e não devem ser fixadas no código PHP ou nos links relativos.
 
 O cadastro público cria somente contas do tipo `usuario`. O envio dos
 formulários de contato e colaboração usa `MAIL_TO` e `MAIL_FROM` e requer que o
@@ -93,3 +94,50 @@ correspondentes.
 Depois de alterar PHP, valide com `php -l` nos arquivos afetados e verifique o
 autoload PSR-4. Testes de rotas e consultas locais são úteis, mas não substituem
 testes funcionais com banco de desenvolvimento e formulários reais controlados.
+
+## Integração e perfis confirmados no branch atual
+
+- A interface principal combina o layout da branch bíblica com autenticação,
+  cadastro, logout, anotações e área administrativa da implementação anterior.
+- Links relativos devem continuar apontando para as rotas existentes do Portal
+  Bíblico. Não fixe `localhost:890` ou `localhost:4000` em código PHP, CSS,
+  JavaScript ou formulários.
+- `TipoUsuario` aceita `usuario`, `editor` e `admin`.
+- Contas públicas recebem somente `usuario`. Perfis privilegiados devem ser
+  provisados por administrador autorizado ou pelo responsável pelo banco.
+- `admin/_bootstrap.php` deve aceitar somente administradores e editores como
+  sessões para área administrativa, mas deve diferenciar permissões completas e
+  parciais.
+- A criação de contas editor/admin, a alteração de perfil e toda exclusão
+  permanente devem ser reservadas ao administrador no servidor, não somente na
+  interface.
+- Editores possuem acesso administrativo parcial e às anotações. Usuários comuns
+  possuem apenas acesso público e às próprias anotações; não podem excluir a
+  própria conta pela aplicação.
+- `login.php` deve conferir o perfil atual no banco ao iniciar sessão e
+  redirecionar conforme o nível permitido.
+- `admin/anotacoes.php` usa `$_SESSION['usuario']['id']` e filtra todas as
+  operações pelo ID do usuário autenticado.
+- As ações de alterar/excluir usuários continuam exigindo POST e CSRF.
+
+## Camada WordPress separada
+
+- Não copie diretamente os arquivos PHP do Portal para `wp-content/plugins` sem
+  revisar conexão e sessão.
+- A integração isolada está em `wordpress-plugin/portal-biblico/` e utiliza um
+  shortcode Bootstrap responsivo para incorporar o Portal Bíblico por iframe.
+- Essa integração não altera o projeto PHP original nem compartilha sessões e
+  bancos com o WordPress.
+
+## Configuração e auditoria
+
+- Não reutilize ou publique a senha de banco usada em ambiente local.
+- Prefira as variáveis `DB_HOST`, `DB_NAME`, `BIBLIA_DB_NAME`, `DB_USER` e
+  `DB_PASSWORD`. Os fallbacks locais podem existir apenas para compatibilidade
+  do servidor de desenvolvimento atual.
+- Inicie sessões por `Seguranca::iniciarSessao()`. Mantenha HTTP-only,
+  SameSite Lax, Secure em HTTPS e modo estrito habilitado.
+- Antes de importar SQL, selecione o banco correto no cliente usado. Não importe
+  dumps que recriem bancos inteiros ou executem `DROP DATABASE`.
+- Execute `php -l` nos arquivos alterados e `composer dump-autoload` após
+  modificar namespaces ou classes.

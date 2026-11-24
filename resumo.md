@@ -102,3 +102,88 @@ administrativas ou de edição.
 - Os testes executados nesta etapa incluíram lint PHP, carregamento PSR-4,
   consultas locais de leitura e requisições GET às páginas. Não foi enviado
   formulário de cadastro, contato ou colaboração durante a validação.
+
+## Atualização posterior do branch — 2026-11-24
+
+> Esta seção registra as mudanças realizadas após a atualização anterior e
+> complementa os estados históricos sem reescrever o conteúdo que a precede.
+
+### Integração entre as branches
+
+- Foi realizada uma cópia seletiva de conteúdos da branch
+  `biblia_alexandre` para `biblia_anderson`, mantendo os arquivos anteriores
+  relacionados a usuários, perfis, login, cadastro e administração.
+- A interface principal passou a combinar o layout da branch copiada com os
+  links e sessões da implementação anterior.
+- A home recebeu links reais para cadastro, login, contato, administração,
+  anotações e leitura bíblica. A navegação ficou integrada a sessão atual.
+- `ConexaoBD.php` passou a oferecer `getConexao()` para o banco da aplicação e
+  `getConexaoBiblia()` para o banco bíblico, com nomes configuráveis por
+  `DB_NAME` e `BIBLIA_DB_NAME`.
+- Foram reconciliados os helpers `Utils.php` e `Validacoes.php`, que hoje
+  oferecem escape HTML, tokenização, validação de perfil, pesquisa, ID,
+  texto de anotação e dados públicos de cadastro.
+
+### Identidade visual e páginas públicas
+
+- Login, cadastro, contato e colaboração passaram a usar o tema azul da página
+  inicial do Portal Bíblico.
+- Os nomes visíveis foram padronizados como **Portal Bíblico**.
+- O leitor recebeu o mesmo tema azul, com cabeçalho, cards, capítulos,
+  versículos, navegação e rodapé consistentes com o restante do portal.
+- Os menus de capítulos mobile foram testados, removidos e restaurados conforme
+  os comandos sequenciais; no estado final, a grade original de capítulos foi
+  preservada como solução desejada. O header da página de leitura possui menu
+  recolhível no mobile e navegação original no desktop.
+
+### Perfis e autorização
+
+- O enum mantém os perfis `usuario`, `editor` e `admin`.
+- O cadastro público cria somente contas `usuario`.
+- Usuários comuns podem navegar pelo portal e gerenciar suas próprias
+  anotações, mas não possuem acesso administrativo nem podem excluir a própria
+  conta permanentemente.
+- Editores possuem acesso administrativo parcial e acesso às anotações. Não
+  podem criar outras contas, alterar perfis ou realizar exclusões permanentes.
+- Administradores possuem acesso integral à área administrativa, contas,
+  perfis e exclusões permanentes.
+- Login, bootstrap administrativo e endpoints de criação, alteração e exclusão
+  foram ajustados para conferir o perfil no servidor em vez de confiar apenas
+  no conteúdo da sessão.
+- `admin/biblia.php` passou a ser protegido pelo bootstrap administrativo.
+
+### Integração Bootstrap e WordPress
+
+- Foi criada uma camada separada em `wordpress-plugin/portal-biblico/`, sem
+  alterar os arquivos do Portal Bíblico original.
+- O plugin oferece o shortcode
+  `[portal_biblico url="https://dominio/projeto-integrador/" altura="820px"]`
+  e carrega Bootstrap responsivo.
+- A integração foi criada como iframe separado, por isso não mescla sessão,
+  banco, PHP ou CSS do plugin com o Portal original.
+
+### Auditoria realizada
+
+- Foram revistos PHP, CSS, SQL, Composer, rotas, sessões, CSRF, banco,
+  anotações, escaping, autorização e estrutura responsiva.
+- A sessão recebeu configuração estrita de cookie: HTTP-only, SameSite Lax,
+  Secure em HTTPS e modo estrito do identificador de sessão.
+- O fallback de senha de banco foi restaurado aos padrões locais anteriores,
+  conforme a necessidade de funcionamento do ambiente atual, mantendo
+  `DB_HOST`, `DB_NAME`, `BIBLIA_DB_NAME`, `DB_USER` e `DB_PASSWORD` como
+  variáveis opcionais/sobreponíveis.
+- Os dumps de livros/testamentos foram ajustados para não depender de banco
+  fixo ou recriar o banco inteiro. O dump de versículos ainda precisa ser
+  revisado antes da importação, pois mantém comandos de criação/destruição em
+  seu cabeçalho legado.
+- A documentação foi ampliada com requisitos, configuração de banco, ordem dos
+  dumps e política de perfis.
+- Foram validados lint PHP, autoload Composer e diagnósticos do workspace.
+
+### Portas do ambiente atual
+
+- Portal Bíblico: `http://localhost:890/`.
+- phpMyAdmin: `http://localhost:4000/`.
+- O projeto PHP não fixa portas HTTP em código ou links relativos; as portas
+  são específicas do servidor local. O MySQL continua usando a conexão local
+  configurada separadamente das portas HTTP.
