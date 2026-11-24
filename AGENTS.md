@@ -37,12 +37,12 @@ para restringir `tipo` aos três perfis.
   os perfis válidos e seus rótulos.
 - `login.php` define `$_SESSION['usuario']['id']` e `$_SESSION['usuario_id']`.
   `logout.php` aceita somente POST com token CSRF.
-- `admin/usuarios.php` e suas ações exigem uma sessão autenticada e confirmam o
+- `public/admin/usuarios.php` e suas ações exigem uma sessão autenticada e confirmam o
   perfil de administrador no banco antes de permitir operações.
 
 ## Anotações
 
-- A página `admin/anotacoes.php` exige uma sessão autenticada com o identificador
+- A página `public/admin/anotacoes.php` exige uma sessão autenticada com o identificador
   positivo do usuário em `$_SESSION['usuario_id']`; o fluxo de autenticação deve
   definir esse valor após o login.
 - `AnotacaoServico` limita listagem, edição, favoritos e exclusão ao dono da
@@ -52,19 +52,20 @@ para restringir `tipo` aos três perfis.
 
 ## Página inicial e imagens
 
-- A página inicial fica em `index.php` e seus estilos ficam em `css/style.css`.
-- As imagens do site ficam em `images/`.
-- Caminhos de imagens definidos no CSS são relativos a `css/style.css`, por
+- A página inicial fica em `public/index.php` e seus estilos ficam em `public/css/style.css`.
+- As imagens do site ficam em `public/images/`.
+- Configure a raiz web do servidor para o diretório `public/`.
+- Caminhos de imagens definidos no CSS são relativos a `public/css/style.css`, por
   exemplo `../images/logo.png`.
 - Ao renomear ou mover uma imagem, atualize também o caminho correspondente na
   página ou no CSS.
 ## Interface da página inicial
 
-- Mantenha o PHP da consulta e da conexão no início de `index.php`.
+- Mantenha o PHP da consulta e da conexão no início de `public/index.php`.
 - Renderize dados vindos do banco com `htmlspecialchars()` ou outra proteção
   equivalente.
-- Coloque os estilos da interface em `css/style.css`; não misture CSS extenso
-  dentro de `index.php`.
+- Coloque os estilos da interface em `public/css/style.css`; não misture CSS extenso
+  dentro de `public/index.php`.
 - Preserve arquivos no diretório `biblia_catolica/imagens/` e use caminhos
   relativos a partir da raiz da aplicação.
 - Utilize `alt` em todas as imagens informativas e preserve `aria-label` em

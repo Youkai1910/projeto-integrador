@@ -5,7 +5,11 @@ use ProjetoIntegrador\Database\ConexaoBD;
 use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Services\UsuarioServico;
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+use ProjetoIntegrador\Helpers\LogServico;
+
+LogServico::configurar();
 Seguranca::iniciarSessao();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
