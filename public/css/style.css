@@ -562,6 +562,10 @@ footer {
         display: flex;
         gap: 0;
     }
+
+    .card-principal {
+        width: 100%;
+    }
 }
 
 @media (max-width: 500px) {
