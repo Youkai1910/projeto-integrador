@@ -8,6 +8,9 @@ use ProjetoIntegrador\Enum\TipoUsuario;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
+use ProjetoIntegrador\Helpers\LogServico;
+
+LogServico::configurar();
 Seguranca::iniciarSessao();
 
 try {

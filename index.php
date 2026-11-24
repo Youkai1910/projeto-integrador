@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+use ProjetoIntegrador\Helpers\LogServico;
+
+LogServico::configurar();
+
 use ProjetoIntegrador\Database\ConexaoBD;
 use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Helpers\Utils;

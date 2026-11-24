@@ -6,6 +6,10 @@ use ProjetoIntegrador\Services\LeituraBiblicaServico;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use ProjetoIntegrador\Helpers\LogServico;
+
+LogServico::configurar();
+
 $servico = null;
 $idLivroRecebido = filter_input(INPUT_GET, 'livro', FILTER_VALIDATE_INT);
 $capituloRecebido = filter_input(INPUT_GET, 'capitulo', FILTER_VALIDATE_INT);

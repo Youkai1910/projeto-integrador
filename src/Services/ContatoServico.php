@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace ProjetoIntegrador\Services;
 
+use ProjetoIntegrador\Helpers\LogServico;
+
 final class ContatoServico
 {
     public function enviar(string $nome, string $email, string $assunto, string $mensagem): bool
@@ -12,6 +14,7 @@ final class ContatoServico
 
         if (filter_var($destinatario, FILTER_VALIDATE_EMAIL) === false
             || filter_var($remetente, FILTER_VALIDATE_EMAIL) === false) {
+            error_log('Contato: MAIL_TO ou MAIL_FROM não está configurado corretamente.');
             return false;
         }
 
@@ -26,6 +29,11 @@ final class ContatoServico
             'X-Mailer' => 'PHP/' . PHP_VERSION,
         ];
 
-        return mail($destinatario, $assunto, $corpo, $cabecalhos);
+        $enviado = mail($destinatario, $assunto, $corpo, $cabecalhos);
+        if (!$enviado) {
+            error_log('Contato: a função mail() não conseguiu enviar a mensagem.');
+        }
+
+        return $enviado;
     }
 }
