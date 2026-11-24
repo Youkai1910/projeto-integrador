@@ -198,6 +198,13 @@ function escaparLeitura(string $valor): string
                     <?php if ($versiculos === []): ?>
                         <p>Este capítulo não possui versículos disponíveis.</p>
                     <?php else: ?>
+                    <div class="leitura-audio-controles" aria-label="Controles de leitura em voz alta">
+                        <button type="button" id="ouvir-capitulo">Ouvir capítulo</button>
+                        <button type="button" id="pausar-leitura" disabled>Pausar</button>
+                        <button type="button" id="continuar-leitura" disabled>Continuar</button>
+                        <button type="button" id="parar-leitura" disabled>Parar</button>
+                        <p id="status-leitura-audio" class="leitura-audio-status" role="status" aria-live="polite"></p>
+                    </div>
                         <ol class="lista-versiculos">
                             <?php foreach ($versiculos as $versiculo): ?>
                                 <li id="versiculo-<?= (int) $versiculo['verse'] ?>">
@@ -237,5 +244,139 @@ function escaparLeitura(string $valor): string
 
     <footer class="leitura-rodape"><a href="index.php">Portal Diário</a><span>Leia capítulo por capítulo e acompanhe cada versículo.</span></footer>
 </div>
+<?php if ($numeroCapitulo !== null && $versiculos !== []): ?>
+<script>
+    (function () {
+        var botaoOuvir = document.getElementById('ouvir-capitulo');
+        var botaoPausar = document.getElementById('pausar-leitura');
+        var botaoContinuar = document.getElementById('continuar-leitura');
+        var botaoParar = document.getElementById('parar-leitura');
+        var status = document.getElementById('status-leitura-audio');
+        var textos = Array.prototype.map.call(
+            document.querySelectorAll('#texto .lista-versiculos li p'),
+            function (paragrafo) {
+                return paragrafo.textContent.trim();
+            }
+        ).filter(Boolean);
+
+        if (!('speechSynthesis' in window) || typeof window.SpeechSynthesisUtterance !== 'function') {
+            botaoOuvir.disabled = true;
+            status.textContent = 'A leitura em voz alta não é compatível com este navegador.';
+            return;
+        }
+
+        var sintetizador = window.speechSynthesis;
+        var indiceVersiculo = 0;
+        var sessao = 0;
+        var leituraAtiva = false;
+        var leituraPausada = false;
+
+        function atualizarControles() {
+            botaoOuvir.disabled = leituraAtiva;
+            botaoPausar.disabled = !leituraAtiva || leituraPausada;
+            botaoContinuar.disabled = !leituraAtiva || !leituraPausada;
+            botaoParar.disabled = !leituraAtiva;
+        }
+
+        function falarProximoVersiculo(sessaoAtual) {
+            if (sessaoAtual !== sessao || !leituraAtiva) {
+                return;
+            }
+
+            if (indiceVersiculo >= textos.length) {
+                leituraAtiva = false;
+                leituraPausada = false;
+                atualizarControles();
+                status.textContent = 'Leitura concluída.';
+                return;
+            }
+
+            var fala = new SpeechSynthesisUtterance(textos[indiceVersiculo]);
+            fala.lang = 'pt-BR';
+            var vozPortugues = sintetizador.getVoices().find(function (voz) {
+                return voz.lang.toLowerCase() === 'pt-br';
+            }) || sintetizador.getVoices().find(function (voz) {
+                return voz.lang.toLowerCase().indexOf('pt-') === 0;
+            });
+
+            if (vozPortugues) {
+                fala.voice = vozPortugues;
+            }
+
+            fala.onend = function () {
+                if (sessaoAtual !== sessao || !leituraAtiva) {
+                    return;
+                }
+
+                indiceVersiculo += 1;
+                falarProximoVersiculo(sessaoAtual);
+            };
+
+            fala.onerror = function () {
+                if (sessaoAtual !== sessao) {
+                    return;
+                }
+
+                sessao += 1;
+                leituraAtiva = false;
+                leituraPausada = false;
+                sintetizador.cancel();
+                atualizarControles();
+                status.textContent = 'Não foi possível reproduzir a leitura em voz alta.';
+            };
+
+            sintetizador.speak(fala);
+        }
+
+        botaoOuvir.addEventListener('click', function () {
+            sessao += 1;
+            sintetizador.cancel();
+            indiceVersiculo = 0;
+            leituraAtiva = true;
+            leituraPausada = false;
+            atualizarControles();
+            status.textContent = 'Leitura em voz alta iniciada.';
+            falarProximoVersiculo(sessao);
+        });
+
+        botaoPausar.addEventListener('click', function () {
+            if (!leituraAtiva || leituraPausada) {
+                return;
+            }
+
+            sintetizador.pause();
+            leituraPausada = true;
+            atualizarControles();
+            status.textContent = 'Leitura pausada.';
+        });
+
+        botaoContinuar.addEventListener('click', function () {
+            if (!leituraAtiva || !leituraPausada) {
+                return;
+            }
+
+            sintetizador.resume();
+            leituraPausada = false;
+            atualizarControles();
+            status.textContent = 'Leitura continuando.';
+        });
+
+        botaoParar.addEventListener('click', function () {
+            sessao += 1;
+            leituraAtiva = false;
+            leituraPausada = false;
+            sintetizador.cancel();
+            indiceVersiculo = 0;
+            atualizarControles();
+            status.textContent = 'Leitura interrompida.';
+        });
+
+        window.addEventListener('pagehide', function () {
+            sessao += 1;
+            sintetizador.cancel();
+        });
+    }());
+</script>
+<?php endif; ?>
 </body>
 </html>
