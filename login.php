@@ -6,6 +6,10 @@ use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Services\UsuarioServico;
 
 require_once __DIR__ . '/vendor/autoload.php';
+
+use ProjetoIntegrador\Helpers\LogServico;
+
+LogServico::configurar();
 Seguranca::iniciarSessao();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -23,17 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new DomainException('E-mail ou senha inválidos.');
         }
         $ehAdministrador = $servico->ehAdministrador((int) $usuario->obterId());
+        $ehEditor = $servico->ehEditor((int) $usuario->obterId());
 
         session_regenerate_id(true);
         $_SESSION['usuario'] = [
             'id' => $usuario->obterId(),
             'nome' => $usuario->obterNome(),
         ];
-        $_SESSION['usuario_id'] = (int) $usuario->obterId();
         unset($_SESSION['usuarios_csrf']);
         Seguranca::obterTokenCsrf();
 
-        if ($ehAdministrador) {
+        if ($ehAdministrador || $ehEditor) {
             header('Location: admin/usuarios.php', true, 303);
         } else {
             header('Location: index.php', true, 303);

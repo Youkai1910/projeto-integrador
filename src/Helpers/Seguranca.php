@@ -17,7 +17,14 @@ final class Seguranca
             return;
         }
 
+        ini_set('session.use_strict_mode', '1');
+        ini_set('session.cookie_httponly', '1');
+        ini_set('session.cookie_samesite', 'Lax');
+
         session_set_cookie_params([
+            'lifetime' => 0,
+            'path' => '/',
+            'domain' => '',
             'httponly' => true,
             'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
             'samesite' => 'Lax',

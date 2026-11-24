@@ -19,6 +19,12 @@ try {
 		throw new DomainException('O usuário informado é inválido.');
 	}
 
+	if (!$ehAdministrador) {
+		http_response_code(403);
+		Seguranca::guardarMensagem('A exclusão permanente exige autorização de um administrador.', 'erro');
+		Seguranca::redirecionarParaLista($busca);
+	}
+
 	$usuarioServico->excluir((int) $idUsuario, $idAdministrador);
 	Seguranca::guardarMensagem('A conta e suas anotações vinculadas foram removidas.', 'sucesso');
 } catch (DomainException $e) {

@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+use ProjetoIntegrador\Helpers\LogServico;
+
+LogServico::configurar();
+
 use ProjetoIntegrador\Database\ConexaoBD;
 use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Helpers\Utils;
@@ -9,16 +13,23 @@ use ProjetoIntegrador\Services\BibliaServico;
 use ProjetoIntegrador\Services\UsuarioServico;
 
 Seguranca::iniciarSessao();
+
 $usuarioSessao = $_SESSION['usuario'] ?? null;
 $idUsuarioSessao = is_array($usuarioSessao)
-    ? Validacoes::idPositivo($usuarioSessao['id'] ?? null)
-    : null;
-$estaLogado = $idUsuarioSessao !== null;
+    ? filter_var($usuarioSessao['id'] ?? null, FILTER_VALIDATE_INT)
+    : false;
+$estaLogado = $idUsuarioSessao !== false && $idUsuarioSessao > 0;
 $ehAdministrador = false;
+$ehEditor = false;
 
 if ($estaLogado) {
-    $servicoUsuario = new UsuarioServico(ConexaoBD::getConexao());
-    $ehAdministrador = $servicoUsuario->ehAdministrador($idUsuarioSessao);
+    try {
+        $servicoUsuario = new UsuarioServico(ConexaoBD::getConexao());
+        $ehAdministrador = $servicoUsuario->ehAdministrador((int) $idUsuarioSessao);
+        $ehEditor = $servicoUsuario->ehEditor((int) $idUsuarioSessao);
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+    }
 }
 
 $biblia = new BibliaServico();
@@ -124,28 +135,30 @@ if ($livroId !== null && $livroSelecionado === null) {
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
             <nav class="banner collapse" id="menu-principal" aria-label="Navegação principal">
-                <form class="search-box" action="#" method="GET">
-                    <input type="text" placeholder="Pesquisar..." name="q" aria-label="Pesquisar" value="<?= Utils::escaparHtml($termo) ?>">
+                <form class="search-box" action="index.php" method="GET">
+                    <input type="search" placeholder="Pesquisar..." name="q" aria-label="Pesquisar livros" value="<?= Utils::escaparHtml($termo) ?>">
                     <button type="submit" aria-label="Enviar pesquisa">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
 
-                <a href="#"><i class="fa-solid fa-house"></i> HOME</a>
-                <a href="#"><i class="fa-solid fa-users"></i> QUEM SOMOS</a>
-                <a href="#"><i class="fa-solid fa-envelope"></i> CONTATO</a>
-                <?php if ($ehAdministrador): ?>
+                <a href="index.php"><i class="fa-solid fa-house"></i> HOME</a>
+                <a href="#quem-somos"><i class="fa-solid fa-users"></i> QUEM SOMOS</a>
+                <a href="contato.php"><i class="fa-solid fa-envelope"></i> CONTATO</a>
+                <?php if ($ehAdministrador || $ehEditor): ?>
                     <a href="admin/usuarios.php"><i class="fa-solid fa-user-gear"></i> ADMINISTRAÇÃO</a>
                 <?php endif; ?>
                 <?php if ($estaLogado): ?>
                     <a href="admin/anotacoes.php"><i class="fa-solid fa-bookmark"></i> ANOTAÇÕES</a>
+                <?php endif; ?>
+                <?php if (!$estaLogado): ?>
+                    <a href="cadastro.php"><i class="fa-solid fa-user-plus"></i> ÁREA DE CADASTRO</a>
+                    <a href="login.php"><i class="fa-solid fa-right-to-bracket"></i> ENTRAR</a>
+                <?php else: ?>
                     <form class="logout-form" method="post" action="logout.php">
                         <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar(Seguranca::obterTokenCsrf()) ?>">
                         <button type="submit">SAIR</button>
                     </form>
-                <?php else: ?>
-                    <a href="cadastro.php"><i class="fa-solid fa-user-plus"></i> ÁREA DE CADASTRO</a>
-                    <a href="login.php"><i class="fa-solid fa-right-to-bracket"></i> ENTRAR</a>
                 <?php endif; ?>
             </nav>
         </div>
@@ -155,34 +168,34 @@ if ($livroId !== null && $livroSelecionado === null) {
         <section class="principal row row-cols-1 justify-content-center g-3">
             <div class="col">
                 <h3>LEITURA DIÁRIA</h3>
-                <div class="card-principal card-leitura">Clique para ver a leitura diária</div>
+                <a class="card-principal card-leitura" href="leitura.php?aleatoria=1">Clique para ver uma leitura diária</a>
             </div>
             <div class="col">
                 <h3>NOVO TESTAMENTO</h3>
-                <div class="card-principal card-novo-testamento">Clique para ver o novo testamento</div>
+                <a class="card-principal card-novo-testamento" href="leitura.php?testamento=2">Clique para abrir o Novo Testamento</a>
             </div>
             <div class="col">
                 <h3>ANTIGO TESTAMENTO</h3>
-                <div class="card-principal card-antigo-testamento">Clique para ver o antigo testamento</div>
+                <a class="card-principal card-antigo-testamento" href="leitura.php?testamento=1">Clique para abrir o Antigo Testamento</a>
             </div>
         </section>
 
         <section class="inferior row row-cols-1 row-cols-sm-2 justify-content-center g-3">
             <div class="col">
                 <h3>SALMOS</h3>
-                <div class="card-inferior card-salmos">Ver Salmo</div>
+                <a class="card-inferior card-salmos" href="leitura.php?livro=21">Abrir o livro de Salmos</a>
             </div>
             <div class="col">
                 <h3>VERSÍCULOS</h3>
-                <div class="card-inferior card-versiculos">Ver Versículo</div>
+                <a class="card-inferior card-versiculos" href="leitura.php?aleatoria=1">Ler um versículo</a>
             </div>
             <div class="col">
                 <h3>EVANGELHO</h3>
-                <div class="card-inferior card-evangelho">Ver Evangelho</div>
+                <a class="card-inferior card-evangelho" href="leitura.php?testamento=2">Abrir os Evangelhos</a>
             </div>
             <div class="col">
                 <h3>AUTO AJUDA</h3>
-                <div class="card-inferior card-auto-ajuda">Ver Conteúdo</div>
+                <a class="card-inferior card-auto-ajuda" href="contato.php">Fale conosco</a>
             </div>
         </section>
 
@@ -248,7 +261,7 @@ if ($livroId !== null && $livroSelecionado === null) {
                                         $parametrosLivro['q'] = $termo;
                                     }
                                     ?>
-                                    <a href="?<?= Utils::escaparHtml(http_build_query($parametrosLivro)) ?>">
+                                    <a href="leitura.php?<?= Utils::escaparHtml(http_build_query($parametrosLivro)) ?>">
                                         <?= Utils::escaparHtml($livro->nome) ?>
                                         <small>(<?= $livro->totalCapitulos ?> capítulos)</small>
                                     </a>
@@ -257,16 +270,6 @@ if ($livroId !== null && $livroSelecionado === null) {
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <span>Livros da Bíblia</span>
-            </button>
-            <div class="collapse d-lg-block" id="lista-livros-collapse">
-                <div class="lista-livros">
-                    <?php foreach ($livros as $livro): ?>
-                        <div>
-                            <?= Utils::escaparHtml($livro->nome) ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
             </div>
 
             <?php if ($livroSelecionado !== null): ?>
@@ -314,37 +317,23 @@ if ($livroId !== null && $livroSelecionado === null) {
     <footer>
         <div class="footer-col">
             <h4>Portal Bíblico</h4>
-            <p>Um espaço dedicado a nutrir a sua espiritualidade todos os dias com conteúdos atualizados, leituras, salmos e reflexões.</p>
+            <p id="quem-somos">Um espaço dedicado a nutrir a sua espiritualidade todos os dias com conteúdos atualizados, leituras, salmos e reflexões.</p>
         </div>
         <div class="footer-col">
             <h4>Links Rápidos</h4>
-            <a href="#">Política de Privacidade</a>
-            <a href="#">Termos de Uso</a>
-            <a href="#">Seja um Colaborador</a>
+            <a href="contato.php">Fale conosco</a>
+            <a href="colaborador.php">Seja um Colaborador</a>
         </div>
         <div class="footer-col">
             <h4>Fale Conosco</h4>
-            <p><i class="fa-solid fa-envelope"></i> contato@portalbiblico.com</p>
-            <p><i class="fa-solid fa-phone"></i> (11) 95648-2343</p>
+            <p><i class="fa-solid fa-envelope"></i> contato@portaldiario.com</p>
+            <p><i class="fa-solid fa-phone"></i> (00) 0000-0000</p>
         </div>
         <div class="footer-bottom">
-            &copy; 2026 Portal bíblico. Todos os direitos reservados.
+            &copy; 2026 Portal Bíblico. Todos os direitos reservados.
         </div>
     </footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script>
-    const menuToggle = document.querySelector('.menu-toggle');
-    const menuPrincipal = document.querySelector('#menu-principal');
-
-    if (menuToggle && menuPrincipal) {
-        menuToggle.addEventListener('click', () => {
-            const aberto = menuPrincipal.classList.toggle('menu-aberto');
-            menuToggle.setAttribute('aria-expanded', aberto ? 'true' : 'false');
-            menuToggle.setAttribute('aria-label', aberto ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
-            menuToggle.querySelector('i').className = aberto ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
-        });
-    }
-</script>
 </body>
 </html>

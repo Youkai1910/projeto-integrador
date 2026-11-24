@@ -1,6 +1,10 @@
 <?php
+require_once __DIR__ . '/_bootstrap.php';
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
+use ProjetoIntegrador\Helpers\LogServico;
+
+LogServico::configurar();
 use ProjetoIntegrador\Helpers\Utils;
 use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Services\BibliaServico;
