@@ -104,6 +104,7 @@ function escaparLeitura(string $valor): string
     <link rel="stylesheet" href="css/leitura.css">
 </head>
 <body>
+<a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
 <div class="container">
     <header class="leitura-topo">
         <a class="leitura-marca" href="index.php"><img src="images/logo.png" alt="Portal Bíblico"><span>Portal Bíblico</span></a>
@@ -130,7 +131,7 @@ function escaparLeitura(string $valor): string
         </script>
     </header>
 
-    <main class="leitura-main">
+    <main class="leitura-main" id="conteudo-principal" tabindex="-1">
         <div class="leitura-cabecalho">
             <div>
                 <p class="sobretitulo">BÍBLIA CATÓLICA</p>
@@ -198,7 +199,7 @@ function escaparLeitura(string $valor): string
                     <?php if ($versiculos === []): ?>
                         <p>Este capítulo não possui versículos disponíveis.</p>
                     <?php else: ?>
-                    <div class="leitura-audio-controles" aria-label="Controles de leitura em voz alta">
+                    <div class="leitura-audio-controles" role="group" aria-label="Controles de leitura em voz alta">
                         <button type="button" id="ouvir-capitulo">Ouvir capítulo</button>
                         <button type="button" id="pausar-leitura" disabled>Pausar</button>
                         <button type="button" id="continuar-leitura" disabled>Continuar</button>
