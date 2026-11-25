@@ -4,8 +4,8 @@ body { background: var(--leitura-fundo); }
 .leitura-topo { display: flex; grid-template-columns: none; justify-content: space-between; align-items: center; gap: 24px; padding: 14px 20px; border-radius: 15px; background: var(--leitura-escuro); }
 .leitura-marca { display: flex; align-items: center; gap: 12px; color: white; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .leitura-marca img { width: 58px; height: 58px; object-fit: contain; }
-.leitura-nav { display: flex; flex: 1; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 10px 16px; }
-.leitura-nav a, .voltar-inicio { display: inline-flex; align-items: center; gap: 8px; color: white; font-size: 14px; font-weight: 600; text-decoration: none; }
+.leitura-nav { display: flex; flex: 1; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 12px 24px; }
+.leitura-nav a, .voltar-inicio { display: inline-flex; align-items: center; gap: 8px; padding: 6px 8px; color: white; font-size: 14px; font-weight: 600; text-decoration: none; }
 .leitura-nav a:hover, .voltar-inicio:hover { text-decoration: underline; }
 .leitura-main { width: min(1120px, 100%); }
 .leitura-cabecalho { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 24px; padding: 24px 0 8px; }
