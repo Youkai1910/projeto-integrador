@@ -2,13 +2,33 @@
 declare(strict_types=1);
 
 use ProjetoIntegrador\Database\ConexaoBD;
+use ProjetoIntegrador\Helpers\LogServico;
+use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Services\LeituraBiblicaServico;
+use ProjetoIntegrador\Services\UsuarioServico;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-use ProjetoIntegrador\Helpers\LogServico;
-
 LogServico::configurar();
+Seguranca::iniciarSessao();
+
+$usuarioSessao = $_SESSION['usuario'] ?? null;
+$idUsuarioSessao = is_array($usuarioSessao)
+    ? filter_var($usuarioSessao['id'] ?? null, FILTER_VALIDATE_INT)
+    : false;
+$estaLogado = $idUsuarioSessao !== false && $idUsuarioSessao > 0;
+$ehAdministrador = false;
+$ehEditor = false;
+
+if ($estaLogado) {
+    try {
+        $servicoUsuario = new UsuarioServico(ConexaoBD::getConexao());
+        $ehAdministrador = $servicoUsuario->ehAdministrador((int) $idUsuarioSessao);
+        $ehEditor = $servicoUsuario->ehEditor((int) $idUsuarioSessao);
+    } catch (\Throwable $e) {
+        error_log($e->getMessage());
+    }
+}
 
 $servico = null;
 $idLivroRecebido = filter_input(INPUT_GET, 'livro', FILTER_VALIDATE_INT);
@@ -100,6 +120,7 @@ function escaparLeitura(string $valor): string
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Leia os livros, capítulos e versículos da Bíblia Católica no Portal Bíblico.">
     <title><?= $livro !== null ? escaparLeitura((string) $livro['label']) . ($numeroCapitulo !== null ? ' ' . $numeroCapitulo : '') . ' | ' : '' ?>Leitura bíblica | Portal Bíblico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/leitura.css">
 </head>
@@ -107,15 +128,29 @@ function escaparLeitura(string $valor): string
 <a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
 <div class="container">
     <header class="leitura-topo">
-        <a class="leitura-marca" href="index.php"><img src="images/logo.png" alt="Portal Bíblico"><span>Portal Bíblico</span></a>
+        <a class="leitura-marca" href="index.php"><img src="images/logo-pequena.png" alt="Portal Bíblico"></a>
         <button class="leitura-menu-toggle" type="button" aria-expanded="false" aria-controls="leitura-menu" id="leitura-menu-toggle" aria-label="Abrir ou fechar o menu">
             <span aria-hidden="true">☰</span>
         </button>
         <nav class="leitura-nav" id="leitura-menu" aria-label="Navegação da leitura">
-            <a href="index.php">Início</a>
-            <a href="leitura.php">Todos os livros</a>
-            <a href="leitura.php?testamento=1">Antigo Testamento</a>
-            <a href="leitura.php?testamento=2">Novo Testamento</a>
+            <a href="index.php"><i class="fa-solid fa-house"></i> HOME</a>
+            <a href="leitura.php?testamento=1"><i class="fa-solid fa-scroll"></i> Antigo Testamento</a>
+            <a href="leitura.php?testamento=2"><i class="fa-solid fa-book-open"></i> Novo Testamento</a>
+            <?php if ($ehAdministrador || $ehEditor): ?>
+                <a href="admin/usuarios.php"><i class="fa-solid fa-user-gear"></i> ADMINISTRAÇÃO</a>
+            <?php endif; ?>
+            <?php if ($estaLogado): ?>
+                <a href="admin/anotacoes.php"><i class="fa-solid fa-bookmark"></i> ANOTAÇÕES</a>
+            <?php endif; ?>
+            <?php if (!$estaLogado): ?>
+                <a href="cadastro.php"><i class="fa-solid fa-user-plus"></i> ÁREA DE CADASTRO</a>
+                <a href="login.php"><i class="fa-solid fa-right-to-bracket"></i> ENTRAR</a>
+            <?php else: ?>
+                <form class="logout-form" method="post" action="logout.php">
+                    <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar(Seguranca::obterTokenCsrf()) ?>">
+                    <button type="submit">SAIR</button>
+                </form>
+            <?php endif; ?>
         </nav>
         <script>
             (function () {
