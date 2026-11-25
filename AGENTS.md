@@ -33,18 +33,19 @@ para restringir `tipo` aos três perfis.
 
 ## Cadastro e administração de usuários
 
-- `cadastro.php` sempre cria contas com perfil `usuario`; `TipoUsuario` centraliza
-  os perfis válidos e seus rótulos.
-- `login.php` define `$_SESSION['usuario']['id']` e `$_SESSION['usuario_id']`.
-  `logout.php` aceita somente POST com token CSRF.
-- `public/admin/usuarios.php` e suas ações exigem uma sessão autenticada e confirmam o
-  perfil de administrador no banco antes de permitir operações.
+- `public/cadastro.php` sempre cria contas com perfil `usuario`; `TipoUsuario`
+  centraliza os perfis válidos e seus rótulos.
+- `public/login.php` define `$_SESSION['usuario']['id']` e `$_SESSION['usuario_id']`.
+  `public/logout.php` aceita somente POST com token CSRF.
+- `public/admin/usuarios.php` e suas ações exigem uma sessão autenticada e
+  verificam o perfil autorizado antes de permitir operações.
+- O bootstrap administrativo fica em `src/Bootstrap/admin.php`, fora da raiz web.
 
 ## Anotações
 
-- A página `public/admin/anotacoes.php` exige uma sessão autenticada com o identificador
-  positivo do usuário em `$_SESSION['usuario_id']`; o fluxo de autenticação deve
-  definir esse valor após o login.
+- A página `public/admin/anotacoes.php` exige uma sessão autenticada com o
+  identificador positivo do usuário em `$_SESSION['usuario_id']`; o fluxo de
+  autenticação deve definir esse valor após o login.
 - `AnotacaoServico` limita listagem, edição, favoritos e exclusão ao dono da
   anotação e usa consultas preparadas.
 - A página usa token CSRF nos formulários e `Validacoes::textoAnotacao()` para
@@ -70,9 +71,34 @@ para restringir `tipo` aos três perfis.
   relativos a partir da raiz da aplicação.
 - Utilize `alt` em todas as imagens informativas e preserve `aria-label` em
   controles importantes de navegação e pesquisa.
+- Mantenha links para pular ao conteúdo principal, hierarquia de títulos,
+  rótulos de formulários e foco visível para navegação por teclado.
+- Garanta contraste legível para textos sobre imagens e fundos coloridos.
+- A leitura em voz alta usa `SpeechSynthesis` e só deve iniciar após ação do
+  usuário; mantenha controles de pausar, continuar e parar, além do status acessível.
 - Preserve o layout responsivo em larguras menores com media queries.
 - Valide a sintaxe PHP e confirme que a página e os recursos CSS e de imagem
   respondem corretamente em servidor local.
+
+## Comandos locais
+
+Execute na raiz do repositório:
+
+```powershell
+composer install
+php -S 127.0.0.1:8000 -t public
+Get-ChildItem -Recurse -Path .\public -Filter *.php | ForEach-Object { php -l $_.FullName }
+git diff --check
+```
+
+## Comandos realizados em 24/11/2026
+
+- `git fetch origin`
+- `git switch main`
+- `git pull --ff-only origin main` — `main` já estava sincronizada com `origin/main`.
+- `php -S 127.0.0.1:8005 -t public` — teste local das páginas e recursos com `public/`
+  como raiz web; o servidor de teste foi encerrado ao final.
+- `php -l` nos arquivos PHP da aplicação e `git diff --check`.
 # Portal Bíblico
 
 Aplicação PHP integrada a MySQL para leitura bíblica, cadastro/login, anotações e área administrativa.

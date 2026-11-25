@@ -134,7 +134,7 @@ function escaparLeitura(string $valor): string
     <main class="leitura-main" id="conteudo-principal" tabindex="-1">
         <div class="leitura-cabecalho">
             <div>
-                <p class="sobretitulo">BÍBLIA CATÓLICA</p>
+                <p class="sobretitulo">BÍBLIA</p>
                 <h1><?= $livro !== null ? escaparLeitura((string) $livro['label']) : ($nomeTestamento !== null ? escaparLeitura($nomeTestamento) : 'Escolha um livro') ?></h1>
                 <p>Selecione um livro e capítulo para abrir a leitura completa.</p>
             </div>
@@ -243,7 +243,7 @@ function escaparLeitura(string $valor): string
         <?php endif; ?>
     </main>
 
-    <footer class="leitura-rodape"><a href="index.php">Portal Diário</a><span>Leia capítulo por capítulo e acompanhe cada versículo.</span></footer>
+    <footer class="leitura-rodape"><a href="index.php">Portal Bíblico</a><span>Leia capítulo por capítulo e acompanhe cada versículo.</span></footer>
 </div>
 <?php if ($numeroCapitulo !== null && $versiculos !== []): ?>
 <script>
