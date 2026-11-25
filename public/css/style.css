@@ -411,6 +411,186 @@ main {
     margin: 18px 0 8px;
 }
 
+.anotacoes-criar {
+    display: grid;
+    gap: 10px;
+    margin: 24px 0;
+    padding: 20px;
+    border: 1px solid #d5e0eb;
+    border-radius: 10px;
+    background: #f5f8fc;
+}
+
+.anotacoes-criar label,
+.anotacoes-filtros label,
+.anotacao-edicao label {
+    color: #173653;
+    font-weight: 600;
+}
+
+.anotacoes-criar textarea,
+.anotacoes-filtros input,
+.anotacoes-filtros select,
+.anotacao-edicao textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #9aafc4;
+    border-radius: 6px;
+    color: #26384a;
+    font: inherit;
+}
+
+.anotacoes-criar textarea,
+.anotacao-edicao textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.anotacoes-criar textarea:focus-visible,
+.anotacoes-filtros input:focus-visible,
+.anotacoes-filtros select:focus-visible,
+.anotacao-edicao textarea:focus-visible,
+.anotacoes-botao:focus-visible,
+.anotacao-edicao summary:focus-visible {
+    outline: 3px solid #5b8dbd;
+    outline-offset: 2px;
+}
+
+.anotacoes-botao {
+    min-height: 42px;
+    padding: 9px 14px;
+    border: 1px solid #24476b;
+    border-radius: 6px;
+    background: #24476b;
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.anotacoes-botao:hover {
+    background: #173653;
+}
+
+.anotacoes-botao-secundario {
+    background: #fff;
+    color: #24476b;
+}
+
+.anotacoes-botao-secundario:hover {
+    background: #eaf1f8;
+    color: #173653;
+}
+
+.anotacoes-botao-remover {
+    border-color: #a33b3b;
+    background: #fff;
+    color: #8a2929;
+}
+
+.anotacoes-botao-remover:hover {
+    background: #fff0f0;
+    color: #702020;
+}
+
+.anotacoes-filtros {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(210px, 280px);
+    gap: 14px 20px;
+    align-items: end;
+    margin: 24px 0 14px;
+    padding: 18px;
+    border-radius: 10px;
+    background: #eef3f8;
+}
+
+.anotacoes-filtros > div {
+    display: grid;
+    gap: 7px;
+}
+
+.anotacoes-filtros[hidden],
+.anotacao-card[hidden],
+.anotacoes-sem-resultados[hidden] {
+    display: none;
+}
+
+.anotacoes-contagem,
+.anotacoes-sem-resultados {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: #42586e;
+}
+
+.anotacoes-lista {
+    display: grid;
+    gap: 16px;
+}
+
+.anotacao-card {
+    display: grid;
+    gap: 14px;
+    padding: 20px;
+    border: 1px solid #d5e0eb;
+    border-left: 4px solid #24476b;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(23, 54, 83, 0.06);
+}
+
+.anotacao-texto {
+    margin: 0;
+    color: #26384a;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.anotacao-datas {
+    color: #52677b;
+    line-height: 1.5;
+}
+
+.anotacao-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid #e1e8ef;
+}
+
+.anotacao-acoes form {
+    margin: 0;
+}
+
+.anotacao-edicao {
+    flex: 1 1 100%;
+    margin-bottom: 2px;
+}
+
+.anotacao-edicao summary {
+    width: fit-content;
+    padding: 8px 0;
+    color: #24476b;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.anotacao-edicao form {
+    display: grid;
+    gap: 9px;
+    max-width: 800px;
+    padding: 8px 0 4px;
+}
+
+.anotacoes-vazio {
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 8px;
+    background: #eef3f8;
+    color: #42586e;
+}
+
 .admin-biblia-resumo {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -593,6 +773,10 @@ footer {
 @media (max-width: 500px) {
     .inferior,
     .lista-livros {
+        grid-template-columns: 1fr;
+    }
+
+    .anotacoes-filtros {
         grid-template-columns: 1fr;
     }
 

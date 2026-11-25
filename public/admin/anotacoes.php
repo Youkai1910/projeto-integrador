@@ -135,54 +135,80 @@ $anotacoes = $servico->listarDoUsuario($usuarioId);
             </div>
         <?php endif; ?>
 
-        <form action="anotacoes.php" method="POST">
+        <form class="anotacoes-criar" action="anotacoes.php" method="POST">
             <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
             <input type="hidden" name="acao" value="criar">
             <label for="nova-anotacao">Nova anotação</label>
             <textarea id="nova-anotacao" name="anotacao" maxlength="65535" required></textarea>
-            <button type="submit">Salvar anotação</button>
+            <button class="anotacoes-botao" type="submit">Salvar anotação</button>
         </form>
 
         <?php if (!$anotacoes): ?>
-            <p>Você ainda não tem anotações.</p>
+            <p class="anotacoes-vazio">Você ainda não tem anotações.</p>
         <?php else: ?>
-            <?php foreach ($anotacoes as $anotacao): ?>
-                <article>
-                    <p>
-                        <?= nl2br(Utils::escaparHtml($anotacao->texto)) ?>
-                    </p>
-                    <small>
-                        Criada em <?= Utils::escaparHtml($anotacao->criadoEm) ?>.
-                        Atualizada em <?= Utils::escaparHtml($anotacao->atualizadoEm) ?>.
-                    </small>
+            <div class="anotacoes-filtros" id="filtros-anotacoes" hidden>
+                <div>
+                    <label for="busca-anotacoes">Buscar nas anotações</label>
+                    <input id="busca-anotacoes" type="search" autocomplete="off">
+                </div>
+                <div>
+                    <label for="filtro-anotacoes">Mostrar</label>
+                    <select id="filtro-anotacoes">
+                        <option value="todas">Todas as anotações</option>
+                        <option value="favoritos">Somente favoritas</option>
+                    </select>
+                </div>
+                <p id="contagem-anotacoes" class="anotacoes-contagem" role="status" aria-live="polite"></p>
+                <p id="nenhuma-anotacao-encontrada" class="anotacoes-sem-resultados" hidden>
+                    Nenhuma anotação corresponde à busca e ao filtro selecionados.
+                </p>
+            </div>
 
-                    <form action="anotacoes.php" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
-                        <input type="hidden" name="acao" value="atualizar">
-                        <input type="hidden" name="id" value="<?= $anotacao->id ?>">
-                        <label for="anotacao-<?= $anotacao->id ?>">Editar anotação</label>
-                        <textarea id="anotacao-<?= $anotacao->id ?>" name="anotacao" maxlength="65535" required><?= Utils::escaparHtml($anotacao->texto) ?></textarea>
-                        <button type="submit">Atualizar</button>
-                    </form>
+            <section class="anotacoes-lista" aria-label="Suas anotações">
+                <?php foreach ($anotacoes as $anotacao): ?>
+                    <article class="anotacao-card" data-favorito="<?= $anotacao->favorito ? '1' : '0' ?>">
+                        <p class="anotacao-texto">
+                            <?= nl2br(Utils::escaparHtml($anotacao->texto)) ?>
+                        </p>
+                        <small class="anotacao-datas">
+                            Criada em <?= Utils::escaparHtml($anotacao->criadoEm) ?>.
+                            Atualizada em <?= Utils::escaparHtml($anotacao->atualizadoEm) ?>.
+                        </small>
 
-                    <form action="anotacoes.php" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
-                        <input type="hidden" name="acao" value="favorito">
-                        <input type="hidden" name="id" value="<?= $anotacao->id ?>">
-                        <input type="hidden" name="favorito" value="<?= $anotacao->favorito ? '0' : '1' ?>">
-                        <button type="submit">
-                            <?= $anotacao->favorito ? 'Remover dos favoritos' : 'Marcar como favorito' ?>
-                        </button>
-                    </form>
+                        <div class="anotacao-acoes">
+                            <details class="anotacao-edicao">
+                                <summary>Editar anotação</summary>
+                                <form action="anotacoes.php" method="POST">
+                                    <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
+                                    <input type="hidden" name="acao" value="atualizar">
+                                    <input type="hidden" name="id" value="<?= $anotacao->id ?>">
+                                    <label for="anotacao-<?= $anotacao->id ?>">Texto da anotação</label>
+                                    <textarea id="anotacao-<?= $anotacao->id ?>" name="anotacao" maxlength="65535" required><?= Utils::escaparHtml($anotacao->texto) ?></textarea>
+                                    <button class="anotacoes-botao" type="submit">Salvar alterações</button>
+                                </form>
+                            </details>
 
-                    <form action="anotacoes.php" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
-                        <input type="hidden" name="acao" value="remover">
-                        <input type="hidden" name="id" value="<?= $anotacao->id ?>">
-                        <button type="submit">Remover</button>
-                    </form>
-                </article>
-            <?php endforeach; ?>
+                            <form action="anotacoes.php" method="POST">
+                                <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
+                                <input type="hidden" name="acao" value="favorito">
+                                <input type="hidden" name="id" value="<?= $anotacao->id ?>">
+                                <input type="hidden" name="favorito" value="<?= $anotacao->favorito ? '0' : '1' ?>">
+                                <button class="anotacoes-botao anotacoes-botao-secundario" type="submit">
+                                    <?= $anotacao->favorito ? 'Remover dos favoritos' : 'Marcar como favorita' ?>
+                                </button>
+                            </form>
+
+                            <form action="anotacoes.php" method="POST">
+                                <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
+                                <input type="hidden" name="acao" value="remover">
+                                <input type="hidden" name="id" value="<?= $anotacao->id ?>">
+                                <button class="anotacoes-botao anotacoes-botao-remover" type="submit">Remover</button>
+                            </form>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </section>
+            <script src="../js/anotacoes.js" defer></script>
         <?php endif; ?>
     </section>
 </main>
