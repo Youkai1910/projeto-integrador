@@ -591,6 +591,131 @@ main {
     color: #42586e;
 }
 
+.botao-favorito-biblico {
+    display: inline-flex;
+    min-width: 42px;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: #9a6500;
+    font: inherit;
+    font-size: 1.25rem;
+    line-height: 1;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.botao-favorito-biblico:hover {
+    border-color: #e5cf93;
+    background: #fff8e6;
+}
+
+.botao-favorito-biblico:focus-visible {
+    outline: 3px solid #5b8dbd;
+    outline-offset: 2px;
+}
+
+.favorito-biblico-capitulo {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #d5e0eb;
+}
+
+.favorito-biblico-login,
+.favorito-biblico-mensagem {
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: #eef3f8;
+    color: #26384a;
+}
+
+.favorito-biblico-login a {
+    color: #173653;
+    font-weight: 700;
+}
+
+.versiculo-dia .botao-favorito-biblico {
+    color: #ffe08a;
+}
+
+.versiculo-dia .botao-favorito-biblico:hover {
+    border-color: rgba(255, 224, 138, 0.6);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.favoritos-biblicos {
+    margin-top: 38px;
+    padding-top: 24px;
+    border-top: 2px solid #d5e0eb;
+}
+
+.favoritos-biblicos > h2 {
+    margin: 0 0 18px;
+    color: #173653;
+}
+
+.favoritos-biblicos-lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.favorito-biblico-card {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 18px;
+    border: 1px solid #d5e0eb;
+    border-left: 4px solid #b98516;
+    border-radius: 10px;
+    background: #fffdf7;
+}
+
+.favorito-biblico-card h3 {
+    margin: 0;
+    color: #173653;
+    font-size: 1.1rem;
+}
+
+.favorito-biblico-card blockquote,
+.favorito-biblico-card p {
+    margin: 0;
+    color: #26384a;
+    line-height: 1.6;
+}
+
+.favorito-biblico-card blockquote {
+    font-family: Georgia, 'Times New Roman', serif;
+}
+
+.favorito-biblico-card small {
+    color: #52677b;
+}
+
+.favorito-biblico-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e1e8ef;
+}
+
+.favorito-biblico-acoes a {
+    color: #24476b;
+    font-weight: 600;
+}
+
+.favorito-biblico-acoes form {
+    margin: 0;
+}
+
 .admin-biblia-resumo {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -777,6 +902,10 @@ footer {
     }
 
     .anotacoes-filtros {
+        grid-template-columns: 1fr;
+    }
+
+    .favoritos-biblicos-lista {
         grid-template-columns: 1fr;
     }
 

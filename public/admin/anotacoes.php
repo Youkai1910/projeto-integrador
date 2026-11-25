@@ -7,6 +7,7 @@ LogServico::configurar();
 use ProjetoIntegrador\Helpers\Utils;
 use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Services\AnotacaoServico;
+use ProjetoIntegrador\Services\FavoritoBiblicoServico;
 use ProjetoIntegrador\Helpers\Seguranca;
 
 Seguranca::iniciarSessao();
@@ -40,9 +41,13 @@ if (!isset($_SESSION['anotacoes_csrf'])) {
     $_SESSION['anotacoes_csrf'] = bin2hex(random_bytes(32));
 }
 $tokenCsrf = $_SESSION['anotacoes_csrf'];
+$tokenFavoritosCsrf = Seguranca::obterTokenCsrf();
 $servico = new AnotacaoServico();
+$servicoFavoritosBiblicos = new FavoritoBiblicoServico();
 $erros = [];
 $mensagem = '';
+$mensagemFavoritoBiblico = $_SESSION['favorito_biblico_flash'] ?? '';
+unset($_SESSION['favorito_biblico_flash']);
 $mensagens = [
     'criada' => 'Anotação criada.',
     'atualizada' => 'Anotação atualizada.',
@@ -109,6 +114,7 @@ if (isset($_GET['status']) && is_string($_GET['status'])) {
 }
 
 $anotacoes = $servico->listarDoUsuario($usuarioId);
+$favoritosBiblicos = $servicoFavoritosBiblicos->listarDoUsuario($usuarioId);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -127,6 +133,9 @@ $anotacoes = $servico->listarDoUsuario($usuarioId);
         <?php if ($mensagem !== ''): ?>
             <div role="status"><p><?= Utils::escaparHtml($mensagem) ?></p></div>
         <?php endif; ?>
+        <?php if (is_string($mensagemFavoritoBiblico) && $mensagemFavoritoBiblico !== ''): ?>
+            <div role="status"><p><?= Utils::escaparHtml($mensagemFavoritoBiblico) ?></p></div>
+        <?php endif; ?>
         <?php if ($erros): ?>
             <div role="alert">
                 <?php foreach ($erros as $erro): ?>
@@ -144,7 +153,7 @@ $anotacoes = $servico->listarDoUsuario($usuarioId);
         </form>
 
         <?php if (!$anotacoes): ?>
-            <p class="anotacoes-vazio">Você ainda não tem anotações.</p>
+            <p class="anotacoes-vazio">Você ainda não tem anotações. Seus favoritos bíblicos aparecem abaixo.</p>
         <?php else: ?>
             <div class="anotacoes-filtros" id="filtros-anotacoes" hidden>
                 <div>
@@ -210,6 +219,54 @@ $anotacoes = $servico->listarDoUsuario($usuarioId);
             </section>
             <script src="../js/anotacoes.js" defer></script>
         <?php endif; ?>
+
+        <section class="favoritos-biblicos" aria-labelledby="titulo-favoritos-biblicos">
+            <h2 id="titulo-favoritos-biblicos">Favoritos bíblicos</h2>
+            <?php if (!$favoritosBiblicos): ?>
+                <p class="anotacoes-vazio">Você ainda não salvou versículos ou capítulos favoritos.</p>
+            <?php else: ?>
+                <div class="favoritos-biblicos-lista">
+                    <?php foreach ($favoritosBiblicos as $favoritoBiblico): ?>
+                        <?php
+                        $livroFavorito = (string) $favoritoBiblico['livro_nome'];
+                        $livroFavoritoId = (int) $favoritoBiblico['livro_id'];
+                        $capituloFavorito = (int) $favoritoBiblico['capitulo'];
+                        $ehVersiculoFavorito = $favoritoBiblico['tipo'] === 'versiculo';
+                        $versiculoFavorito = (int) $favoritoBiblico['versiculo'];
+                        ?>
+                        <article class="favorito-biblico-card">
+                            <h3><?= Utils::escaparHtml(
+                                $livroFavorito . ' ' . $capituloFavorito
+                                . ($ehVersiculoFavorito ? ':' . $versiculoFavorito : '')
+                            ) ?></h3>
+                            <?php if ($ehVersiculoFavorito): ?>
+                                <?php if (is_string($favoritoBiblico['texto'])): ?>
+                                    <blockquote><?= Utils::escaparHtml($favoritoBiblico['texto']) ?></blockquote>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <p>Capítulo salvo nos seus favoritos.</p>
+                            <?php endif; ?>
+                            <small>Salvo em <?= Utils::escaparHtml((string) $favoritoBiblico['criado_em']) ?></small>
+                            <div class="favorito-biblico-acoes">
+                                <a href="../leitura.php?livro=<?= $livroFavoritoId ?>&amp;capitulo=<?= $capituloFavorito ?><?= $ehVersiculoFavorito ? '#versiculo-' . $versiculoFavorito : '#texto' ?>">
+                                    <?= $ehVersiculoFavorito ? 'Abrir versículo' : 'Ler capítulo' ?>
+                                </a>
+                                <form action="../favorito-biblico.php" method="POST">
+                                    <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenFavoritosCsrf) ?>">
+                                    <input type="hidden" name="tipo" value="<?= $ehVersiculoFavorito ? 'versiculo' : 'capitulo' ?>">
+                                    <input type="hidden" name="livro_id" value="<?= $livroFavoritoId ?>">
+                                    <input type="hidden" name="capitulo" value="<?= $capituloFavorito ?>">
+                                    <input type="hidden" name="versiculo" value="<?= $ehVersiculoFavorito ? $versiculoFavorito : '0' ?>">
+                                    <input type="hidden" name="favorito" value="0">
+                                    <input type="hidden" name="origem" value="anotacoes">
+                                    <button class="anotacoes-botao anotacoes-botao-secundario" type="submit">★ Remover dos favoritos</button>
+                                </form>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </section>
     </section>
 </main>
 </body>
