@@ -124,18 +124,7 @@ if ($livroId !== null && $livroSelecionado === null) {
             <img class="logo" src="images/logo.png?v=<?= filemtime(__DIR__ . '/images/logo.png') ?>" alt="Portal Bíblico">
         </div>
         <div class="menu-area">
-            <button
-                class="menu-toggle"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#menu-principal"
-                aria-expanded="false"
-                aria-controls="menu-principal"
-                aria-label="Abrir ou fechar o menu de navegação"
-            >
-                <i class="fa-solid fa-bars" aria-hidden="true"></i>
-            </button>
-            <nav class="banner collapse" id="menu-principal" aria-label="Navegação principal">
+            <nav class="banner" id="menu-principal" aria-label="Navegação principal">
                 <form class="search-box" action="index.php" method="GET">
                     <input type="search" placeholder="Pesquisar..." name="q" aria-label="Pesquisar livros" value="<?= Utils::escaparHtml($termo) ?>">
                     <button type="submit" aria-label="Enviar pesquisa">
