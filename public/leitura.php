@@ -4,7 +4,6 @@ declare(strict_types=1);
 use ProjetoIntegrador\Database\ConexaoBD;
 use ProjetoIntegrador\Helpers\LogServico;
 use ProjetoIntegrador\Helpers\Seguranca;
-use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Services\FavoritoBiblicoServico;
 use ProjetoIntegrador\Services\LeituraBiblicaServico;
