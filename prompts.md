@@ -15,3 +15,45 @@ Eu quero que coloque as imagens no html respeitando os códigos do agents.md e o
 
 # 2. Hamburgue pelo bootstrap
 Utilizando o collapse do bootstrap para criar um menu hamburgue nos livros, para deixar o controle mais interativo ao usuário pelo celular e manter-lo responsivo.
+
+# Registro de solicitações e comandos — 24/11/2026
+
+## Solicitações atendidas
+
+- Copiar para `biblia_alexandre` as alterações selecionadas de `biblia_anderson`,
+  sem substituir `AGENTS.md`, `prompts.md` e `resumo.md`.
+- Analisar a conexão `ConexaoBD`, atualizar o e-mail de contato e configurar
+  registro centralizado de erros.
+- Atualizar localmente a branch `main`.
+- Organizar páginas e recursos públicos sob `public/`, mantendo código interno
+  fora da raiz web e testando a configuração correta do servidor PHP.
+- Corrigir o alinhamento dos cards em telas de celular.
+- Adicionar leitura em voz alta opcional usando a voz nativa do navegador.
+- Aplicar melhorias de acessibilidade sem remover as alterações existentes.
+- Ajustar os textos da página de leitura para “BÍBLIA” e “Portal Bíblico”.
+- Atualizar a documentação com o trabalho e os comandos executados.
+
+## Comandos de terminal executados
+
+```powershell
+git fetch origin
+git switch main
+git pull --ff-only origin main
+php -S 127.0.0.1:8005 -t public
+Get-ChildItem -Recurse -Path .\public -Filter *.php | ForEach-Object { php -l $_.FullName }
+git diff --check
+```
+
+O pull confirmou que `main` já estava sincronizada com `origin/main`. O servidor
+PHP foi usado para validar as páginas com `public/` como raiz web e encerrado
+após os testes. A cópia seletiva de arquivos foi feita com
+`git restore --source=biblia_anderson`, preservando os três documentos listados
+acima.
+
+## Verificações realizadas
+
+- Sintaxe dos arquivos PHP validada com `php -l`.
+- `git diff --check` sem erros.
+- Páginas e recursos locais verificados por HTTP.
+- Navegação por teclado, link para o conteúdo principal e suporte à API de voz
+  conferidos no navegador; a fala não foi iniciada automaticamente.
