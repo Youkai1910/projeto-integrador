@@ -26,5 +26,22 @@ CREATE TABLE IF NOT EXISTS anotacoes (
         ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS favoritos_biblicos (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    usuario_id INT UNSIGNED NOT NULL,
+    tipo ENUM('capitulo', 'versiculo') NOT NULL,
+    livro_id INT UNSIGNED NOT NULL,
+    capitulo INT UNSIGNED NOT NULL,
+    versiculo INT UNSIGNED NOT NULL DEFAULT 0,
+    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_favoritos_biblicos_alvo (usuario_id, tipo, livro_id, capitulo, versiculo),
+    KEY idx_favoritos_biblicos_usuario_criado (usuario_id, criado_em),
+    CONSTRAINT fk_favoritos_biblicos_usuario
+        FOREIGN KEY (usuario_id) REFERENCES usuarios (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 ALTER TABLE usuarios
     MODIFY tipo ENUM('usuario', 'editor', 'admin') NOT NULL DEFAULT 'usuario';

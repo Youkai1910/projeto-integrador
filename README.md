@@ -27,3 +27,12 @@ php -S localhost:8000 -t public
 Depois, acesse `http://localhost:8000`. Configure as variáveis de ambiente do
 banco de dados (`DB_HOST`, `DB_NAME`, `DB_USER` e `DB_PASSWORD`) antes de usar as
 funcionalidades que precisam dele.
+
+## Anotações e favoritos bíblicos
+
+Execute `biblia_catolica/tabelas_usuarios_anotacoes.sql` no banco configurado
+em `DB_NAME` para criar as tabelas de anotações e favoritos bíblicos. Em uma
+instalação existente, execute o script novamente para criar a tabela de
+favoritos. Usuários autenticados podem favoritar versículos e capítulos na
+página de leitura; esses itens aparecem em uma seção própria na página de
+anotações.

@@ -4,6 +4,9 @@ declare(strict_types=1);
 use ProjetoIntegrador\Database\ConexaoBD;
 use ProjetoIntegrador\Helpers\LogServico;
 use ProjetoIntegrador\Helpers\Seguranca;
+use ProjetoIntegrador\Helpers\Seguranca;
+use ProjetoIntegrador\Helpers\Validacoes;
+use ProjetoIntegrador\Services\FavoritoBiblicoServico;
 use ProjetoIntegrador\Services\LeituraBiblicaServico;
 use ProjetoIntegrador\Services\UsuarioServico;
 
@@ -31,6 +34,14 @@ if ($estaLogado) {
 }
 
 $servico = null;
+$usuarioSessao = $_SESSION['usuario'] ?? null;
+$usuarioId = is_array($usuarioSessao)
+    ? Validacoes::idPositivo($usuarioSessao['id'] ?? null)
+    : null;
+$mensagemFavoritoBiblico = $_SESSION['favorito_biblico_flash'] ?? '';
+unset($_SESSION['favorito_biblico_flash']);
+$estadoFavoritosBiblicos = ['capitulo' => false, 'versiculos' => []];
+$tokenFavoritosBiblicos = null;
 $idLivroRecebido = filter_input(INPUT_GET, 'livro', FILTER_VALIDATE_INT);
 $capituloRecebido = filter_input(INPUT_GET, 'capitulo', FILTER_VALIDATE_INT);
 $idTestamentoRecebido = filter_input(INPUT_GET, 'testamento', FILTER_VALIDATE_INT);
@@ -84,6 +95,15 @@ try {
     $nomeTestamento = $testamentoSelecionado !== null
         ? $servico->obterTestamento($testamentoSelecionado)
         : null;
+    if ($usuarioId !== null && $livro !== null && $numeroCapitulo !== null) {
+        $servicoFavoritosBiblicos = new FavoritoBiblicoServico(ConexaoBD::getConexao());
+        $estadoFavoritosBiblicos = $servicoFavoritosBiblicos->estadoNoTrecho(
+            $usuarioId,
+            (int) $livro['id'],
+            $numeroCapitulo
+        );
+        $tokenFavoritosBiblicos = Seguranca::obterTokenCsrf();
+    }
 } catch (\Throwable $e) {
     error_log($e->getMessage());
     http_response_code(500);
@@ -176,14 +196,42 @@ function escaparLeitura(string $valor): string
             <a class="voltar-inicio" href="index.php">Voltar à página inicial</a>
         </div>
 
+        <?php if (is_string($mensagemFavoritoBiblico) && $mensagemFavoritoBiblico !== ''): ?>
+            <p class="favorito-biblico-mensagem" role="status"><?= escaparLeitura($mensagemFavoritoBiblico) ?></p>
+        <?php endif; ?>
+
         <?php if ($erroLeitura !== ''): ?>
             <p class="leitura-alerta" role="alert"><?= escaparLeitura($erroLeitura) ?></p>
         <?php endif; ?>
 
         <?php if ($aleatoria && $referenciaAleatoria !== null && $livroReferencia !== null): ?>
+            <?php
+            $numeroVersiculoAleatorio = (int) $referenciaAleatoria['verse'];
+            $versiculoAleatorioFavorito = isset($estadoFavoritosBiblicos['versiculos'][$numeroVersiculoAleatorio]);
+            ?>
             <aside class="versiculo-dia">
                 <span>UMA LEITURA PARA HOJE</span>
-                <blockquote>“<?= escaparLeitura((string) $referenciaAleatoria['text']) ?>”</blockquote>
+                <blockquote>
+                    “<?= escaparLeitura((string) $referenciaAleatoria['text']) ?>”
+                    <?php if ($usuarioId !== null): ?>
+                        <button
+                            class="botao-favorito-biblico"
+                            type="submit"
+                            form="favorito-versiculo-dia"
+                            aria-label="<?= $versiculoAleatorioFavorito ? 'Remover versículo do dia dos favoritos' : 'Salvar versículo do dia nos favoritos' ?>"
+                            title="<?= $versiculoAleatorioFavorito ? 'Remover dos favoritos' : 'Salvar nos favoritos' ?>"
+                        ><?= $versiculoAleatorioFavorito ? '★' : '☆' ?></button>
+                        <form id="favorito-versiculo-dia" action="favorito-biblico.php" method="POST" hidden>
+                            <input type="hidden" name="csrf_token" value="<?= escaparLeitura((string) $tokenFavoritosBiblicos) ?>">
+                            <input type="hidden" name="tipo" value="versiculo">
+                            <input type="hidden" name="livro_id" value="<?= (int) $referenciaAleatoria['book'] ?>">
+                            <input type="hidden" name="capitulo" value="<?= (int) $referenciaAleatoria['chapter'] ?>">
+                            <input type="hidden" name="versiculo" value="<?= $numeroVersiculoAleatorio ?>">
+                            <input type="hidden" name="favorito" value="<?= $versiculoAleatorioFavorito ? '0' : '1' ?>">
+                            <input type="hidden" name="origem" value="leitura">
+                        </form>
+                    <?php endif; ?>
+                </blockquote>
                 <a href="leitura.php?livro=<?= (int) $referenciaAleatoria['book'] ?>&amp;capitulo=<?= (int) $referenciaAleatoria['chapter'] ?>#versiculo-<?= (int) $referenciaAleatoria['verse'] ?>">
                     <?= escaparLeitura((string) $livroReferencia['label']) ?> <?= (int) $referenciaAleatoria['chapter'] ?>:<?= (int) $referenciaAleatoria['verse'] ?> · Ler capítulo
                 </a>
@@ -234,6 +282,9 @@ function escaparLeitura(string $valor): string
                     <?php if ($versiculos === []): ?>
                         <p>Este capítulo não possui versículos disponíveis.</p>
                     <?php else: ?>
+                    <?php if ($usuarioId === null): ?>
+                        <p class="favorito-biblico-login"><a href="login.php">Entre na sua conta</a> para salvar versículos e capítulos favoritos.</p>
+                    <?php endif; ?>
                     <div class="leitura-audio-controles" role="group" aria-label="Controles de leitura em voz alta">
                         <button type="button" id="ouvir-capitulo">Ouvir capítulo</button>
                         <button type="button" id="pausar-leitura" disabled>Pausar</button>
@@ -243,12 +294,55 @@ function escaparLeitura(string $valor): string
                     </div>
                         <ol class="lista-versiculos">
                             <?php foreach ($versiculos as $versiculo): ?>
-                                <li id="versiculo-<?= (int) $versiculo['verse'] ?>">
+                                <?php
+                                $numeroVersiculo = (int) $versiculo['verse'];
+                                $versiculoFavorito = isset($estadoFavoritosBiblicos['versiculos'][$numeroVersiculo]);
+                                $formFavoritoVersiculo = 'favorito-versiculo-' . $numeroCapitulo . '-' . $numeroVersiculo;
+                                ?>
+                                <li id="versiculo-<?= $numeroVersiculo ?>">
                                     <span class="numero-versiculo"><?= (int) $versiculo['verse'] ?></span>
-                                    <p><?= escaparLeitura((string) $versiculo['text']) ?></p>
+                                    <p>
+                                        <?= escaparLeitura((string) $versiculo['text']) ?>
+                                        <?php if ($usuarioId !== null): ?>
+                                            <button
+                                                class="botao-favorito-biblico"
+                                                type="submit"
+                                                form="<?= $formFavoritoVersiculo ?>"
+                                                aria-label="<?= $versiculoFavorito ? 'Remover versículo dos favoritos' : 'Salvar versículo nos favoritos' ?>"
+                                                title="<?= $versiculoFavorito ? 'Remover dos favoritos' : 'Salvar nos favoritos' ?>"
+                                            ><?= $versiculoFavorito ? '★' : '☆' ?></button>
+                                        <?php endif; ?>
+                                    </p>
+                                    <?php if ($usuarioId !== null): ?>
+                                        <form id="<?= $formFavoritoVersiculo ?>" action="favorito-biblico.php" method="POST" hidden>
+                                            <input type="hidden" name="csrf_token" value="<?= escaparLeitura((string) $tokenFavoritosBiblicos) ?>">
+                                            <input type="hidden" name="tipo" value="versiculo">
+                                            <input type="hidden" name="livro_id" value="<?= (int) $livro['id'] ?>">
+                                            <input type="hidden" name="capitulo" value="<?= $numeroCapitulo ?>">
+                                            <input type="hidden" name="versiculo" value="<?= $numeroVersiculo ?>">
+                                            <input type="hidden" name="favorito" value="<?= $versiculoFavorito ? '0' : '1' ?>">
+                                            <input type="hidden" name="origem" value="leitura">
+                                        </form>
+                                    <?php endif; ?>
                                 </li>
                             <?php endforeach; ?>
                         </ol>
+                        <?php if ($usuarioId !== null): ?>
+                            <form class="favorito-biblico-capitulo" action="favorito-biblico.php" method="POST">
+                                <input type="hidden" name="csrf_token" value="<?= escaparLeitura((string) $tokenFavoritosBiblicos) ?>">
+                                <input type="hidden" name="tipo" value="capitulo">
+                                <input type="hidden" name="livro_id" value="<?= (int) $livro['id'] ?>">
+                                <input type="hidden" name="capitulo" value="<?= $numeroCapitulo ?>">
+                                <input type="hidden" name="versiculo" value="0">
+                                <input type="hidden" name="favorito" value="<?= $estadoFavoritosBiblicos['capitulo'] ? '0' : '1' ?>">
+                                <input type="hidden" name="origem" value="leitura">
+                                <button
+                                    class="botao-favorito-biblico"
+                                    type="submit"
+                                    aria-label="<?= $estadoFavoritosBiblicos['capitulo'] ? 'Remover capítulo dos favoritos' : 'Salvar capítulo nos favoritos' ?>"
+                                ><?= $estadoFavoritosBiblicos['capitulo'] ? 'Remover capítulo dos favoritos ★' : 'Salvar capítulo nos favoritos ☆' ?></button>
+                            </form>
+                        <?php endif; ?>
                     <?php endif; ?>
                     <nav class="troca-livro" aria-label="Navegar entre livros">
                         <?php if ($livroAnterior !== null): ?><a href="leitura.php?livro=<?= (int) $livroAnterior['id'] ?>">← <?= escaparLeitura((string) $livroAnterior['label']) ?></a><?php endif; ?>
