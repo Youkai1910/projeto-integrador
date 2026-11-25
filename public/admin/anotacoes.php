@@ -7,6 +7,7 @@ LogServico::configurar();
 use ProjetoIntegrador\Helpers\Utils;
 use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Services\AnotacaoServico;
+use ProjetoIntegrador\Services\FavoritoBiblicoServico;
 use ProjetoIntegrador\Helpers\Seguranca;
 
 Seguranca::iniciarSessao();
@@ -40,9 +41,13 @@ if (!isset($_SESSION['anotacoes_csrf'])) {
     $_SESSION['anotacoes_csrf'] = bin2hex(random_bytes(32));
 }
 $tokenCsrf = $_SESSION['anotacoes_csrf'];
+$tokenFavoritosCsrf = Seguranca::obterTokenCsrf();
 $servico = new AnotacaoServico();
+$servicoFavoritosBiblicos = new FavoritoBiblicoServico();
 $erros = [];
 $mensagem = '';
+$mensagemFavoritoBiblico = $_SESSION['favorito_biblico_flash'] ?? '';
+unset($_SESSION['favorito_biblico_flash']);
 $mensagens = [
     'criada' => 'Anotação criada.',
     'atualizada' => 'Anotação atualizada.',
@@ -109,6 +114,7 @@ if (isset($_GET['status']) && is_string($_GET['status'])) {
 }
 
 $anotacoes = $servico->listarDoUsuario($usuarioId);
+$favoritosBiblicos = $servicoFavoritosBiblicos->listarDoUsuario($usuarioId);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -127,6 +133,9 @@ $anotacoes = $servico->listarDoUsuario($usuarioId);
         <?php if ($mensagem !== ''): ?>
             <div role="status"><p><?= Utils::escaparHtml($mensagem) ?></p></div>
         <?php endif; ?>
+        <?php if (is_string($mensagemFavoritoBiblico) && $mensagemFavoritoBiblico !== ''): ?>
+            <div role="status"><p><?= Utils::escaparHtml($mensagemFavoritoBiblico) ?></p></div>
+        <?php endif; ?>
         <?php if ($erros): ?>
             <div role="alert">
                 <?php foreach ($erros as $erro): ?>
@@ -135,55 +144,129 @@ $anotacoes = $servico->listarDoUsuario($usuarioId);
             </div>
         <?php endif; ?>
 
-        <form action="anotacoes.php" method="POST">
+        <form class="anotacoes-criar" action="anotacoes.php" method="POST">
             <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
             <input type="hidden" name="acao" value="criar">
             <label for="nova-anotacao">Nova anotação</label>
             <textarea id="nova-anotacao" name="anotacao" maxlength="65535" required></textarea>
-            <button type="submit">Salvar anotação</button>
+            <button class="anotacoes-botao" type="submit">Salvar anotação</button>
         </form>
 
         <?php if (!$anotacoes): ?>
-            <p>Você ainda não tem anotações.</p>
+            <p class="anotacoes-vazio">Você ainda não tem anotações. Seus favoritos bíblicos aparecem abaixo.</p>
         <?php else: ?>
-            <?php foreach ($anotacoes as $anotacao): ?>
-                <article>
-                    <p>
-                        <?= nl2br(Utils::escaparHtml($anotacao->texto)) ?>
-                    </p>
-                    <small>
-                        Criada em <?= Utils::escaparHtml($anotacao->criadoEm) ?>.
-                        Atualizada em <?= Utils::escaparHtml($anotacao->atualizadoEm) ?>.
-                    </small>
+            <div class="anotacoes-filtros" id="filtros-anotacoes" hidden>
+                <div>
+                    <label for="busca-anotacoes">Buscar nas anotações</label>
+                    <input id="busca-anotacoes" type="search" autocomplete="off">
+                </div>
+                <div>
+                    <label for="filtro-anotacoes">Mostrar</label>
+                    <select id="filtro-anotacoes">
+                        <option value="todas">Todas as anotações</option>
+                        <option value="favoritos">Somente favoritas</option>
+                    </select>
+                </div>
+                <p id="contagem-anotacoes" class="anotacoes-contagem" role="status" aria-live="polite"></p>
+                <p id="nenhuma-anotacao-encontrada" class="anotacoes-sem-resultados" hidden>
+                    Nenhuma anotação corresponde à busca e ao filtro selecionados.
+                </p>
+            </div>
 
-                    <form action="anotacoes.php" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
-                        <input type="hidden" name="acao" value="atualizar">
-                        <input type="hidden" name="id" value="<?= $anotacao->id ?>">
-                        <label for="anotacao-<?= $anotacao->id ?>">Editar anotação</label>
-                        <textarea id="anotacao-<?= $anotacao->id ?>" name="anotacao" maxlength="65535" required><?= Utils::escaparHtml($anotacao->texto) ?></textarea>
-                        <button type="submit">Atualizar</button>
-                    </form>
+            <section class="anotacoes-lista" aria-label="Suas anotações">
+                <?php foreach ($anotacoes as $anotacao): ?>
+                    <article class="anotacao-card" data-favorito="<?= $anotacao->favorito ? '1' : '0' ?>">
+                        <p class="anotacao-texto">
+                            <?= nl2br(Utils::escaparHtml($anotacao->texto)) ?>
+                        </p>
+                        <small class="anotacao-datas">
+                            Criada em <?= Utils::escaparHtml($anotacao->criadoEm) ?>.
+                            Atualizada em <?= Utils::escaparHtml($anotacao->atualizadoEm) ?>.
+                        </small>
 
-                    <form action="anotacoes.php" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
-                        <input type="hidden" name="acao" value="favorito">
-                        <input type="hidden" name="id" value="<?= $anotacao->id ?>">
-                        <input type="hidden" name="favorito" value="<?= $anotacao->favorito ? '0' : '1' ?>">
-                        <button type="submit">
-                            <?= $anotacao->favorito ? 'Remover dos favoritos' : 'Marcar como favorito' ?>
-                        </button>
-                    </form>
+                        <div class="anotacao-acoes">
+                            <details class="anotacao-edicao">
+                                <summary>Editar anotação</summary>
+                                <form action="anotacoes.php" method="POST">
+                                    <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
+                                    <input type="hidden" name="acao" value="atualizar">
+                                    <input type="hidden" name="id" value="<?= $anotacao->id ?>">
+                                    <label for="anotacao-<?= $anotacao->id ?>">Texto da anotação</label>
+                                    <textarea id="anotacao-<?= $anotacao->id ?>" name="anotacao" maxlength="65535" required><?= Utils::escaparHtml($anotacao->texto) ?></textarea>
+                                    <button class="anotacoes-botao" type="submit">Salvar alterações</button>
+                                </form>
+                            </details>
 
-                    <form action="anotacoes.php" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
-                        <input type="hidden" name="acao" value="remover">
-                        <input type="hidden" name="id" value="<?= $anotacao->id ?>">
-                        <button type="submit">Remover</button>
-                    </form>
-                </article>
-            <?php endforeach; ?>
+                            <form action="anotacoes.php" method="POST">
+                                <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
+                                <input type="hidden" name="acao" value="favorito">
+                                <input type="hidden" name="id" value="<?= $anotacao->id ?>">
+                                <input type="hidden" name="favorito" value="<?= $anotacao->favorito ? '0' : '1' ?>">
+                                <button class="anotacoes-botao anotacoes-botao-secundario" type="submit">
+                                    <?= $anotacao->favorito ? 'Remover dos favoritos' : 'Marcar como favorita' ?>
+                                </button>
+                            </form>
+
+                            <form action="anotacoes.php" method="POST">
+                                <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenCsrf) ?>">
+                                <input type="hidden" name="acao" value="remover">
+                                <input type="hidden" name="id" value="<?= $anotacao->id ?>">
+                                <button class="anotacoes-botao anotacoes-botao-remover" type="submit">Remover</button>
+                            </form>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </section>
+            <script src="../js/anotacoes.js" defer></script>
         <?php endif; ?>
+
+        <section class="favoritos-biblicos" aria-labelledby="titulo-favoritos-biblicos">
+            <h2 id="titulo-favoritos-biblicos">Favoritos bíblicos</h2>
+            <?php if (!$favoritosBiblicos): ?>
+                <p class="anotacoes-vazio">Você ainda não salvou versículos ou capítulos favoritos.</p>
+            <?php else: ?>
+                <div class="favoritos-biblicos-lista">
+                    <?php foreach ($favoritosBiblicos as $favoritoBiblico): ?>
+                        <?php
+                        $livroFavorito = (string) $favoritoBiblico['livro_nome'];
+                        $livroFavoritoId = (int) $favoritoBiblico['livro_id'];
+                        $capituloFavorito = (int) $favoritoBiblico['capitulo'];
+                        $ehVersiculoFavorito = $favoritoBiblico['tipo'] === 'versiculo';
+                        $versiculoFavorito = (int) $favoritoBiblico['versiculo'];
+                        ?>
+                        <article class="favorito-biblico-card">
+                            <h3><?= Utils::escaparHtml(
+                                $livroFavorito . ' ' . $capituloFavorito
+                                . ($ehVersiculoFavorito ? ':' . $versiculoFavorito : '')
+                            ) ?></h3>
+                            <?php if ($ehVersiculoFavorito): ?>
+                                <?php if (is_string($favoritoBiblico['texto'])): ?>
+                                    <blockquote><?= Utils::escaparHtml($favoritoBiblico['texto']) ?></blockquote>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <p>Capítulo salvo nos seus favoritos.</p>
+                            <?php endif; ?>
+                            <small>Salvo em <?= Utils::escaparHtml((string) $favoritoBiblico['criado_em']) ?></small>
+                            <div class="favorito-biblico-acoes">
+                                <a href="../leitura.php?livro=<?= $livroFavoritoId ?>&amp;capitulo=<?= $capituloFavorito ?><?= $ehVersiculoFavorito ? '#versiculo-' . $versiculoFavorito : '#texto' ?>">
+                                    <?= $ehVersiculoFavorito ? 'Abrir versículo' : 'Ler capítulo' ?>
+                                </a>
+                                <form action="../favorito-biblico.php" method="POST">
+                                    <input type="hidden" name="csrf_token" value="<?= Utils::escaparHtml($tokenFavoritosCsrf) ?>">
+                                    <input type="hidden" name="tipo" value="<?= $ehVersiculoFavorito ? 'versiculo' : 'capitulo' ?>">
+                                    <input type="hidden" name="livro_id" value="<?= $livroFavoritoId ?>">
+                                    <input type="hidden" name="capitulo" value="<?= $capituloFavorito ?>">
+                                    <input type="hidden" name="versiculo" value="<?= $ehVersiculoFavorito ? $versiculoFavorito : '0' ?>">
+                                    <input type="hidden" name="favorito" value="0">
+                                    <input type="hidden" name="origem" value="anotacoes">
+                                    <button class="anotacoes-botao anotacoes-botao-secundario" type="submit">★ Remover dos favoritos</button>
+                                </form>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </section>
     </section>
 </main>
 </body>
