@@ -1,1 +1,6 @@
 /vendor/
+
+# Dumps e inicialização de banco do servidor
+database/init/
+*.log
+.env

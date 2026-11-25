@@ -1,0 +1,48 @@
+[25-Nov-2026 12:26:05 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.testament' doesn't exist in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+Stack trace:
+#0 /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php(25): PDO->query()
+#1 /home/maia/projetos/projeto-integrador/public/index.php(41): ProjetoIntegrador\Services\BibliaServico->listarTestamentos()
+#2 {main}
+  thrown in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php on line 25
+[25-Nov-2026 12:26:05 UTC] Erro fatal: Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.testament' doesn't exist in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+Stack trace:
+#0 /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php(25): PDO->query()
+#1 /home/maia/projetos/projeto-integrador/public/index.php(41): ProjetoIntegrador\Services\BibliaServico->listarTestamentos()
+#2 {main}
+  thrown em /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+[25-Nov-2026 12:26:06 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.testament' doesn't exist in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+Stack trace:
+#0 /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php(25): PDO->query()
+#1 /home/maia/projetos/projeto-integrador/public/index.php(41): ProjetoIntegrador\Services\BibliaServico->listarTestamentos()
+#2 {main}
+  thrown in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php on line 25
+[25-Nov-2026 12:26:06 UTC] Erro fatal: Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.testament' doesn't exist in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+Stack trace:
+#0 /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php(25): PDO->query()
+#1 /home/maia/projetos/projeto-integrador/public/index.php(41): ProjetoIntegrador\Services\BibliaServico->listarTestamentos()
+#2 {main}
+  thrown em /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+[25-Nov-2026 12:26:07 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.testament' doesn't exist in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+Stack trace:
+#0 /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php(25): PDO->query()
+#1 /home/maia/projetos/projeto-integrador/public/index.php(41): ProjetoIntegrador\Services\BibliaServico->listarTestamentos()
+#2 {main}
+  thrown in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php on line 25
+[25-Nov-2026 12:26:07 UTC] Erro fatal: Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.testament' doesn't exist in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+Stack trace:
+#0 /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php(25): PDO->query()
+#1 /home/maia/projetos/projeto-integrador/public/index.php(41): ProjetoIntegrador\Services\BibliaServico->listarTestamentos()
+#2 {main}
+  thrown em /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+[25-Nov-2026 12:29:13 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.testament' doesn't exist in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+Stack trace:
+#0 /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php(25): PDO->query()
+#1 /home/maia/projetos/projeto-integrador/public/index.php(41): ProjetoIntegrador\Services\BibliaServico->listarTestamentos()
+#2 {main}
+  thrown in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php on line 25
+[25-Nov-2026 12:29:13 UTC] Erro fatal: Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.testament' doesn't exist in /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+Stack trace:
+#0 /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php(25): PDO->query()
+#1 /home/maia/projetos/projeto-integrador/public/index.php(41): ProjetoIntegrador\Services\BibliaServico->listarTestamentos()
+#2 {main}
+  thrown em /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
