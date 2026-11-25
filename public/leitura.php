@@ -138,6 +138,7 @@ function escaparLeitura(string $valor): string
             <a href="leitura.php?testamento=1">Antigo Testamento</a>
             <a href="leitura.php?testamento=2">Novo Testamento</a>
             <?php if ($usuarioId !== null): ?>
+                <a href="conta.php">Minha conta</a>
                 <a href="admin/anotacoes.php">Anotações e favoritos</a>
             <?php endif; ?>
         </nav>

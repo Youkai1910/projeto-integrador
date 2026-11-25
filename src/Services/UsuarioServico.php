@@ -191,6 +191,46 @@ final class UsuarioServico
 		}
 	}
 
+	public function excluirPropriaConta(int $idUsuario, string $senhaAtual): void
+	{
+		if ($idUsuario < 1) {
+			throw new DomainException('A conta informada é inválida.');
+		}
+		if ($senhaAtual === '' || strlen($senhaAtual) > 4096) {
+			throw new DomainException('Informe sua senha atual para confirmar a exclusão.');
+		}
+
+		$this->conexao->beginTransaction();
+		try {
+			$consulta = $this->conexao->prepare(
+				'SELECT senha, tipo FROM usuarios WHERE id = :id FOR UPDATE'
+			);
+			$consulta->execute(['id' => $idUsuario]);
+			$usuario = $consulta->fetch(PDO::FETCH_ASSOC);
+
+			if ($usuario === false) {
+				throw new DomainException('A conta não foi encontrada.');
+			}
+			if ($usuario['tipo'] !== TipoUsuario::USUARIO) {
+				throw new DomainException('A exclusão própria está disponível somente para contas de usuário. Contate um administrador.');
+			}
+			if (!password_verify($senhaAtual, (string) $usuario['senha'])) {
+				throw new DomainException('A senha atual está incorreta.');
+			}
+
+			$exclusao = $this->conexao->prepare('DELETE FROM usuarios WHERE id = :id');
+			$exclusao->execute(['id' => $idUsuario]);
+			if ($exclusao->rowCount() !== 1) {
+				throw new DomainException('Não foi possível confirmar a exclusão da conta.');
+			}
+
+			$this->conexao->commit();
+		} catch (Throwable $e) {
+			$this->reverterTransacao();
+			throw $e;
+		}
+	}
+
 	/** @return int[] */
 	private function bloquearAdministradores(): array
 	{

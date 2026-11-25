@@ -57,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $flash = $_SESSION['auth_flash'] ?? null;
 unset($_SESSION['auth_flash']);
 $mensagem = is_array($flash) ? (string) ($flash['mensagem'] ?? '') : '';
+$tipoMensagem = is_array($flash) ? (string) ($flash['tipo'] ?? '') : '';
 $tokenCsrf = Seguranca::obterTokenCsrf();
 ?>
 <!DOCTYPE html>
@@ -73,7 +74,9 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
         <h1>Entrar</h1>
         <p>Acesse sua conta do Portal Bíblico.</p>
         <?php if ($mensagem !== ''): ?>
-            <p class="aviso erro" role="alert"><?= Seguranca::escapar($mensagem) ?></p>
+            <p class="aviso <?= $tipoMensagem === 'sucesso' ? 'sucesso' : 'erro' ?>" role="<?= $tipoMensagem === 'sucesso' ? 'status' : 'alert' ?>">
+                <?= Seguranca::escapar($mensagem) ?>
+            </p>
         <?php endif; ?>
         <form method="post" action="login.php" class="form-publico">
             <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar($tokenCsrf) ?>">

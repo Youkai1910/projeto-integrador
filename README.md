@@ -28,6 +28,10 @@ Depois, acesse `http://localhost:8000`. Configure as variáveis de ambiente do
 banco de dados (`DB_HOST`, `DB_NAME`, `DB_USER` e `DB_PASSWORD`) antes de usar as
 funcionalidades que precisam dele.
 
+Usuários comuns podem excluir a própria conta em **Minha conta**, confirmando a
+senha atual. A exclusão também remove as anotações e os favoritos vinculados;
+contas de editor e administrador continuam sob gestão administrativa.
+
 ## Anotações e favoritos bíblicos
 
 Execute `biblia_catolica/tabelas_usuarios_anotacoes.sql` no banco configurado
