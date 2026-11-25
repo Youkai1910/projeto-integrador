@@ -46,3 +46,15 @@ Stack trace:
 #1 /home/maia/projetos/projeto-integrador/public/index.php(41): ProjetoIntegrador\Services\BibliaServico->listarTestamentos()
 #2 {main}
   thrown em /home/maia/projetos/projeto-integrador/src/Services/BibliaServico.php:25
+[25-Nov-2026 12:52:54 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.favoritos_biblicos' doesn't exist in C:\backend\projeto-integrador\src\Services\FavoritoBiblicoServico.php:57
+Stack trace:
+#0 C:\backend\projeto-integrador\src\Services\FavoritoBiblicoServico.php(57): PDO->prepare('SELECT f.id, f....')
+#1 C:\backend\projeto-integrador\public\admin\anotacoes.php(117): ProjetoIntegrador\Services\FavoritoBiblicoServico->listarDoUsuario(9)
+#2 {main}
+  thrown in C:\backend\projeto-integrador\src\Services\FavoritoBiblicoServico.php on line 57
+[25-Nov-2026 12:52:54 UTC] Erro fatal: Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'biblia_catolica.favoritos_biblicos' doesn't exist in C:\backend\projeto-integrador\src\Services\FavoritoBiblicoServico.php:57
+Stack trace:
+#0 C:\backend\projeto-integrador\src\Services\FavoritoBiblicoServico.php(57): PDO->prepare('SELECT f.id, f....')
+#1 C:\backend\projeto-integrador\public\admin\anotacoes.php(117): ProjetoIntegrador\Services\FavoritoBiblicoServico->listarDoUsuario(9)
+#2 {main}
+  thrown em C:\backend\projeto-integrador\src\Services\FavoritoBiblicoServico.php:57
