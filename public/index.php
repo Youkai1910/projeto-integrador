@@ -381,7 +381,6 @@ if ($estaLogado && $livroSelecionado !== null && $capitulo !== null) {
         <div class="footer-col">
             <h2>Fale Conosco</h2>
             <p><i class="fa-solid fa-envelope"></i> <a href="mailto:contato.portalbiblico@outlook.com">contato.portalbiblico@outlook.com</a></p>
-            <p><i class="fa-solid fa-phone"></i> (00) 0000-0000</p>
         </div>
         <div class="footer-bottom">
             &copy; 2026 Portal Bíblico. Todos os direitos reservados.
