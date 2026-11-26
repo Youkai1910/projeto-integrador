@@ -114,7 +114,7 @@ git diff --check
 
 - Os dumps SQL foram movidos para `database/dumps/`; o esquema passou a incluir
   `favoritos_biblicos`.
-- Os formulários de contato e colaboração usam Formspree via cURL. Configure
+- O formulário de contato usa Formspree via cURL. Configure
   `FORMSPREE_FORM_ID`; se necessário, informe `CURL_CA_BUNDLE` com o caminho
   local do bundle de certificados CA. Nunca desative a validação TLS.
 - A conexão MySQL, as tabelas necessárias, as páginas inicial/contato e o envio
@@ -152,12 +152,12 @@ FORMSPREE_FORM_ID=seu_id_de_formulario
 CURL_CA_BUNDLE=
 ```
 
-Os formulários de contato e colaboração enviam pelo Formspree através do serviço
-PHP, preservando a validação e o token CSRF dos formulários. Crie o formulário,
-confirme o endereço de destino e configure seu ID em `FORMSPREE_FORM_ID`. O PHP
-precisa da extensão `curl` e de acesso HTTPS ao Formspree. Se a validação do
-certificado falhar, configure `CURL_CA_BUNDLE` ou os caminhos `curl.cainfo` e
-`openssl.cafile` no `php.ini`; nunca desative a verificação de certificados.
+O formulário de contato envia pelo Formspree através do serviço PHP,
+preservando a validação e o token CSRF. Crie o formulário, confirme o endereço
+de destino e configure seu ID em `FORMSPREE_FORM_ID`. O PHP precisa da extensão
+`curl` e de acesso HTTPS ao Formspree. Se a validação do certificado falhar,
+configure `CURL_CA_BUNDLE` ou os caminhos `curl.cainfo` e `openssl.cafile` no
+`php.ini`; nunca desative a verificação de certificados.
 
 ## Banco de dados
 

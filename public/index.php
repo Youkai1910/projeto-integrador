@@ -375,8 +375,8 @@ if ($estaLogado && $livroSelecionado !== null && $capitulo !== null) {
         </div>
         <div class="footer-col">
             <h2>Links Rápidos</h2>
+            <a href="quem-somos.php">Quem somos</a>
             <a href="contato.php">Fale conosco</a>
-            <a href="colaborador.php">Seja um Colaborador</a>
         </div>
         <div class="footer-col">
             <h2>Fale Conosco</h2>
