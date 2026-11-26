@@ -146,7 +146,7 @@ if ($estaLogado && $livroSelecionado !== null && $capitulo !== null) {
                 </form>
 
                 <a href="index.php"><i class="fa-solid fa-house"></i> HOME</a>
-                <a href="#quem-somos"><i class="fa-solid fa-users"></i> QUEM SOMOS</a>
+                <a href="quem-somos.php"><i class="fa-solid fa-users"></i> QUEM SOMOS</a>
                 <a href="contato.php"><i class="fa-solid fa-envelope"></i> CONTATO</a>
                 <?php if ($ehAdministrador): ?>
                     <a href="admin/usuarios.php"><i class="fa-solid fa-user-gear"></i> ADMINISTRAÇÃO</a>
@@ -371,7 +371,7 @@ if ($estaLogado && $livroSelecionado !== null && $capitulo !== null) {
     <footer>
         <div class="footer-col">
             <h2>Portal Bíblico</h2>
-            <p id="quem-somos">Um espaço dedicado a nutrir a sua espiritualidade todos os dias com conteúdos atualizados, leituras, salmos e reflexões.</p>
+            <p>Um espaço dedicado a nutrir a sua espiritualidade todos os dias com conteúdos atualizados, leituras, salmos e reflexões.</p>
         </div>
         <div class="footer-col">
             <h2>Links Rápidos</h2>

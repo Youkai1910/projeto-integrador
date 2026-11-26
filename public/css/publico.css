@@ -26,3 +26,15 @@ h1 { margin: 26px 0 8px; color: #173653; font-size: clamp(1.7rem, 5vw, 2.2rem); 
 .nota a { color: #24476b; font-weight: 650; }
 .contato-info { padding: 14px; border-radius: 8px; background: #eef3f8; line-height: 1.7; }
 .contato-info a { color: #24476b; font-weight: 650; }
+.pagina-quem-somos { width: min(100%, 760px); }
+.pagina-quem-somos .quem-somos-sobretitulo { margin: 22px 0 0; color: #24476b; font-size: .75rem; font-weight: 750; letter-spacing: .12em; }
+.pagina-quem-somos .quem-somos-introducao { color: #26384a; font-size: 1.08rem; line-height: 1.75; }
+.quem-somos-bloco { margin-top: 20px; padding: 18px; border: 1px solid #d5e0eb; border-radius: 10px; background: #f8fafc; }
+.quem-somos-bloco h2 { margin: 0 0 8px; color: #173653; font-size: 1.2rem; }
+.quem-somos-bloco p, .quem-somos-agradecimento { margin: 0; color: #52677b; line-height: 1.7; }
+.quem-somos-tecnologias { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.quem-somos-tecnologias li { padding: 7px 11px; border: 1px solid #d5e0eb; border-radius: 999px; background: #fff; color: #24476b; font-size: .9rem; font-weight: 600; }
+.quem-somos-agradecimento { margin-top: 22px; }
+.quem-somos-contato { display: inline-flex; margin-top: 18px; padding: 11px 16px; border-radius: 8px; background: #24476b; color: #fff; font-weight: 700; text-decoration: none; }
+.quem-somos-contato:hover { background: #173653; }
+.quem-somos-contato:focus-visible { outline: 3px solid #5b8dbd; outline-offset: 3px; }
