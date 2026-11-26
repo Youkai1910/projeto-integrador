@@ -20,13 +20,11 @@ $idUsuarioSessao = is_array($usuarioSessao)
     : false;
 $estaLogado = $idUsuarioSessao !== false && $idUsuarioSessao > 0;
 $ehAdministrador = false;
-$ehEditor = false;
 
 if ($estaLogado) {
     try {
         $servicoUsuario = new UsuarioServico(ConexaoBD::getConexao());
         $ehAdministrador = $servicoUsuario->ehAdministrador((int) $idUsuarioSessao);
-        $ehEditor = $servicoUsuario->ehEditor((int) $idUsuarioSessao);
     } catch (\Throwable $e) {
         error_log($e->getMessage());
     }
@@ -155,7 +153,7 @@ function escaparLeitura(string $valor): string
             <a href="index.php"><i class="fa-solid fa-house"></i> HOME</a>
             <a href="leitura.php?testamento=1"><i class="fa-solid fa-scroll"></i> Antigo Testamento</a>
             <a href="leitura.php?testamento=2"><i class="fa-solid fa-book-open"></i> Novo Testamento</a>
-            <?php if ($ehAdministrador || $ehEditor): ?>
+            <?php if ($ehAdministrador): ?>
                 <a href="admin/usuarios.php"><i class="fa-solid fa-user-gear"></i> ADMINISTRAÇÃO</a>
             <?php endif; ?>
             <?php if ($estaLogado): ?>

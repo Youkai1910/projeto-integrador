@@ -5,7 +5,6 @@ namespace ProjetoIntegrador\Services;
 
 use DomainException;
 use PDO;
-use ProjetoIntegrador\Enum\TipoUsuario;
 use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Models\Usuario;
 use Throwable;
@@ -24,11 +23,11 @@ final class UsuarioServico
 	{
 		if ($busca === '') {
 			$consulta = $this->conexao->query(
-				'SELECT id, nome, email, tipo, criado_em FROM usuarios ORDER BY criado_em DESC, id DESC'
+				'SELECT id, nome, email, criado_em FROM usuarios ORDER BY criado_em DESC, id DESC'
 			);
 		} else {
 			$consulta = $this->conexao->prepare(
-				'SELECT id, nome, email, tipo, criado_em
+				'SELECT id, nome, email, criado_em
 				 FROM usuarios
 				 WHERE nome LIKE :nome OR email LIKE :email
 				 ORDER BY criado_em DESC, id DESC'
@@ -47,9 +46,21 @@ final class UsuarioServico
 
 	public function ehAdministrador(int $idUsuario): bool
 	{
-		$consulta = $this->conexao->prepare('SELECT tipo FROM usuarios WHERE id = :id LIMIT 1');
-		$consulta->execute(['id' => $idUsuario]);
-		return $consulta->fetchColumn() === TipoUsuario::ADMIN;
+		$idAdministradorConfigurado = getenv('ADMIN_USER_ID');
+		if ($idAdministradorConfigurado === false || trim($idAdministradorConfigurado) === '') {
+			return false;
+		}
+
+		$idAdministrador = filter_var(
+			trim($idAdministradorConfigurado),
+			FILTER_VALIDATE_INT,
+			['options' => ['min_range' => 1]]
+		);
+		if ($idAdministrador === false) {
+			throw new \RuntimeException('A configuração ADMIN_USER_ID deve ser um identificador positivo.');
+		}
+
+		return $idUsuario === (int) $idAdministrador && $this->usuarioExiste($idUsuario);
 	}
 
 	public function autenticar(string $email, string $senha): ?Usuario
@@ -60,7 +71,7 @@ final class UsuarioServico
 		}
 
 		$consulta = $this->conexao->prepare(
-			'SELECT id, nome, email, senha, tipo, criado_em FROM usuarios WHERE email = :email LIMIT 1'
+			'SELECT id, nome, email, senha, criado_em FROM usuarios WHERE email = :email LIMIT 1'
 		);
 		$consulta->execute(['email' => $email]);
 		$dados = $consulta->fetch(PDO::FETCH_ASSOC);
@@ -80,15 +91,8 @@ final class UsuarioServico
 		return Usuario::deDados($dados);
 	}
 
-	public function inserir(string $nome, string $email, string $senha, string $tipo = TipoUsuario::USUARIO, ?int $idSolicitante = null): int
+	public function inserir(string $nome, string $email, string $senha): int
 	{
-		$tipo = TipoUsuario::validar($tipo);
-		if ($tipo !== TipoUsuario::USUARIO) {
-			if ($idSolicitante === null || !$this->ehAdministrador($idSolicitante)) {
-				throw new DomainException('Somente administradores podem criar contas de editor ou administrador.');
-			}
-		}
-
 		$nome = trim($nome);
 		$email = trim($email);
 
@@ -109,13 +113,12 @@ final class UsuarioServico
 
 		try {
 			$consulta = $this->conexao->prepare(
-				'INSERT INTO usuarios (nome, senha, email, tipo) VALUES (:nome, :senha, :email, :tipo)'
+				"INSERT INTO usuarios (nome, senha, email, tipo) VALUES (:nome, :senha, :email, 'usuario')"
 			);
 			$consulta->execute([
 				'nome' => $nome,
 				'senha' => $hashSenha,
 				'email' => $email,
-				'tipo' => $tipo,
 			]);
 		} catch (\PDOException $e) {
 			if ($e->getCode() === '23000') {
@@ -125,38 +128,6 @@ final class UsuarioServico
 		}
 
 		return (int) $this->conexao->lastInsertId();
-	}
-
-	public function atualizarTipo(int $idUsuario, string $tipo, int $idAdministrador): void
-	{
-		if (!$this->ehAdministrador($idAdministrador)) {
-			throw new DomainException('Somente administradores podem alterar perfis de acesso.');
-		}
-		$tipo = TipoUsuario::validar($tipo);
-		if ($idUsuario === $idAdministrador) {
-			throw new DomainException('Não é permitido alterar o próprio perfil.');
-		}
-
-		$this->conexao->beginTransaction();
-		try {
-			$administradores = $this->bloquearAdministradores();
-			$this->confirmarAdministrador($administradores, $idAdministrador);
-			$tipoAtual = $this->obterTipoBloqueado($idUsuario);
-
-			if ($tipoAtual === null) {
-				throw new DomainException('O usuário não foi encontrado.');
-			}
-			if ($tipoAtual === TipoUsuario::ADMIN && $tipo !== TipoUsuario::ADMIN && count($administradores) <= 1) {
-				throw new DomainException('Não é possível remover o perfil do único administrador.');
-			}
-
-			$atualizacao = $this->conexao->prepare('UPDATE usuarios SET tipo = :tipo WHERE id = :id');
-			$atualizacao->execute(['tipo' => $tipo, 'id' => $idUsuario]);
-			$this->conexao->commit();
-		} catch (Throwable $e) {
-			$this->reverterTransacao();
-			throw $e;
-		}
 	}
 
 	public function excluir(int $idUsuario, int $idAdministrador): void
@@ -171,15 +142,11 @@ final class UsuarioServico
 
 		$this->conexao->beginTransaction();
 		try {
-			$administradores = $this->bloquearAdministradores();
-			$this->confirmarAdministrador($administradores, $idAdministrador);
-			$tipoUsuario = $this->obterTipoBloqueado($idUsuario);
+			$consulta = $this->conexao->prepare('SELECT id FROM usuarios WHERE id = :id FOR UPDATE');
+			$consulta->execute(['id' => $idUsuario]);
 
-			if ($tipoUsuario === null) {
+			if ($consulta->fetchColumn() === false) {
 				throw new DomainException('O usuário não foi encontrado.');
-			}
-			if ($tipoUsuario === TipoUsuario::ADMIN && count($administradores) <= 1) {
-				throw new DomainException('Não é possível excluir o único administrador.');
 			}
 
 			$exclusao = $this->conexao->prepare('DELETE FROM usuarios WHERE id = :id');
@@ -199,20 +166,20 @@ final class UsuarioServico
 		if ($senhaAtual === '' || strlen($senhaAtual) > 4096) {
 			throw new DomainException('Informe sua senha atual para confirmar a exclusão.');
 		}
+		if ($this->ehAdministrador($idUsuario)) {
+			throw new DomainException('A conta configurada para administração não pode ser excluída por esta página.');
+		}
 
 		$this->conexao->beginTransaction();
 		try {
 			$consulta = $this->conexao->prepare(
-				'SELECT senha, tipo FROM usuarios WHERE id = :id FOR UPDATE'
+				'SELECT senha FROM usuarios WHERE id = :id FOR UPDATE'
 			);
 			$consulta->execute(['id' => $idUsuario]);
 			$usuario = $consulta->fetch(PDO::FETCH_ASSOC);
 
 			if ($usuario === false) {
 				throw new DomainException('A conta não foi encontrada.');
-			}
-			if ($usuario['tipo'] !== TipoUsuario::USUARIO) {
-				throw new DomainException('A exclusão própria está disponível somente para contas de usuário. Contate um administrador.');
 			}
 			if (!password_verify($senhaAtual, (string) $usuario['senha'])) {
 				throw new DomainException('A senha atual está incorreta.');
@@ -231,31 +198,6 @@ final class UsuarioServico
 		}
 	}
 
-	/** @return int[] */
-	private function bloquearAdministradores(): array
-	{
-		$consulta = $this->conexao->query(
-			"SELECT id FROM usuarios WHERE tipo = 'admin' ORDER BY id FOR UPDATE"
-		);
-		return array_map('intval', $consulta->fetchAll(PDO::FETCH_COLUMN));
-	}
-
-	/** @param int[] $administradores */
-	private function confirmarAdministrador(array $administradores, int $idAdministrador): void
-	{
-		if (!in_array($idAdministrador, $administradores, true)) {
-			throw new DomainException('Sua sessão administrativa não é mais válida.');
-		}
-	}
-
-	private function obterTipoBloqueado(int $idUsuario): ?string
-	{
-		$consulta = $this->conexao->prepare('SELECT tipo FROM usuarios WHERE id = :id FOR UPDATE');
-		$consulta->execute(['id' => $idUsuario]);
-		$tipo = $consulta->fetchColumn();
-		return $tipo === false ? null : (string) $tipo;
-	}
-
 	private function reverterTransacao(): void
 	{
 		if ($this->conexao->inTransaction()) {
@@ -263,22 +205,10 @@ final class UsuarioServico
 		}
 	}
 
-	public function obterTipoUsuario(int $idUsuario): ?string
+	public function usuarioExiste(int $idUsuario): bool
 	{
-		$consulta = $this->conexao->prepare('SELECT tipo FROM usuarios WHERE id = :id LIMIT 1');
+		$consulta = $this->conexao->prepare('SELECT 1 FROM usuarios WHERE id = :id LIMIT 1');
 		$consulta->execute(['id' => $idUsuario]);
-		$tipo = $consulta->fetchColumn();
-		return $tipo === false ? null : (string) $tipo;
-	}
-
-	public function ehEditor(int $idUsuario): bool
-	{
-		return $this->obterTipoUsuario($idUsuario) === TipoUsuario::EDITOR;
-	}
-
-	public function ehPrivilegiado(int $idUsuario): bool
-	{
-		$tipo = $this->obterTipoUsuario($idUsuario);
-		return $tipo === TipoUsuario::ADMIN || $tipo === TipoUsuario::EDITOR;
+		return $consulta->fetchColumn() !== false;
 	}
 }

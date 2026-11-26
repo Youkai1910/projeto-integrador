@@ -26,8 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($usuario === null || $usuario->obterId() === null) {
             throw new DomainException('E-mail ou senha inválidos.');
         }
-        $ehAdministrador = $servico->ehAdministrador((int) $usuario->obterId());
-        $ehEditor = $servico->ehEditor((int) $usuario->obterId());
 
         session_regenerate_id(true);
         $_SESSION['usuario'] = [
@@ -37,11 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($_SESSION['usuarios_csrf']);
         Seguranca::obterTokenCsrf();
 
-        if ($ehAdministrador || $ehEditor) {
-            header('Location: admin/usuarios.php', true, 303);
-        } else {
-            header('Location: index.php', true, 303);
-        }
+        header('Location: index.php', true, 303);
         exit;
     } catch (DomainException $e) {
         $_SESSION['auth_flash'] = ['mensagem' => $e->getMessage(), 'tipo' => 'erro'];

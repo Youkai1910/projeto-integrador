@@ -21,7 +21,7 @@ try {
 
 	if (!$ehAdministrador) {
 		http_response_code(403);
-		Seguranca::guardarMensagem('A exclusão permanente exige autorização de um administrador.', 'erro');
+		Seguranca::guardarMensagem('A exclusão permanente exige a conta configurada pela equipe.', 'erro');
 		Seguranca::redirecionarParaLista($busca);
 	}
 
