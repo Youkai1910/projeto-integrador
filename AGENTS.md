@@ -128,11 +128,19 @@ DB_NAME=biblia_catolica
 BIBLIA_DB_NAME=biblia_catolica
 DB_USER=usuario_do_banco
 DB_PASSWORD=senha_segura
-MAIL_TO=contato@portaldiario.com
-MAIL_FROM=nao-responda@seu-dominio.com
+MAIL_TO=contato.portalbiblico@outlook.com
+OUTLOOK_SMTP_USERNAME=contato.portalbiblico@outlook.com
+OUTLOOK_CLIENT_ID=ID_DO_APLICATIVO_MICROSOFT
 ```
 
-Nunca coloque a senha real diretamente nos arquivos versionados.
+Os formulários usam SMTP Outlook.com com OAuth2/XOAUTH2. Registre um aplicativo
+Microsoft Entra para contas pessoais, habilite cliente público e conceda
+`SMTP.Send` delegado. Depois de configurar `OUTLOOK_CLIENT_ID`, execute
+`php .\scripts\autorizar-outlook.php` para autorizar a conta. O refresh token
+fica em `.secrets/`, fora da raiz web e ignorado pelo Git; nunca o versione ou
+compartilhe. As extensões PHP `curl` e `openssl` são necessárias.
+No Windows, configure `curl.cainfo` e `openssl.cafile` no `php.ini` carregado
+quando o PHP não localizar o certificado CA; nunca desative a verificação SSL.
 
 ## Banco de dados
 
@@ -152,3 +160,6 @@ Os dumps bíblicos não removem o banco inteiro. Confirme o banco selecionado an
 - `admin`: administração integral, perfis, usuários e exclusões permanentes.
 
 O cadastro público cria somente usuários comuns. Perfis editor/admin devem ser atribuídos pelo banco ou por administrador autorizado.
+
+curl.cainfo = "C:\backend\php\extras\ssl\cacert.pem"
+openssl.cafile = "C:\backend\php\extras\ssl\cacert.pem"

@@ -40,6 +40,41 @@ administrador ou editor no banco. Sem essa configuração, as rotas administrati
 ficam indisponíveis. Usuários podem excluir a própria conta em **Minha conta**,
 confirmando a senha atual; isso também remove as anotações e favoritos vinculados.
 
+## E-mail de contato
+
+Os formulários usam SMTP do Outlook.com (`smtp-mail.outlook.com`, porta 587,
+STARTTLS) e OAuth2/XOAUTH2 para enviar para `contato.portalbiblico@outlook.com`.
+Não é usada senha de e-mail nem senha de aplicativo. Configure no ambiente:
+
+```text
+MAIL_TO=contato.portalbiblico@outlook.com
+OUTLOOK_SMTP_USERNAME=contato.portalbiblico@outlook.com
+OUTLOOK_CLIENT_ID=ID_DO_APLICATIVO_MICROSOFT
+```
+
+Registre um aplicativo Microsoft Entra que aceite contas pessoais Microsoft,
+habilite o fluxo de cliente público e conceda a permissão delegada `SMTP.Send`
+do Exchange Online. `OUTLOOK_CLIENT_ID` é o ID de aplicativo exibido no
+registro; não é uma senha. Com essa variável configurada e o Composer instalado,
+execute na raiz do projeto:
+
+```powershell
+php .\scripts\autorizar-outlook.php
+```
+
+O script mostrará as instruções e o código de dispositivo da Microsoft para
+entrar na conta Outlook e consentir o acesso. Ele grava o token de atualização
+em `.secrets/outlook-refresh-token.txt`, fora do document root e ignorado pelo
+Git. Não compartilhe nem versione esse arquivo. O PHP precisa das extensões
+`curl` e `openssl`, e o servidor deve permitir conexões HTTPS e SMTP de saída
+na porta 587. As respostas ao formulário serão direcionadas ao e-mail informado
+pelo visitante.
+
+No Windows, se o PHP informar que não encontrou o emissor do certificado SSL,
+baixe um pacote CA atualizado de `https://curl.se/ca/cacert.pem` e configure
+`curl.cainfo` e `openssl.cafile` com o caminho desse arquivo no `php.ini` que
+aparece em `php --ini`. Mantenha a verificação de certificados ativada.
+
 ## Anotações e favoritos bíblicos
 
 Execute `biblia_catolica/tabelas_usuarios_anotacoes.sql` no banco configurado
