@@ -1,6 +1,6 @@
 # Resumo da branch `biblia_alexandre`
 
-Atualizado em 24/11/2026.
+Atualizado em 26/11/2026.
 
 ## Estrutura atual
 
@@ -40,6 +40,16 @@ Atualizado em 24/11/2026.
   semântica de grupo nos controles de áudio.
 - Na página de leitura, o rótulo foi simplificado para “BÍBLIA” e o rodapé
   passou a exibir “Portal Bíblico”.
+
+## Alterações realizadas em 26/11/2026
+
+- Dumps SQL reorganizados em `database/`; scripts de inicialização do Docker
+  passaram a ser versionáveis, enquanto `.env` e credenciais seguem ignorados.
+- Conexão MySQL passou a carregar configurações do `.env`; a tabela
+  `favoritos_biblicos` foi criada no banco local.
+- Formulários de contato e colaboração migrados para Formspree. O CA do PHP foi
+  configurado para validar TLS; o envio foi testado com sucesso.
+- Removida a duplicação de erros fatais no log.
 
 ## Comandos executados e verificações
 
