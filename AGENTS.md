@@ -11,34 +11,42 @@
 - Depois de alterar o mapeamento de autoload, execute `composer dump-autoload`.
 - `vendor/` é gerado pelo Composer e não deve ser versionado.
 
-## Criar as tabelas de usuários e anotações
+## Configuração local
 
-No phpMyAdmin, selecione o banco `biblia_catolica`, abra a aba **Importar** e
-importe `biblia_catolica/tabelas_usuarios_anotacoes.sql`. O script cria:
+- `Env` carrega variáveis do `.env` na raiz; variáveis já definidas no ambiente
+  têm precedência. Use `.env.example` como modelo.
+- Nunca versione `.env`, senhas ou tokens. Mantenha-os fora do Git.
+- Configure `DB_HOST`, `DB_NAME`, `DB_USER` e `DB_PASSWORD` para a instalação
+  MySQL local. O Docker Compose configura o host interno do banco para a aplicação.
 
-- `usuarios`: nome, senha, email e tipo. O email é único.
-- `tipo` aceita somente `usuario`, `editor` ou `admin`; novas contas recebem
-  `usuario` por padrão. O script não cria contas automaticamente.
-- `anotacoes`: anotação, indicador de favorito e vínculo com o usuário; cada
-  usuário pode ter várias anotações.
+## Banco de dados
+
+No phpMyAdmin, selecione `biblia_catolica` e importe os arquivos de
+`database/dumps/` nesta ordem:
+
+1. `biblia_tabelas.sql.sql`
+2. `biblia_testamento_livros.sql.sql`
+3. `biblia_versiculos.sql.sql`
+4. `tabelas_usuarios_anotacoes.sql`
+
+O último script cria `usuarios`, `anotacoes` e `favoritos_biblicos`, além de
+ajustar `usuarios.tipo` para `usuario`, `editor` ou `admin`. Ele não cria contas.
+Os arquivos em `database/init/` são cópias usadas na inicialização do MySQL pelo
+Docker; os scripts dessa pasta devem permanecer versionados.
 
 Armazene em `usuarios.senha` somente o hash gerado por `password_hash()` do PHP,
-nunca a senha em texto puro. A aplicação também deve verificar o tipo do usuário
-no servidor antes de permitir ações administrativas ou de edição; o valor no
-banco, sozinho, não controla permissões.
-
-`CREATE TABLE IF NOT EXISTS` não altera tabelas que já existam. Se essas tabelas
-já foram criadas, a estrutura existente precisará de uma alteração específica
-para restringir `tipo` aos três perfis.
+nunca a senha em texto puro. Permissões administrativas também são verificadas
+no servidor; não confie somente no valor do banco ou na interface.
 
 ## Cadastro e administração de usuários
 
-- `public/cadastro.php` sempre cria contas com perfil `usuario`; `TipoUsuario`
-  centraliza os perfis válidos e seus rótulos.
+- `public/cadastro.php` sempre cria contas com perfil `usuario`.
 - `public/login.php` define `$_SESSION['usuario']['id']` e `$_SESSION['usuario_id']`.
   `public/logout.php` aceita somente POST com token CSRF.
-- `public/admin/usuarios.php` e suas ações exigem uma sessão autenticada e
-  verificam o perfil autorizado antes de permitir operações.
+- As rotas administrativas exigem sessão autenticada e autorizam o usuário
+  conforme `usuarios.tipo = 'admin'` ou o identificador `ADMIN_USER_ID`.
+- O perfil `editor` existe no esquema do banco, mas não concede acesso
+  administrativo por si só.
 - O bootstrap administrativo fica em `src/Bootstrap/admin.php`, fora da raiz web.
 
 ## Anotações
@@ -60,6 +68,7 @@ para restringir `tipo` aos três perfis.
   exemplo `../images/logo.png`.
 - Ao renomear ou mover uma imagem, atualize também o caminho correspondente na
   página ou no CSS.
+
 ## Interface da página inicial
 
 - Mantenha o PHP da consulta e da conexão no início de `public/index.php`.
@@ -67,8 +76,8 @@ para restringir `tipo` aos três perfis.
   equivalente.
 - Coloque os estilos da interface em `public/css/style.css`; não misture CSS extenso
   dentro de `public/index.php`.
-- Preserve arquivos no diretório `biblia_catolica/imagens/` e use caminhos
-  relativos a partir da raiz da aplicação.
+- Preserve os arquivos existentes em `public/images/` e use caminhos relativos
+  a partir da raiz web `public/`.
 - Utilize `alt` em todas as imagens informativas e preserve `aria-label` em
   controles importantes de navegação e pesquisa.
 - Mantenha links para pular ao conteúdo principal, hierarquia de títulos,
@@ -82,7 +91,8 @@ para restringir `tipo` aos três perfis.
 
 ## Comandos locais
 
-Execute na raiz do repositório:
+Execute na raiz do repositório. Copie `.env.example` para `.env` e preencha as
+configurações locais antes de iniciar recursos que dependem do banco.
 
 ```powershell
 composer install
@@ -99,6 +109,16 @@ git diff --check
 - `php -S 127.0.0.1:8005 -t public` — teste local das páginas e recursos com `public/`
   como raiz web; o servidor de teste foi encerrado ao final.
 - `php -l` nos arquivos PHP da aplicação e `git diff --check`.
+
+## Alterações e verificações em 26/11/2026
+
+- Os dumps SQL foram movidos para `database/dumps/`; o esquema passou a incluir
+  `favoritos_biblicos`.
+- Os formulários de contato e colaboração usam Formspree via cURL. Configure
+  `FORMSPREE_FORM_ID`; se necessário, informe `CURL_CA_BUNDLE` com o caminho
+  local do bundle de certificados CA. Nunca desative a validação TLS.
+- A conexão MySQL, as tabelas necessárias, as páginas inicial/contato e o envio
+  Formspree foram verificados; o segredo do banco permanece somente no `.env`.
 # Portal Bíblico
 
 Aplicação PHP integrada a MySQL para leitura bíblica, cadastro/login, anotações e área administrativa.
@@ -129,12 +149,15 @@ BIBLIA_DB_NAME=biblia_catolica
 DB_USER=usuario_do_banco
 DB_PASSWORD=senha_segura
 FORMSPREE_FORM_ID=seu_id_de_formulario
+CURL_CA_BUNDLE=
 ```
 
-Os formulários de contato e colaboração usam Formspree. Crie um formulário no
-painel, confirme o endereço de destino e configure seu ID em
-`FORMSPREE_FORM_ID`. O PHP precisa da extensão `curl` e de acesso HTTPS ao
-Formspree.
+Os formulários de contato e colaboração enviam pelo Formspree através do serviço
+PHP, preservando a validação e o token CSRF dos formulários. Crie o formulário,
+confirme o endereço de destino e configure seu ID em `FORMSPREE_FORM_ID`. O PHP
+precisa da extensão `curl` e de acesso HTTPS ao Formspree. Se a validação do
+certificado falhar, configure `CURL_CA_BUNDLE` ou os caminhos `curl.cainfo` e
+`openssl.cafile` no `php.ini`; nunca desative a verificação de certificados.
 
 ## Banco de dados
 
@@ -150,10 +173,9 @@ Os dumps bíblicos não removem o banco inteiro. Confirme o banco selecionado an
 ## Perfis
 
 - `usuario`: navegação pública e anotações próprias.
-- `editor`: área administrativa parcial e anotações.
-- `admin`: administração integral, perfis, usuários e exclusões permanentes.
+- `editor`: perfil definido no banco; não recebe acesso administrativo somente
+  por esse valor.
+- `admin`: autorizado pelas rotas administrativas.
 
-O cadastro público cria somente usuários comuns. Perfis editor/admin devem ser atribuídos pelo banco ou por administrador autorizado.
-
-curl.cainfo = "C:\backend\php\extras\ssl\cacert.pem"
-openssl.cafile = "C:\backend\php\extras\ssl\cacert.pem"
+O cadastro público cria somente usuários comuns. O acesso administrativo exige
+perfil `admin` ou correspondência com `ADMIN_USER_ID`, verificada no servidor.
