@@ -37,6 +37,8 @@ services:
       - DB_NAME=biblia_catolica
       - DB_USER=root
       - DB_PASSWORD=senacpenha
+      - ADMIN_USER_ID=${ADMIN_USER_ID:-}
+      - FORMSPREE_FORM_ID=${FORMSPREE_FORM_ID:-}
     depends_on:
       - db
 

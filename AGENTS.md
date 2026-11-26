@@ -128,23 +128,17 @@ DB_NAME=biblia_catolica
 BIBLIA_DB_NAME=biblia_catolica
 DB_USER=usuario_do_banco
 DB_PASSWORD=senha_segura
-MAIL_TO=contato.portalbiblico@outlook.com
-OUTLOOK_SMTP_USERNAME=contato.portalbiblico@outlook.com
-OUTLOOK_CLIENT_ID=ID_DO_APLICATIVO_MICROSOFT
+FORMSPREE_FORM_ID=seu_id_de_formulario
 ```
 
-Os formulários usam SMTP Outlook.com com OAuth2/XOAUTH2. Registre um aplicativo
-Microsoft Entra para contas pessoais, habilite cliente público e conceda
-`SMTP.Send` delegado. Depois de configurar `OUTLOOK_CLIENT_ID`, execute
-`php .\scripts\autorizar-outlook.php` para autorizar a conta. O refresh token
-fica em `.secrets/`, fora da raiz web e ignorado pelo Git; nunca o versione ou
-compartilhe. As extensões PHP `curl` e `openssl` são necessárias.
-No Windows, configure `curl.cainfo` e `openssl.cafile` no `php.ini` carregado
-quando o PHP não localizar o certificado CA; nunca desative a verificação SSL.
+Os formulários de contato e colaboração usam Formspree. Crie um formulário no
+painel, confirme o endereço de destino e configure seu ID em
+`FORMSPREE_FORM_ID`. O PHP precisa da extensão `curl` e de acesso HTTPS ao
+Formspree.
 
 ## Banco de dados
 
-Selecione o banco no phpMyAdmin ou cliente MySQL antes de importar os arquivos da pasta `biblia_catolica/` nesta ordem:
+Selecione o banco no phpMyAdmin ou cliente MySQL antes de importar os arquivos da pasta `database/dumps/` nesta ordem:
 
 1. `biblia_tabelas.sql.sql`
 2. `biblia_testamento_livros.sql.sql`

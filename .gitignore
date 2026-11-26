@@ -1,7 +1,6 @@
 /vendor/
 
-# Dumps e inicialização de banco do servidor
-database/init/
+# Configuracoes e credenciais locais
 *.log
 .env
 .secrets/
