@@ -31,9 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (trim($portfolio) !== '') {
             $detalhes .= "\n\nPortfólio ou perfil: " . trim($portfolio);
         }
-        $enviado = (new ContatoServico())->enviar(trim($nome), trim($email), 'Proposta de colaboração - Portal Diário', $detalhes);
+        $enviado = (new ContatoServico())->enviar(trim($nome), trim($email), 'Proposta de colaboração - Portal Bíblico', $detalhes);
         if (!$enviado) {
-            throw new DomainException('O envio pelo site ainda não está configurado. Você pode escrever diretamente para contato@portaldiario.com.');
+            throw new DomainException('O envio pelo site não está disponível agora. Você pode escrever diretamente para contato.portalbiblico@outlook.com.');
         }
         $_SESSION['colaborador_flash'] = ['mensagem' => 'Sua proposta foi enviada. Obrigado pelo interesse em colaborar.', 'tipo' => 'sucesso'];
     } catch (DomainException $e) {
@@ -69,7 +69,7 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
         <?php if ($mensagemFlash !== ''): ?>
             <p class="aviso <?= $tipoFlash === 'sucesso' ? 'sucesso' : 'erro' ?>" role="status"><?= Seguranca::escapar($mensagemFlash) ?></p>
         <?php endif; ?>
-        <p class="contato-info">Prefere e-mail? <a href="mailto:contato@portaldiario.com?subject=Proposta%20de%20colabora%C3%A7%C3%A3o">contato@portaldiario.com</a></p>
+        <p class="contato-info">Prefere e-mail? <a href="mailto:contato.portalbiblico@outlook.com?subject=Proposta%20de%20colabora%C3%A7%C3%A3o">contato.portalbiblico@outlook.com</a></p>
         <form method="post" action="colaborador.php" class="form-publico">
             <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar($tokenCsrf) ?>">
             <label>Nome<input type="text" name="nome" maxlength="150" autocomplete="name" required></label>
@@ -78,7 +78,7 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
             <label>Como gostaria de colaborar?<textarea name="mensagem" maxlength="10000" required></textarea></label>
             <button type="submit">Enviar proposta</button>
         </form>
-        <p class="nota">O envio pelo site depende da configuração de e-mail do servidor. Se ela não estiver disponível, use o endereço acima.</p>
+        <p class="nota">Se o formulário não enviar sua proposta, escreva diretamente para o endereço acima.</p>
     </main>
 </body>
 </html>

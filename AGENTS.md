@@ -128,15 +128,17 @@ DB_NAME=biblia_catolica
 BIBLIA_DB_NAME=biblia_catolica
 DB_USER=usuario_do_banco
 DB_PASSWORD=senha_segura
-MAIL_TO=contato@portaldiario.com
-MAIL_FROM=nao-responda@seu-dominio.com
+FORMSPREE_FORM_ID=seu_id_de_formulario
 ```
 
-Nunca coloque a senha real diretamente nos arquivos versionados.
+Os formulários de contato e colaboração usam Formspree. Crie um formulário no
+painel, confirme o endereço de destino e configure seu ID em
+`FORMSPREE_FORM_ID`. O PHP precisa da extensão `curl` e de acesso HTTPS ao
+Formspree.
 
 ## Banco de dados
 
-Selecione o banco no phpMyAdmin ou cliente MySQL antes de importar os arquivos da pasta `biblia_catolica/` nesta ordem:
+Selecione o banco no phpMyAdmin ou cliente MySQL antes de importar os arquivos da pasta `database/dumps/` nesta ordem:
 
 1. `biblia_tabelas.sql.sql`
 2. `biblia_testamento_livros.sql.sql`
@@ -152,3 +154,6 @@ Os dumps bíblicos não removem o banco inteiro. Confirme o banco selecionado an
 - `admin`: administração integral, perfis, usuários e exclusões permanentes.
 
 O cadastro público cria somente usuários comuns. Perfis editor/admin devem ser atribuídos pelo banco ou por administrador autorizado.
+
+curl.cainfo = "C:\backend\php\extras\ssl\cacert.pem"
+openssl.cafile = "C:\backend\php\extras\ssl\cacert.pem"

@@ -4,6 +4,7 @@ namespace ProjetoIntegrador\Database;
 use PDO;
 use PDOException;
 use RuntimeException;
+use ProjetoIntegrador\Helpers\Env;
 
 final class ConexaoBD
 {
@@ -16,12 +17,13 @@ final class ConexaoBD
     public static function getConexao(): PDO
     {
         if (self::$conexao === null) {
-            $host = getenv('DB_HOST') ?: 'localhost';
-            $database = getenv('DB_NAME') ?: 'biblia_catolica';
-            $username = getenv('DB_USER') ?: 'root';
-            $password = getenv('DB_PASSWORD') ?: 'senacpenha';
+            Env::carregar();
+            $host = Env::obter('DB_HOST', 'localhost');
+            $database = Env::obter('BIBLIA_DB_NAME', Env::obter('DB_NAME', 'biblia_catolica'));
+            $username = Env::obter('DB_USER');
+            $password = Env::obter('DB_PASSWORD');
 
-            if ($username === false || $username === '' || $password === false) {
+            if ($username === null || $username === '' || $password === null) {
                 throw new RuntimeException('Configure DB_USER e DB_PASSWORD antes de conectar ao banco de dados.');
             }
 

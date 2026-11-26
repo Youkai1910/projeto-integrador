@@ -24,9 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new DomainException('Confira seu nome, e-mail e mensagem antes de enviar.');
         }
 
-        $enviado = (new ContatoServico())->enviar(trim($nome), trim($email), 'Contato pelo Portal Diário', trim($mensagem));
+        $enviado = (new ContatoServico())->enviar(trim($nome), trim($email), 'Contato pelo Portal Bíblico', trim($mensagem));
         if (!$enviado) {
-            throw new DomainException('O envio pelo site ainda não está configurado. Você pode escrever diretamente para contato@portalbiblico.com.');
+            throw new DomainException('O envio pelo site não está disponível agora. Você pode escrever diretamente para contato.portalbiblico@outlook.com.');
         }
         $_SESSION['contato_flash'] = ['mensagem' => 'Mensagem enviada. Obrigado por entrar em contato.', 'tipo' => 'sucesso'];
     } catch (DomainException $e) {
@@ -62,7 +62,7 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
         <?php if ($mensagemFlash !== ''): ?>
             <p class="aviso <?= $tipoFlash === 'sucesso' ? 'sucesso' : 'erro' ?>" role="status"><?= Seguranca::escapar($mensagemFlash) ?></p>
         <?php endif; ?>
-        <p class="contato-info">E-mail: <a href="mailto:contato@portalbiblico.com">contato@portalbiblico.com</a></p>
+        <p class="contato-info">E-mail: <a href="mailto:contato.portalbiblico@outlook.com">contato.portalbiblico@outlook.com</a></p>
         <form method="post" action="contato.php" class="form-publico">
             <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar($tokenCsrf) ?>">
             <label>Nome<input type="text" name="nome" maxlength="150" autocomplete="name" required></label>
@@ -70,7 +70,7 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
             <label>Mensagem<textarea name="mensagem" maxlength="10000" required></textarea></label>
             <button type="submit">Enviar mensagem</button>
         </form>
-        <p class="nota">O envio pelo site depende da configuração de e-mail do servidor. Se ela não estiver disponível, use o endereço acima.</p>
+        <p class="nota">Se o formulário não enviar sua mensagem, escreva diretamente para o endereço acima.</p>
     </main>
 </body>
 </html>
