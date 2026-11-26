@@ -20,9 +20,8 @@ Atualizado em 26/11/2026.
 - Leitura bíblica pública por livro e capítulo, com leitura em voz alta opcional
   via `SpeechSynthesis` do navegador. Há controles para ouvir, pausar, continuar
   e parar; o áudio não inicia automaticamente.
-- Formulários públicos de contato e colaboração.
-- Os formulários de contato e colaboração enviam pelo Formspree, configurado
-  pela variável `FORMSPREE_FORM_ID` no `.env`.
+- Formulário público de contato enviado pelo Formspree, configurado pela
+  variável `FORMSPREE_FORM_ID` no `.env`.
 - `LogServico` direciona registros PHP para `logs/erros.log`.
 
 ## Alterações realizadas em 24/11/2026

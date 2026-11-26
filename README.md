@@ -44,9 +44,9 @@ confirmando a senha atual; isso também remove as anotações e favoritos vincul
 
 ## E-mail de contato
 
-Os formulários de contato e colaboração enviam as mensagens pelo Formspree.
-Crie um formulário no painel do Formspree, confirme o endereço de destino e
-configure o ID do formulário no arquivo `.env`:
+O formulário de contato envia mensagens pelo Formspree. Crie um formulário no
+painel do Formspree, confirme o endereço de destino e configure o ID do
+formulário no arquivo `.env`:
 
 ```text
 FORMSPREE_FORM_ID=xoedbywo
