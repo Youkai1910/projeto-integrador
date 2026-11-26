@@ -57,3 +57,31 @@ acima.
 - Páginas e recursos locais verificados por HTTP.
 - Navegação por teclado, link para o conteúdo principal e suporte à API de voz
   conferidos no navegador; a fala não foi iniciada automaticamente.
+
+# Registro de solicitações e comandos — 26/11/2026
+
+## Solicitações atendidas
+
+- Reorganizar os scripts SQL e alinhar o esquema do banco às tabelas usadas
+  pela aplicação.
+- Configurar os formulários de contato e colaboração com Formspree e corrigir
+  a validação do certificado TLS no PHP.
+- Corrigir a configuração local do banco e criar a tabela
+  `favoritos_biblicos` ausente.
+- Atualizar `resumo.md` com as alterações do dia.
+
+## Comandos executados
+
+```powershell
+composer install
+composer update --no-interaction
+Get-ChildItem -Recurse -Path .\public -Filter *.php | ForEach-Object { php -l $_.FullName }
+php -l .\src\Services\ContatoServico.php
+php -l .\src\Helpers\LogServico.php
+php -S 127.0.0.1:8005 -t public
+git diff --check
+```
+
+O PHP conectou ao banco `biblia_catolica`, as páginas inicial e de contato
+responderam com HTTP 200, e o envio pelo Formspree foi confirmado. Credenciais
+locais ficaram em `.env`, ignorado pelo Git, e não foram registradas aqui.
