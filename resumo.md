@@ -21,10 +21,8 @@ Atualizado em 24/11/2026.
   via `SpeechSynthesis` do navegador. Há controles para ouvir, pausar, continuar
   e parar; o áudio não inicia automaticamente.
 - Formulários públicos de contato e colaboração.
-- Os formulários de contato e colaboração usam
-  `contato.portalbiblico@outlook.com` com SMTP Outlook OAuth2/XOAUTH2. A
-  autorização inicial é feita pelo script `scripts/autorizar-outlook.php`; o
-  token fica em `.secrets/`, fora da raiz pública e ignorado pelo Git.
+- Os formulários de contato e colaboração enviam pelo Formspree, configurado
+  pela variável `FORMSPREE_FORM_ID` no `.env`.
 - `LogServico` direciona registros PHP para `logs/erros.log`.
 
 ## Alterações realizadas em 24/11/2026

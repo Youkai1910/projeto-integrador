@@ -21,25 +21,6 @@ final class LogServico
         $arquivoLog = $diretorioLogs . DIRECTORY_SEPARATOR . 'erros.log';
         ini_set('log_errors', '1');
         ini_set('error_log', $arquivoLog);
-
-        register_shutdown_function(static function (): void {
-            $erro = error_get_last();
-            if ($erro === null) {
-                return;
-            }
-
-            $tiposFatais = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR;
-            if (($erro['type'] & $tiposFatais) === 0) {
-                return;
-            }
-
-            error_log(sprintf(
-                'Erro fatal: %s em %s:%d',
-                $erro['message'],
-                $erro['file'],
-                $erro['line']
-            ));
-        });
     }
 
     public static function registrar(Throwable $erro, string $contexto = ''): void

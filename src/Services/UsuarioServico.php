@@ -5,6 +5,7 @@ namespace ProjetoIntegrador\Services;
 
 use DomainException;
 use PDO;
+use ProjetoIntegrador\Helpers\Env;
 use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Models\Usuario;
 use Throwable;
@@ -46,13 +47,21 @@ final class UsuarioServico
 
 	public function ehAdministrador(int $idUsuario): bool
 	{
-		$idAdministradorConfigurado = getenv('ADMIN_USER_ID');
-		if ($idAdministradorConfigurado === false || trim($idAdministradorConfigurado) === '') {
-			return false;
+		$consultaTipo = $this->conexao->prepare(
+			"SELECT tipo FROM usuarios WHERE id = :id LIMIT 1"
+		);
+		$consultaTipo->execute(['id' => $idUsuario]);
+		$tipo = $consultaTipo->fetchColumn();
+		if ($tipo === 'admin') {
+			return true;
 		}
 
+		$idAdministradorConfigurado = Env::obter('ADMIN_USER_ID');
+		if ($idAdministradorConfigurado === null) {
+			return false;
+		}
 		$idAdministrador = filter_var(
-			trim($idAdministradorConfigurado),
+			$idAdministradorConfigurado,
 			FILTER_VALIDATE_INT,
 			['options' => ['min_range' => 1]]
 		);

@@ -3,65 +3,87 @@ declare(strict_types=1);
 
 namespace ProjetoIntegrador\Services;
 
-use PHPMailer\PHPMailer\Exception as MailerException;
-use PHPMailer\PHPMailer\PHPMailer;
-use RuntimeException;
+use ProjetoIntegrador\Helpers\Env;
 
 final class ContatoServico
 {
-    private const EMAIL_CONTATO = 'contato.portalbiblico@outlook.com';
-
     public function enviar(string $nome, string $email, string $assunto, string $mensagem): bool
     {
-        $destinatario = getenv('MAIL_TO') ?: self::EMAIL_CONTATO;
-        $remetente = getenv('OUTLOOK_SMTP_USERNAME') ?: self::EMAIL_CONTATO;
-        $clientId = getenv('OUTLOOK_CLIENT_ID') ?: '';
-
-        if (filter_var($destinatario, FILTER_VALIDATE_EMAIL) === false
-            || filter_var($remetente, FILTER_VALIDATE_EMAIL) === false
-            || $clientId === '') {
-            error_log('Contato: configure OUTLOOK_CLIENT_ID e verifique OUTLOOK_SMTP_USERNAME e MAIL_TO.');
+        Env::carregar();
+        $formId = Env::obter('FORMSPREE_FORM_ID', '');
+        if ($formId === '' || !preg_match('/^[A-Za-z0-9]+$/D', $formId)) {
+            error_log('Contato: configure um FORMSPREE_FORM_ID válido.');
             return false;
         }
 
         $nome = trim(str_replace(["\r", "\n"], ' ', $nome));
         $email = trim($email);
         $assunto = trim(str_replace(["\r", "\n"], '', $assunto));
-        if ($nome === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false || $assunto === '') {
-            error_log('Contato: os dados do remetente ou do assunto são inválidos.');
+        $mensagem = trim($mensagem);
+        if ($nome === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false
+            || $assunto === '' || $mensagem === '') {
+            error_log('Contato: os dados do formulário são inválidos.');
             return false;
         }
 
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp-mail.outlook.com';
-            $mail->SMTPAuth = true;
-            $mail->AuthType = 'XOAUTH2';
-            $mail->Username = $remetente;
-            $mail->setOAuth(new OutlookOAuthTokenProvider($clientId, $remetente));
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-            $mail->Timeout = 20;
-            $mail->CharSet = PHPMailer::CHARSET_UTF8;
-            $mail->setFrom($remetente, 'Portal Bíblico');
-            $mail->addAddress($destinatario);
-            $mail->addReplyTo($email, $nome);
-            $mail->Subject = $assunto;
-            $mail->Body = "Nome: {$nome}\r\nE-mail: {$email}\r\n\r\n{$mensagem}";
+        if (!function_exists('curl_init')) {
+            error_log('Contato: a extensão PHP cURL precisa estar ativada para enviar pelo Formspree.');
+            return false;
+        }
 
-            $enviado = $mail->send();
-            if (!$enviado) {
-                error_log('Contato: o servidor SMTP do Outlook não aceitou a mensagem.');
+        $corpo = json_encode([
+            'name' => $nome,
+            'email' => $email,
+            '_subject' => $assunto,
+            'message' => $mensagem,
+        ], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+
+        $curl = curl_init('https://formspree.io/f/' . $formId);
+        if ($curl === false) {
+            error_log('Contato: não foi possível iniciar a conexão com o Formspree.');
+            return false;
+        }
+
+        $opcoes = [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $corpo,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 20,
+            CURLOPT_HTTPHEADER => [
+                'Accept: application/json',
+                'Content-Type: application/json',
+            ],
+        ];
+
+        $arquivoCa = Env::obter('CURL_CA_BUNDLE');
+        if ($arquivoCa !== null) {
+            if (!is_file($arquivoCa) || !is_readable($arquivoCa)) {
+                error_log('Contato: o arquivo configurado em CURL_CA_BUNDLE não existe ou não pode ser lido.');
+                return false;
             }
+            $opcoes[CURLOPT_CAINFO] = $arquivoCa;
+        }
 
-            return $enviado;
-        } catch (MailerException $erro) {
-            error_log('Contato: falha no envio via Outlook SMTP OAuth2. ' . $mail->ErrorInfo);
-            return false;
-        } catch (RuntimeException $erro) {
-            error_log('Contato: falha na autorização OAuth2 do Outlook. ' . $erro->getMessage());
+        if (!curl_setopt_array($curl, $opcoes)) {
+            error_log('Contato: não foi possível configurar a requisição ao Formspree: ' . curl_error($curl));
             return false;
         }
+
+        $resposta = curl_exec($curl);
+        $erroCurl = curl_error($curl);
+        $codigoHttp = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+
+        if ($resposta === false) {
+            error_log('Contato: falha ao conectar ao Formspree: ' . $erroCurl);
+            return false;
+        }
+
+        if ($codigoHttp < 200 || $codigoHttp >= 300) {
+            error_log('Contato: Formspree respondeu com HTTP ' . $codigoHttp . '.');
+            return false;
+        }
+
+        return true;
     }
 }

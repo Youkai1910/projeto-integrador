@@ -4,6 +4,7 @@ declare(strict_types=1);
 use ProjetoIntegrador\Database\ConexaoBD;
 use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Services\UsuarioServico;
+use ProjetoIntegrador\Helpers\Env;
 
 require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
 
@@ -12,8 +13,8 @@ use ProjetoIntegrador\Helpers\LogServico;
 LogServico::configurar();
 Seguranca::iniciarSessao();
 
-$idAdministradorConfigurado = getenv('ADMIN_USER_ID');
-if ($idAdministradorConfigurado === false || trim($idAdministradorConfigurado) === '') {
+$idAdministradorConfigurado = Env::obter('ADMIN_USER_ID');
+if ($idAdministradorConfigurado === null) {
     http_response_code(503);
     echo '<!DOCTYPE html><html lang="pt-BR"><meta charset="UTF-8"><title>Administração indisponível</title>'
         . '<body><h1>Administração indisponível</h1><p>Configure ADMIN_USER_ID no ambiente do servidor.</p>'
