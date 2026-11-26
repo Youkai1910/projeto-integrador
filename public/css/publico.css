@@ -12,6 +12,13 @@ h1 { margin: 26px 0 8px; color: #173653; font-size: clamp(1.7rem, 5vw, 2.2rem); 
 .form-publico textarea { min-height: 150px; resize: vertical; }
 .form-publico button { justify-self: start; padding: 12px 18px; border: 0; border-radius: 8px; background: #24476b; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
 .form-publico button:hover { background: #173653; }
+.exclusao-conta { margin-top: 30px; padding-top: 20px; border-top: 1px solid #d1deeb; }
+.exclusao-conta h2 { color: #7f1d1d; font-size: 1.25rem; }
+.exclusao-conta > p { padding: 12px 14px; border-radius: 8px; background: #fff0ef; color: #7f1d1d; line-height: 1.5; }
+.form-publico .confirmacao-exclusao { display: flex; grid-template-columns: none; align-items: flex-start; gap: 10px; }
+.form-publico .confirmacao-exclusao input { width: auto; margin: 4px 0 0; }
+.form-publico button.botao-perigo { background: #8a2929; }
+.form-publico button.botao-perigo:hover { background: #702020; }
 .aviso { padding: 12px 14px; border-radius: 8px; line-height: 1.5; }
 .aviso.sucesso { background: #eaf5ec; color: #235b31; }
 .aviso.erro { background: #fff0ef; color: #7f1d1d; }

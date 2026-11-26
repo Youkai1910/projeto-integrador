@@ -128,6 +128,7 @@ $favoritosBiblicos = $servicoFavoritosBiblicos->listarDoUsuario($usuarioId);
 <main class="admin-biblia-page">
     <section class="admin-biblia-painel">
         <a href="../index.php">Voltar à página inicial</a>
+        <a href="../conta.php">Minha conta</a>
         <h1>Minhas anotações</h1>
 
         <?php if ($mensagem !== ''): ?>

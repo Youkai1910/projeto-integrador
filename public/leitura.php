@@ -159,6 +159,7 @@ function escaparLeitura(string $valor): string
                 <a href="admin/usuarios.php"><i class="fa-solid fa-user-gear"></i> ADMINISTRAÇÃO</a>
             <?php endif; ?>
             <?php if ($estaLogado): ?>
+                <a href="conta.php"><i class="fa-solid fa-user"></i> MINHA CONTA</a>
                 <a href="admin/anotacoes.php"><i class="fa-solid fa-bookmark"></i> ANOTAÇÕES</a>
             <?php endif; ?>
             <?php if (!$estaLogado): ?>
