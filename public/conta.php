@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use ProjetoIntegrador\Database\ConexaoBD;
-use ProjetoIntegrador\Enum\TipoUsuario;
 use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Helpers\Validacoes;
 use ProjetoIntegrador\Services\UsuarioServico;
@@ -33,17 +32,17 @@ if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'], true)) {
 }
 
 $erros = [];
-$tipoUsuario = null;
+$ehAdministrador = false;
 $tokenCsrf = Seguranca::obterTokenCsrf();
 
 try {
     $servico = new UsuarioServico(ConexaoBD::getConexao());
-    $tipoUsuario = $servico->obterTipoUsuario($usuarioId);
-    if ($tipoUsuario === null) {
+    if (!$servico->usuarioExiste($usuarioId)) {
         $_SESSION = [];
         header('Location: login.php', true, 303);
         exit;
     }
+    $ehAdministrador = $servico->ehAdministrador($usuarioId);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         Seguranca::validarTokenCsrf($_POST['csrf_token'] ?? null);
@@ -93,7 +92,7 @@ $nomeUsuario = is_array($usuarioSessao) && is_string($usuarioSessao['nome'] ?? n
             <?php endforeach; ?>
         <?php endif; ?>
 
-        <?php if ($tipoUsuario === TipoUsuario::USUARIO): ?>
+        <?php if (!$ehAdministrador): ?>
             <section class="exclusao-conta">
                 <h2>Excluir minha conta</h2>
                 <p>
@@ -115,8 +114,7 @@ $nomeUsuario = is_array($usuarioSessao) && is_string($usuarioSessao['nome'] ?? n
             </section>
         <?php else: ?>
             <p class="aviso erro" role="status">
-                A exclusão própria está disponível somente para contas de usuário.
-                Para contas de edição ou administração, contate um administrador.
+                A conta configurada para administração não pode ser excluída por esta página.
             </p>
         <?php endif; ?>
 

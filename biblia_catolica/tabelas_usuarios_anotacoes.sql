@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     nome VARCHAR(150) NOT NULL,
     senha VARCHAR(255) NOT NULL,
     email VARCHAR(254) NOT NULL,
-    tipo ENUM('usuario', 'editor', 'admin') NOT NULL DEFAULT 'usuario',
+    tipo ENUM('usuario') NOT NULL DEFAULT 'usuario',
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uq_usuarios_email (email)
@@ -43,5 +43,9 @@ CREATE TABLE IF NOT EXISTS favoritos_biblicos (
         ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+UPDATE usuarios
+SET tipo = 'usuario'
+WHERE tipo <> 'usuario';
+
 ALTER TABLE usuarios
-    MODIFY tipo ENUM('usuario', 'editor', 'admin') NOT NULL DEFAULT 'usuario';
+    MODIFY tipo ENUM('usuario') NOT NULL DEFAULT 'usuario';

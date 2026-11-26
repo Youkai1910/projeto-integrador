@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use ProjetoIntegrador\Database\ConexaoBD;
-use ProjetoIntegrador\Enum\TipoUsuario;
 use ProjetoIntegrador\Helpers\Seguranca;
 use ProjetoIntegrador\Services\UsuarioServico;
 
@@ -26,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $servico = new UsuarioServico(ConexaoBD::getConexao());
-        $servico->inserir($nome, $email, $senha, TipoUsuario::USUARIO);
+        $servico->inserir($nome, $email, $senha);
         $cadastroRealizado = true;
     } catch (\DomainException $e) {
         $_SESSION['cadastro_flash'] = ['mensagem' => $e->getMessage(), 'tipo' => 'erro'];
@@ -73,7 +72,7 @@ $tokenCsrf = Seguranca::obterTokenCsrf();
             <button type="submit">Criar conta</button>
         </form>
         <p class="nota">Já possui uma conta? <a href="login.php">Entrar</a>.</p>
-        <p class="nota">Novas contas recebem o perfil de usuário. Perfis administrativos são atribuídos somente pela equipe autorizada.</p>
+        <p class="nota">Novas contas são contas de usuário padrão.</p>
     </main>
 </body>
 </html>

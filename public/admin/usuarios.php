@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use ProjetoIntegrador\Enum\TipoUsuario;
 use ProjetoIntegrador\Helpers\Seguranca;
 
 require_once dirname(__DIR__, 2) . '/src/Bootstrap/admin.php';
@@ -30,9 +29,6 @@ try {
     $tipoMensagem = 'erro';
 }
 
-$quantidadeAdministradores = count(array_filter($usuarios, static function ($usuario): bool {
-    return $usuario->obterTipo() === TipoUsuario::ADMIN;
-}));
 $urlLista = 'usuarios.php';
 ?>
 <!DOCTYPE html>
@@ -59,11 +55,10 @@ $urlLista = 'usuarios.php';
         <section class="cabecalho-pagina">
             <div>
                 <h1>Gerenciar usuários</h1>
-                <p class="subtitulo"><?= $ehAdministrador ? 'Acesso administrativo integral.' : 'Acesso administrativo parcial como editor.' ?></p>
+                <p class="subtitulo">Área restrita à conta configurada pela equipe.</p>
             </div>
             <div class="resumo" aria-label="Resumo dos resultados">
                 <div class="indicador"><strong><?= count($usuarios) ?></strong><span><?= $busca !== '' ? 'resultados' : 'usuários' ?></span></div>
-                <div class="indicador"><strong><?= $quantidadeAdministradores ?></strong><span>administradores listados</span></div>
             </div>
         </section>
 
@@ -91,13 +86,6 @@ $urlLista = 'usuarios.php';
                         <label>Nome<input type="text" name="nome" maxlength="150" autocomplete="name" required></label>
                         <label>E-mail<input type="email" name="email" maxlength="254" autocomplete="email" required></label>
                         <label>Senha (mínimo 8 caracteres)<input type="password" name="senha" minlength="8" maxlength="4096" autocomplete="new-password" required></label>
-                        <label>Perfil
-                            <select name="tipo" required>
-                                <?php foreach (TipoUsuario::obterOpcoes() as $tipo => $rotulo): ?>
-                                    <option value="<?= Seguranca::escapar($tipo) ?>" <?= $tipo === TipoUsuario::USUARIO ? 'selected' : '' ?>><?= Seguranca::escapar($rotulo) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </label>
                         <button class="botao" type="submit">Criar conta</button>
                     </form>
                 </details>
@@ -109,7 +97,7 @@ $urlLista = 'usuarios.php';
                 <div class="tabela-conteudo">
                     <table>
                         <thead>
-                            <tr><th>Usuário</th><th>Perfil</th><th>Cadastro</th><th>Ações</th></tr>
+                            <tr><th>Usuário</th><th>Cadastro</th><th>Ações</th></tr>
                         </thead>
                         <tbody>
                         <?php foreach ($usuarios as $usuario): ?>
@@ -118,7 +106,6 @@ $urlLista = 'usuarios.php';
                             if ($idUsuario === null) {
                                 continue;
                             }
-                            $tipoUsuario = $usuario->obterTipo();
                             $nomeUsuario = $usuario->obterNome();
                             ?>
                             <tr>
@@ -126,26 +113,12 @@ $urlLista = 'usuarios.php';
                                     <div class="nome-usuario"><?= Seguranca::escapar($nomeUsuario) ?><?= $idUsuario === $idAdministrador ? ' <span class="proprio">(você)</span>' : '' ?></div>
                                     <div class="email-usuario"><?= Seguranca::escapar($usuario->obterEmail()) ?></div>
                                 </td>
-                                <td data-label="Perfil"><span class="perfil <?= $tipoUsuario === TipoUsuario::ADMIN ? 'perfil-admin' : '' ?>"><?= Seguranca::escapar(TipoUsuario::obterRotulo($tipoUsuario)) ?></span></td>
                                 <td data-label="Cadastro"><?= Seguranca::escapar($usuario->obterDataCriacao() ?? '') ?></td>
                                 <td class="acoes-celula" data-label="Ações">
                                     <?php if ($idUsuario === $idAdministrador): ?>
                                         <span class="proprio">Sua própria conta não pode ser alterada aqui.</span>
                                     <?php else: ?>
-                                        <?php if ($ehAdministrador): ?>
                                         <div class="acoes">
-                                            <form class="form-perfil" method="post" action="usuario-atualiza.php">
-                                                <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar($tokenCsrf) ?>">
-                                                <input type="hidden" name="id" value="<?= $idUsuario ?>">
-                                                <input type="hidden" name="q" value="<?= Seguranca::escapar($busca) ?>">
-                                                <label class="visualmente-oculto" for="tipo-<?= $idUsuario ?>">Perfil de <?= Seguranca::escapar($nomeUsuario) ?></label>
-                                                <select id="tipo-<?= $idUsuario ?>" name="tipo">
-                                                    <?php foreach (TipoUsuario::obterOpcoes() as $tipo => $rotulo): ?>
-                                                        <option value="<?= Seguranca::escapar($tipo) ?>" <?= $tipoUsuario === $tipo ? 'selected' : '' ?>><?= Seguranca::escapar($rotulo) ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                                <button class="botao botao-pequeno" type="submit">Salvar</button>
-                                            </form>
                                             <form method="post" action="usuario-exclui.php" onsubmit="return confirm('Excluir esta conta? As anotações vinculadas também serão removidas.');">
                                                 <input type="hidden" name="csrf_token" value="<?= Seguranca::escapar($tokenCsrf) ?>">
                                                 <input type="hidden" name="id" value="<?= $idUsuario ?>">
@@ -153,9 +126,6 @@ $urlLista = 'usuarios.php';
                                                 <button class="botao botao-pequeno botao-excluir" type="submit">Excluir</button>
                                             </form>
                                         </div>
-                                        <?php else: ?>
-                                            <span class="proprio">Ações permanentes disponíveis somente ao administrador.</span>
-                                        <?php endif; ?>
                                     <?php endif; ?>
                                 </td>
                             </tr>

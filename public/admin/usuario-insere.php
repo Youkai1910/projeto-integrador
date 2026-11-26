@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use ProjetoIntegrador\Enum\TipoUsuario;
 use ProjetoIntegrador\Helpers\Seguranca;
 
 require_once dirname(__DIR__, 2) . '/src/Bootstrap/admin.php';
@@ -19,18 +18,17 @@ try {
 	$nome = $_POST['nome'] ?? '';
 	$email = $_POST['email'] ?? '';
 	$senha = $_POST['senha'] ?? '';
-	$tipo = $_POST['tipo'] ?? TipoUsuario::USUARIO;
-	if (!is_string($nome) || !is_string($email) || !is_string($senha) || !is_string($tipo)) {
+	if (!is_string($nome) || !is_string($email) || !is_string($senha)) {
 		throw new DomainException('Os dados enviados são inválidos.');
 	}
 
 	if (!$ehAdministrador) {
 		http_response_code(403);
-		Seguranca::guardarMensagem('Somente administradores podem cadastrar ou alterar perfis de acesso.', 'erro');
+		Seguranca::guardarMensagem('Somente a conta configurada pela equipe pode cadastrar usuários.', 'erro');
 		Seguranca::redirecionarParaLista($busca);
 	}
 
-	$usuarioServico->inserir($nome, $email, $senha, $tipo, $idAdministrador);
+	$usuarioServico->inserir($nome, $email, $senha);
 	Seguranca::guardarMensagem('A conta foi cadastrada com sucesso.', 'sucesso');
 } catch (DomainException $e) {
 	Seguranca::guardarMensagem($e->getMessage(), 'erro');
